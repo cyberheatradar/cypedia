@@ -141,7 +141,12 @@ const nav = isJa
         class="sidebar"
         data-pagefind-ignore="all"
       >
-        <nav>
+        <details class="sidebar-disclosure">
+          <summary class="sidebar-toggle">
+            {isJa ? 'メニュー' : 'Menu'}
+          </summary>
+
+          <nav class="sidebar-nav">
           <section class="sidebar-section">
             <h2 class="sidebar-title">
               {nav.main}
@@ -218,6 +223,7 @@ const nav = isJa
             </ul>
           </section>
         </nav>
+        </details>
       </aside>
 
       <main class="content">

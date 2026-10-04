@@ -384,3 +384,93 @@ code {
     min-width: 0;
   }
 }
+
+/* CyPedia responsive sidebar finalization */
+.sidebar-disclosure {
+  display: block;
+}
+
+.sidebar-toggle {
+  display: none;
+}
+
+.sidebar-disclosure > .sidebar-nav,
+.sidebar-disclosure:not([open]) > .sidebar-nav {
+  display: block;
+}
+
+@media (max-width: 850px) {
+  .sidebar {
+    padding: 0;
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-toggle {
+    display: block;
+    padding: 10px 18px;
+    cursor: pointer;
+    background: var(--panel);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    list-style: none;
+    user-select: none;
+  }
+
+  .sidebar-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .sidebar-toggle::before {
+    content: "☰";
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  .sidebar-disclosure:not([open]) > .sidebar-nav {
+    display: none;
+  }
+
+  .sidebar-disclosure[open] > .sidebar-nav {
+    display: block;
+    padding: 14px 18px 18px;
+  }
+
+  .sidebar-disclosure[open] > .sidebar-toggle {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-disclosure[open]
+    .sidebar-section:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header-inner {
+    padding: 10px 12px;
+    gap: 8px 12px;
+  }
+
+  .brand {
+    font-size: 22px;
+  }
+
+  .brand-subtitle {
+    display: none;
+  }
+
+  .language-switch {
+    font-size: 12px;
+  }
+
+  .content {
+    padding: 16px 14px 60px;
+  }
+
+  .content h1 {
+    font-size: 26px;
+  }
+}
