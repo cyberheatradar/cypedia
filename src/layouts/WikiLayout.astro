@@ -141,12 +141,20 @@ const nav = isJa
         class="sidebar"
         data-pagefind-ignore="all"
       >
-        <details class="sidebar-disclosure">
-          <summary class="sidebar-toggle">
-            {isJa ? 'メニュー' : 'Menu'}
-          </summary>
+        <input
+          id="sidebar-menu-toggle"
+          class="sidebar-menu-checkbox"
+          type="checkbox"
+        />
 
-          <nav class="sidebar-nav">
+        <label
+          class="sidebar-toggle"
+          for="sidebar-menu-toggle"
+        >
+          {isJa ? 'メニュー' : 'Menu'}
+        </label>
+
+        <nav class="sidebar-nav">
           <section class="sidebar-section">
             <h2 class="sidebar-title">
               {nav.main}
@@ -223,7 +231,6 @@ const nav = isJa
             </ul>
           </section>
         </nav>
-        </details>
       </aside>
 
       <main class="content">

@@ -386,16 +386,19 @@ code {
 }
 
 /* CyPedia responsive sidebar finalization */
-.sidebar-disclosure {
-  display: block;
+.sidebar-menu-checkbox {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .sidebar-toggle {
   display: none;
 }
 
-.sidebar-disclosure > .sidebar-nav,
-.sidebar-disclosure:not([open]) > .sidebar-nav {
+.sidebar-nav {
   display: block;
 }
 
@@ -415,12 +418,7 @@ code {
     color: var(--text);
     font-size: 14px;
     font-weight: 700;
-    list-style: none;
     user-select: none;
-  }
-
-  .sidebar-toggle::-webkit-details-marker {
-    display: none;
   }
 
   .sidebar-toggle::before {
@@ -429,20 +427,25 @@ code {
     margin-right: 8px;
   }
 
-  .sidebar-disclosure:not([open]) > .sidebar-nav {
+  .sidebar-nav {
     display: none;
   }
 
-  .sidebar-disclosure[open] > .sidebar-nav {
+  .sidebar-menu-checkbox:checked
+    + .sidebar-toggle {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-menu-checkbox:checked
+    + .sidebar-toggle
+    + .sidebar-nav {
     display: block;
     padding: 14px 18px 18px;
   }
 
-  .sidebar-disclosure[open] > .sidebar-toggle {
-    border-bottom: 1px solid var(--border);
-  }
-
-  .sidebar-disclosure[open]
+  .sidebar-menu-checkbox:checked
+    + .sidebar-toggle
+    + .sidebar-nav
     .sidebar-section:last-child {
     margin-bottom: 0;
   }
