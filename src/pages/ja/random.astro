@@ -1,0 +1,46 @@
+---
+import WikiLayout from '../../layouts/WikiLayout.astro';
+import wikiMeta from '../../generated/wiki-meta.json';
+
+const base = import.meta.env.BASE_URL;
+
+const urls =
+  wikiMeta.pages
+    .filter(p => p.lang === 'ja')
+    .map(p =>
+      `${base}ja/${p.slug}/`
+    );
+---
+
+<WikiLayout title="ランダムページ" lang="ja">
+  <h1>ランダムページ</h1>
+
+  <p>
+    ランダムなCyPedia項目へ移動します。
+  </p>
+
+  <p id="random-fallback">
+    JavaScriptが無効な場合は
+    <a href={urls[0] ?? `${base}ja/`}>
+      こちら
+    </a>
+    から移動してください。
+  </p>
+
+  <script
+    is:inline
+    define:vars={{ urls }}
+  >
+    if (urls.length > 0) {
+      const target =
+        urls[
+          Math.floor(
+            Math.random() *
+            urls.length
+          )
+        ];
+
+      window.location.replace(target);
+    }
+  </script>
+</WikiLayout>

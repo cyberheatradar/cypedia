@@ -1,0 +1,76 @@
+---
+import WikiLayout from '../../layouts/WikiLayout.astro';
+import wikiMeta from '../../generated/wiki-meta.json';
+
+const pages = wikiMeta.pages
+  .filter(p => p.lang === 'en')
+  .sort((a, b) =>
+    a.title.localeCompare(b.title, 'en')
+  );
+
+const groups = {};
+
+for (const page of pages) {
+  const first =
+    page.title.charAt(0).toUpperCase();
+
+  const group =
+    /^[A-Z]$/.test(first)
+      ? first
+      : /^[0-9]$/.test(first)
+        ? '0-9'
+        : 'Other';
+
+  groups[group] ??= [];
+  groups[group].push(page);
+}
+
+const keys =
+  Object.keys(groups).sort(
+    (a, b) => {
+      if (a === 'Other') return 1;
+      if (b === 'Other') return -1;
+      return a.localeCompare(b);
+    }
+  );
+
+const base = import.meta.env.BASE_URL;
+---
+
+<WikiLayout title="Index" lang="en">
+  <h1>Index</h1>
+
+  <p>
+    Alphabetical index of CyPedia entries.
+  </p>
+
+  {
+    keys.map(key => (
+      <section class="directory-section">
+        <h2>{key}</h2>
+
+        <ul class="directory-list">
+          {groups[key].map(page => (
+            <li>
+              <a
+                href={`${base}en/${page.slug}/`}
+              >
+                {page.title}
+              </a>
+
+              {
+                page.aliases?.length > 0 &&
+                (
+                  <span class="directory-alias">
+                    {' '}
+                    ({page.aliases.join(', ')})
+                  </span>
+                )
+              }
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</WikiLayout>

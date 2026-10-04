@@ -1,0 +1,115 @@
+---
+import WikiLayout from '../../layouts/WikiLayout.astro';
+import wikiMeta from '../../generated/wiki-meta.json';
+
+const base = import.meta.env.BASE_URL;
+
+const recent = wikiMeta.pages
+  .filter((page) => page.lang === 'en')
+  .sort(
+    (a, b) =>
+      new Date(b.updated_at).getTime() -
+      new Date(a.updated_at).getTime()
+  )
+  .slice(0, 8);
+---
+
+<WikiLayout
+  title="Main Page"
+  lang="en"
+  description="CyPedia — The Cyber Security Wiki"
+>
+  <h1>CyPedia</h1>
+
+  <p class="lead">
+    CyPedia is an encyclopedia for cybersecurity terminology,
+    concepts, technologies, protocols, attack techniques,
+    tools, and related knowledge.
+  </p>
+
+  <h2>Fields</h2>
+
+  <div class="category-grid">
+    <div class="category-box">
+      <strong>Web / API</strong>
+      <ul>
+        <li>Web Application</li>
+        <li>HTTP</li>
+        <li>API</li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>Windows / Active Directory</strong>
+      <ul>
+        <li>
+          <a href={`${base}en/active-directory/`}>
+            Active Directory
+          </a>
+        </li>
+        <li>Windows</li>
+        <li>
+          <a href={`${base}en/kerberos/`}>
+            Kerberos
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>Network / Protocol</strong>
+      <ul>
+        <li>TCP/IP</li>
+        <li>DNS</li>
+        <li>SMB</li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>Cloud</strong>
+      <ul>
+        <li>AWS</li>
+        <li>Azure</li>
+        <li>Google Cloud</li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>AI</strong>
+      <ul>
+        <li>LLM</li>
+        <li>AI Agent</li>
+        <li>MCP</li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>Other</strong>
+      <ul>
+        <li>Mobile</li>
+        <li>Hardware / IoT / RF</li>
+        <li>DFIR / CTI / Defense</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Recent Changes</h2>
+
+  <ul class="recent-list">
+    {
+      recent.map((page) => (
+        <li>
+          <a href={`${base}en/${page.slug}/`}>
+            {page.title}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p>
+    <a href={`${base}en/recent/`}>
+      View all recent changes
+    </a>
+  </p>
+</WikiLayout>

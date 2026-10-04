@@ -1,0 +1,84 @@
+---
+import WikiLayout from '../../layouts/WikiLayout.astro';
+import wikiMeta from '../../generated/wiki-meta.json';
+
+const pages = wikiMeta.pages
+  .filter(p => p.lang === 'ja')
+  .sort((a, b) =>
+    (a.reading || a.title)
+      .localeCompare(
+        b.reading || b.title,
+        'ja'
+      )
+  );
+
+const groups = {};
+
+for (const page of pages) {
+  const source =
+    page.reading || page.title;
+
+  const first =
+    source.charAt(0).toUpperCase();
+
+  let group = 'その他';
+
+  if (/^[A-Z]$/.test(first)) {
+    group = first;
+  } else if (/^[0-9]$/.test(first)) {
+    group = '0-9';
+  }
+
+  groups[group] ??= [];
+  groups[group].push(page);
+}
+
+const keys =
+  Object.keys(groups).sort(
+    (a, b) => {
+      if (a === 'その他') return 1;
+      if (b === 'その他') return -1;
+      return a.localeCompare(b);
+    }
+  );
+
+const base = import.meta.env.BASE_URL;
+---
+
+<WikiLayout title="索引" lang="ja">
+  <h1>索引</h1>
+
+  <p>
+    CyPediaに登録されている見出し語の一覧です。
+  </p>
+
+  {
+    keys.map(key => (
+      <section class="directory-section">
+        <h2>{key}</h2>
+
+        <ul class="directory-list">
+          {groups[key].map(page => (
+            <li>
+              <a
+                href={`${base}ja/${page.slug}/`}
+              >
+                {page.title}
+              </a>
+
+              {
+                page.aliases?.length > 0 &&
+                (
+                  <span class="directory-alias">
+                    {' '}
+                    ({page.aliases.join(', ')})
+                  </span>
+                )
+              }
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</WikiLayout>

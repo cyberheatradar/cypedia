@@ -1,0 +1,235 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  lang: 'ja' | 'en';
+  description?: string;
+  jaPath?: string;
+  enPath?: string;
+}
+
+const {
+  title,
+  lang,
+  description = 'CyPedia — The Cyber Security Wiki',
+  jaPath = 'ja/',
+  enPath = 'en/'
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+
+function href(path: string): string {
+  return `${base}${path.replace(/^\/+/, '')}`;
+}
+
+const isJa = lang === 'ja';
+
+const nav = isJa
+  ? {
+      main: 'メイン',
+      top: 'トップページ',
+      recent: '最近更新',
+      random: 'ランダムページ',
+      index: '索引',
+      categories: 'カテゴリ',
+      fields: '分野',
+      web: 'Web / API',
+      network: 'Network / Protocol',
+      windows: 'Windows',
+      ad: 'Active Directory',
+      linux: 'Linux / Unix',
+      cloud: 'Cloud',
+      mobile: 'Mobile',
+      ai: 'AI / LLM / Agent',
+      re: 'Reverse Engineering',
+      hardware: 'Hardware / IoT / RF',
+      dfir: 'DFIR / CTI / Defense',
+      reference: '資料',
+      terms: '用語集',
+      tools: 'ツール',
+      protocols: 'プロトコル',
+      search: 'CyPediaを検索',
+      searchButton: '検索'
+    }
+  : {
+      main: 'Main',
+      top: 'Main Page',
+      recent: 'Recent Changes',
+      random: 'Random Page',
+      index: 'Index',
+      categories: 'Categories',
+      fields: 'Fields',
+      web: 'Web / API',
+      network: 'Network / Protocol',
+      windows: 'Windows',
+      ad: 'Active Directory',
+      linux: 'Linux / Unix',
+      cloud: 'Cloud',
+      mobile: 'Mobile',
+      ai: 'AI / LLM / Agent',
+      re: 'Reverse Engineering',
+      hardware: 'Hardware / IoT / RF',
+      dfir: 'DFIR / CTI / Defense',
+      reference: 'Reference',
+      terms: 'Terminology',
+      tools: 'Tools',
+      protocols: 'Protocols',
+      search: 'Search CyPedia',
+      searchButton: 'Search'
+    };
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width"
+    />
+    <meta
+      name="description"
+      content={description}
+    />
+    <title>{title} - CyPedia</title>
+  </head>
+
+  <body>
+    <header
+      class="site-header"
+      data-pagefind-ignore="all"
+    >
+      <div class="site-header-inner">
+        <a
+          class="brand"
+          href={href(`${lang}/`)}
+        >
+          CyPedia
+          <span class="brand-subtitle">
+            The Cyber Security Wiki
+          </span>
+        </a>
+
+        <form
+          class="search-shell"
+          action={href(`${lang}/search/`)}
+          method="get"
+          role="search"
+        >
+          <input
+            type="search"
+            name="q"
+            placeholder={nav.search}
+            aria-label={nav.search}
+          />
+          <button type="submit">
+            {nav.searchButton}
+          </button>
+        </form>
+
+        <div class="language-switch">
+          <a href={href(jaPath)}>日本語</a>
+          <span> / </span>
+          <a href={href(enPath)}>English</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="wiki-shell">
+      <aside
+        class="sidebar"
+        data-pagefind-ignore="all"
+      >
+        <nav>
+          <section class="sidebar-section">
+            <h2 class="sidebar-title">
+              {nav.main}
+            </h2>
+
+            <ul>
+              <li>
+                <a href={href(`${lang}/`)}>
+                  {nav.top}
+                </a>
+              </li>
+
+              <li>
+                <a href={href(`${lang}/recent/`)}>
+                  {nav.recent}
+                </a>
+              </li>
+
+              <li>
+                <a href={href(`${lang}/random/`)}>
+                  {nav.random}
+                </a>
+              </li>
+
+              <li>
+                <a href={href(`${lang}/indexes/`)}>
+                  {nav.index}
+                </a>
+              </li>
+
+              <li>
+                <a href={href(`${lang}/categories/`)}>
+                  {nav.categories}
+                </a>
+              </li>
+            </ul>
+          </section>
+
+          <section class="sidebar-section">
+            <h2 class="sidebar-title">
+              {nav.fields}
+            </h2>
+
+            <ul>
+              <li><span>{nav.web}</span></li>
+              <li><span>{nav.network}</span></li>
+              <li><span>{nav.windows}</span></li>
+
+              <li>
+                <a href={href(`${lang}/active-directory/`)}>
+                  {nav.ad}
+                </a>
+              </li>
+
+              <li><span>{nav.linux}</span></li>
+              <li><span>{nav.cloud}</span></li>
+              <li><span>{nav.mobile}</span></li>
+              <li><span>{nav.ai}</span></li>
+              <li><span>{nav.re}</span></li>
+              <li><span>{nav.hardware}</span></li>
+              <li><span>{nav.dfir}</span></li>
+            </ul>
+          </section>
+
+          <section class="sidebar-section">
+            <h2 class="sidebar-title">
+              {nav.reference}
+            </h2>
+
+            <ul>
+              <li><span>{nav.terms}</span></li>
+              <li><span>{nav.tools}</span></li>
+              <li><span>{nav.protocols}</span></li>
+            </ul>
+          </section>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <slot />
+
+        <footer
+          class="footer"
+          data-pagefind-ignore="all"
+        >
+          CyPedia — The Cyber Security Wiki
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

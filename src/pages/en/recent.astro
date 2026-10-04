@@ -1,0 +1,41 @@
+---
+import WikiLayout from '../../layouts/WikiLayout.astro';
+import wikiMeta from '../../generated/wiki-meta.json';
+
+const base = import.meta.env.BASE_URL;
+
+const pages = wikiMeta.pages
+  .filter(p => p.lang === 'en')
+  .sort((a, b) =>
+    new Date(b.updated_at).getTime() -
+    new Date(a.updated_at).getTime()
+  )
+  .slice(0, 100);
+---
+
+<WikiLayout title="Recent Changes" lang="en">
+  <h1>Recent Changes</h1>
+
+  <ul class="recent-pages">
+    {
+      pages.map(page => (
+        <li>
+          <time datetime={page.updated_at}>
+            {
+              new Date(page.updated_at)
+                .toLocaleString('en-US')
+            }
+          </time>
+
+          {' '}
+
+          <a
+            href={`${base}en/${page.slug}/`}
+          >
+            {page.title}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</WikiLayout>

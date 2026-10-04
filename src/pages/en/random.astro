@@ -1,0 +1,44 @@
+---
+import WikiLayout from '../../layouts/WikiLayout.astro';
+import wikiMeta from '../../generated/wiki-meta.json';
+
+const base = import.meta.env.BASE_URL;
+
+const urls =
+  wikiMeta.pages
+    .filter(p => p.lang === 'en')
+    .map(p =>
+      `${base}en/${p.slug}/`
+    );
+---
+
+<WikiLayout title="Random Page" lang="en">
+  <h1>Random Page</h1>
+
+  <p>
+    Redirecting to a random CyPedia entry.
+  </p>
+
+  <p>
+    <a href={urls[0] ?? `${base}en/`}>
+      Continue manually
+    </a>
+  </p>
+
+  <script
+    is:inline
+    define:vars={{ urls }}
+  >
+    if (urls.length > 0) {
+      const target =
+        urls[
+          Math.floor(
+            Math.random() *
+            urls.length
+          )
+        ];
+
+      window.location.replace(target);
+    }
+  </script>
+</WikiLayout>

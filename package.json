@@ -1,0 +1,24 @@
+{
+  "name": "cypedia",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "wiki:generate": "node scripts/generate-wiki.mjs",
+    "dev": "npm run wiki:generate && astro dev",
+    "search:index": "pagefind --site dist --root-selector \"article[data-pagefind-body]\"",
+    "build": "npm run wiki:generate && astro build && npm run alias:generate && npm run search:index",
+    "serve:static": "python3 -m http.server 4321 --bind 0.0.0.0 --directory dist",
+    "preview": "astro preview",
+    "alias:generate": "node scripts/generate-alias-redirects.mjs",
+    "release:gate": "./scripts/release-gate.sh",
+    "deploy:pages": "./scripts/deploy-gh-pages.sh"
+  },
+  "dependencies": {
+    "astro": "7.3.5",
+    "gray-matter": "4.0.3"
+  },
+  "devDependencies": {
+    "pagefind": "1.5.2"
+  }
+}

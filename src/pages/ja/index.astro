@@ -1,0 +1,114 @@
+---
+import WikiLayout from '../../layouts/WikiLayout.astro';
+import wikiMeta from '../../generated/wiki-meta.json';
+
+const base = import.meta.env.BASE_URL;
+
+const recent = wikiMeta.pages
+  .filter((page) => page.lang === 'ja')
+  .sort(
+    (a, b) =>
+      new Date(b.updated_at).getTime() -
+      new Date(a.updated_at).getTime()
+  )
+  .slice(0, 8);
+---
+
+<WikiLayout
+  title="メインページ"
+  lang="ja"
+  description="CyPedia — The Cyber Security Wiki"
+>
+  <h1>CyPedia</h1>
+
+  <p class="lead">
+    CyPediaは、サイバーセキュリティに関する用語、概念、技術、
+    プロトコル、攻撃手法、ツールなどを横断的に参照できる百科事典です。
+  </p>
+
+  <h2>分野</h2>
+
+  <div class="category-grid">
+    <div class="category-box">
+      <strong>Web / API</strong>
+      <ul>
+        <li>Web Application</li>
+        <li>HTTP</li>
+        <li>API</li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>Windows / Active Directory</strong>
+      <ul>
+        <li>
+          <a href={`${base}ja/active-directory/`}>
+            Active Directory
+          </a>
+        </li>
+        <li>Windows</li>
+        <li>
+          <a href={`${base}ja/kerberos/`}>
+            Kerberos
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>Network / Protocol</strong>
+      <ul>
+        <li>TCP/IP</li>
+        <li>DNS</li>
+        <li>SMB</li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>Cloud</strong>
+      <ul>
+        <li>AWS</li>
+        <li>Azure</li>
+        <li>Google Cloud</li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>AI</strong>
+      <ul>
+        <li>LLM</li>
+        <li>AI Agent</li>
+        <li>MCP</li>
+      </ul>
+    </div>
+
+    <div class="category-box">
+      <strong>その他</strong>
+      <ul>
+        <li>Mobile</li>
+        <li>Hardware / IoT / RF</li>
+        <li>DFIR / CTI / Defense</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>最近更新されたページ</h2>
+
+  <ul class="recent-list">
+    {
+      recent.map((page) => (
+        <li>
+          <a href={`${base}ja/${page.slug}/`}>
+            {page.title}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p>
+    <a href={`${base}ja/recent/`}>
+      最近更新をすべて見る
+    </a>
+  </p>
+</WikiLayout>

@@ -1,0 +1,62 @@
+---
+import WikiLayout from '../../layouts/WikiLayout.astro';
+import wikiMeta from '../../generated/wiki-meta.json';
+
+const base = import.meta.env.BASE_URL;
+
+const pages =
+  wikiMeta.pages.filter(
+    p => p.lang === 'ja'
+  );
+
+const groups = {};
+
+for (const page of pages) {
+  for (
+    const category
+    of page.categories ?? []
+  ) {
+    groups[category] ??= [];
+    groups[category].push(page);
+  }
+}
+
+const categories =
+  Object.keys(groups)
+    .sort((a, b) =>
+      a.localeCompare(b, 'ja')
+    );
+---
+
+<WikiLayout title="カテゴリ" lang="ja">
+  <h1>カテゴリ</h1>
+
+  {
+    categories.map(category => (
+      <section class="directory-section">
+        <h2>{category}</h2>
+
+        <ul class="directory-list">
+          {
+            groups[category]
+              .sort((a, b) =>
+                a.title.localeCompare(
+                  b.title,
+                  'ja'
+                )
+              )
+              .map(page => (
+                <li>
+                  <a
+                    href={`${base}ja/${page.slug}/`}
+                  >
+                    {page.title}
+                  </a>
+                </li>
+              ))
+          }
+        </ul>
+      </section>
+    ))
+  }
+</WikiLayout>

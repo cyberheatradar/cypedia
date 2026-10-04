@@ -1,0 +1,145 @@
+---
+import WikiLayout from '../../layouts/WikiLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<WikiLayout
+  title="検索"
+  lang="ja"
+  description="CyPedia全文検索"
+>
+  <h1>検索</h1>
+
+  <form
+    id="page-search-form"
+    class="page-search-form"
+    method="get"
+  >
+    <input
+      id="page-search-input"
+      name="q"
+      type="search"
+      placeholder="検索語を入力"
+      autocomplete="off"
+    />
+
+    <button type="submit">
+      検索
+    </button>
+  </form>
+
+  <p id="search-status"></p>
+
+  <div id="search-results"></div>
+
+  <script
+    is:inline
+    define:vars={{ base }}
+  >
+    const params =
+      new URLSearchParams(window.location.search);
+
+    const query =
+      params.get('q')?.trim() ?? '';
+
+    const input =
+      document.getElementById(
+        'page-search-input'
+      );
+
+    const status =
+      document.getElementById(
+        'search-status'
+      );
+
+    const results =
+      document.getElementById(
+        'search-results'
+      );
+
+    input.value = query;
+
+    async function runSearch(q) {
+      results.replaceChildren();
+
+      if (!q) {
+        status.textContent =
+          '検索語を入力してください。';
+        return;
+      }
+
+      status.textContent =
+        '検索中...';
+
+      try {
+        const pagefind =
+          await import(
+            `${base}pagefind/pagefind.js`
+          );
+
+        await pagefind.options({
+          baseUrl: base,
+          bundlePath:
+            `${base}pagefind/`
+        });
+
+        await pagefind.init();
+
+        const search =
+          await pagefind.search(q);
+
+        status.textContent =
+          `${search.results.length}件`;
+
+        for (
+          const result
+          of search.results.slice(0, 50)
+        ) {
+          const data =
+            await result.data();
+
+          const article =
+            document.createElement('article');
+
+          article.className =
+            'search-result';
+
+          const heading =
+            document.createElement('h2');
+
+          const link =
+            document.createElement('a');
+
+          link.href = data.url;
+
+          link.textContent =
+            data.meta?.title ??
+            data.url;
+
+          heading.appendChild(link);
+
+          const excerpt =
+            document.createElement('p');
+
+          excerpt.innerHTML =
+            data.excerpt ?? '';
+
+          article.append(
+            heading,
+            excerpt
+          );
+
+          results.appendChild(article);
+        }
+      } catch (error) {
+        console.error(error);
+
+        status.textContent =
+          '検索Indexを読み込めませんでした。';
+      }
+    }
+
+    runSearch(query);
+  </script>
+</WikiLayout>

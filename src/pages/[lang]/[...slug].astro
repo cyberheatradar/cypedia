@@ -1,0 +1,110 @@
+---
+import { getCollection, render } from 'astro:content';
+import WikiLayout from '../../layouts/WikiLayout.astro';
+import wikiMeta from '../../generated/wiki-meta.json';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+
+  return pages.map((page) => ({
+    params: {
+      lang: page.data.lang,
+      slug: page.data.wiki_slug
+    },
+    props: { page }
+  }));
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+
+const meta = wikiMeta.pages.find(
+  (item) =>
+    item.lang === page.data.lang &&
+    item.canonical_id === page.data.canonical_id
+);
+
+const counterpart = wikiMeta.pages.find(
+  (item) =>
+    item.lang !== page.data.lang &&
+    item.canonical_id === page.data.canonical_id
+);
+
+const jaPath =
+  page.data.lang === 'ja'
+    ? `ja/${page.data.wiki_slug}/`
+    : counterpart?.lang === 'ja'
+      ? `ja/${counterpart.slug}/`
+      : 'ja/';
+
+const enPath =
+  page.data.lang === 'en'
+    ? `en/${page.data.wiki_slug}/`
+    : counterpart?.lang === 'en'
+      ? `en/${counterpart.slug}/`
+      : 'en/';
+
+const base = import.meta.env.BASE_URL;
+
+function href(lang, slug) {
+  return `${base}${lang}/${slug}/`;
+}
+
+const isJa = page.data.lang === 'ja';
+---
+
+<WikiLayout
+  title={page.data.title}
+  lang={page.data.lang}
+  description={page.data.summary}
+  jaPath={jaPath}
+  enPath={enPath}
+>
+  <article data-pagefind-body>
+    <h1>{page.data.title}</h1>
+
+    {
+      page.data.aliases?.length > 0 && (
+        <div class="article-meta">
+          <strong>{isJa ? '別名' : 'Aliases'}:</strong>
+          {' '}
+          {page.data.aliases.join(', ')}
+        </div>
+      )
+    }
+
+    {
+      page.data.categories?.length > 0 && (
+        <div class="article-meta">
+          <strong>{isJa ? 'カテゴリ' : 'Categories'}:</strong>
+          {' '}
+          {page.data.categories.join(' / ')}
+        </div>
+      )
+    }
+
+    <div class="article-body">
+      <Content />
+    </div>
+
+    <section class="backlinks">
+      <h2>{isJa ? 'この項目を参照しているページ' : 'Pages that link here'}</h2>
+
+      {
+        meta?.backlinks?.length > 0 ? (
+          <ul>
+            {meta.backlinks.map((item) => (
+              <li>
+                <a href={href(item.lang, item.slug)}>
+                  {item.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>{isJa ? '現在ありません。' : 'None currently.'}</p>
+        )
+      }
+    </section>
+  </article>
+</WikiLayout>
