@@ -276,3 +276,58 @@ What is TGT?
 What is Kerberoasting?
 
 CyPedia should provide an independent page that answers the question deeply, accurately, and with traceable sources.
+
+## Term Registry / WikiLink Policy
+
+CyPediaでは、記事間リンクを長期的に維持するため、中央用語レジストリ `content/terms.json` を正本として使用する。
+
+各用語は少なくとも以下を持つ。
+
+- `canonical_id`
+- `slug`
+- `status`
+- category
+- 日本語の title / aliases / summary
+- 英語の title / aliases / summary
+
+記事本文から他のCyPedia用語を参照する場合は、原則としてWikiLink記法を使用する。
+
+記法:
+
+    [[canonical_id|表示名]]
+
+例:
+
+    [[kerberos.kdc|KDC]]
+    [[attack.golden-ticket|Golden Ticket]]
+
+表示名またはaliasによるWikiLinkも解決可能とする。ただし、曖昧性や将来の名称変更による影響を避けるため、正本記事ではcanonical ID指定を優先する。
+
+Term Registry上で `planned` の用語は、本文ファイルがまだ存在しなくても日本語・英語のstubページを自動生成する。
+
+後から同一canonical IDの実記事を作成した場合、既存記事側のWikiLinkを書き換えず、そのstubを実記事へ置き換えられることを必須要件とする。
+
+generatorは以下を実施する。
+
+- WikiLink resolution
+- canonical ID resolution
+- title / alias resolution
+- backlink generation
+- planned stub generation
+- missing WikiLink detection
+- registered termの未リンク検出
+- canonical ID重複検出
+- slug重複検出
+
+Release Gateでは以下を必須とする。
+
+- `MISSING_WIKI_LINK_COUNT=0`
+- `UNLINKED_KNOWN_TERM_COUNT=0`
+
+planned stubは辞書拡張中の正常な状態として許容する。
+
+同一記事内で同じ用語が頻繁に出現する場合は、可読性を損なう過剰リンクを避ける。ただし、その記事で重要となる最初の出現または主要な説明箇所にはWikiLinkを設定する。
+
+未作成用語をプレーンテキストのまま放置し、後日過去記事を手作業で修正する運用は原則禁止する。
+
+新しい記事で新規の重要用語が登場した場合は、Term Registryへ登録し、WikiLink化する。

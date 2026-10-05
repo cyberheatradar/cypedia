@@ -23,7 +23,10 @@ for p in \
   dist/404.html \
   dist/pagefind/pagefind.js \
   build-reports/missing-wiki-links.json \
-  build-reports/alias-redirects.json
+  build-reports/unlinked-known-terms.json \
+  build-reports/alias-redirects.json \
+  src/generated/wiki-meta.json \
+  src/generated/term-registry.json
 do
   echo "CHECK=$p"
   test -e "$p"
@@ -60,6 +63,25 @@ do
 done
 
 echo
+echo '===== TERM REGISTRY ROUTES ====='
+
+for p in \
+  dist/ja/key-distribution-center/index.html \
+  dist/ja/service-ticket/index.html \
+  dist/ja/service-account/index.html \
+  dist/ja/service-principal-name/index.html \
+  dist/ja/as-rep-roasting/index.html \
+  dist/ja/golden-ticket/index.html \
+  dist/ja/silver-ticket/index.html \
+  dist/ja/krbtgt/index.html \
+  dist/ja/pkinit/index.html \
+  dist/ja/privilege-attribute-certificate/index.html
+do
+  echo "CHECK=$p"
+  test -f "$p"
+done
+
+echo
 echo '===== SIZE GATE ====='
 
 DIST_BYTES="$(
@@ -86,21 +108,59 @@ echo 'DIST_SIZE_GATE=PASS'
 echo
 echo '===== CONTENT STATUS ====='
 
-STUB_COUNT="$(
-  grep \
-    -R \
-    -h \
-    '^status:[[:space:]]*stub' \
-    content/ja \
-    content/en \
-    2>/dev/null |
+SOURCE_STUB_COUNT="$(
+  (
+    grep \
+      -R \
+      -h \
+      '^status:[[:space:]]*stub' \
+      content/ja \
+      content/en \
+      2>/dev/null || true
+  ) |
   wc -l
+)"
+
+REGISTRY_TERM_COUNT="$(
+  node -e "
+    const x=require(
+      './src/generated/wiki-meta.json'
+    );
+    console.log(x.registry_term_count);
+  "
+)"
+
+SOURCE_PAGE_COUNT="$(
+  node -e "
+    const x=require(
+      './src/generated/wiki-meta.json'
+    );
+    console.log(x.source_page_count);
+  "
+)"
+
+PLANNED_STUB_COUNT="$(
+  node -e "
+    const x=require(
+      './src/generated/wiki-meta.json'
+    );
+    console.log(x.planned_stub_count);
+  "
 )"
 
 MISSING_COUNT="$(
   node -e "
     const x=require(
       './build-reports/missing-wiki-links.json'
+    );
+    console.log(x.length);
+  "
+)"
+
+UNLINKED_COUNT="$(
+  node -e "
+    const x=require(
+      './build-reports/unlinked-known-terms.json'
     );
     console.log(x.length);
   "
@@ -115,12 +175,34 @@ ALIAS_COUNT="$(
   "
 )"
 
-echo "STUB_PAGE_COUNT=$STUB_COUNT"
+echo "TERM_REGISTRY_COUNT=$REGISTRY_TERM_COUNT"
+echo "SOURCE_PAGE_COUNT=$SOURCE_PAGE_COUNT"
+echo "SOURCE_STUB_PAGE_COUNT=$SOURCE_STUB_COUNT"
+echo "PLANNED_STUB_PAGE_COUNT=$PLANNED_STUB_COUNT"
 echo "MISSING_WIKI_LINK_COUNT=$MISSING_COUNT"
+echo "UNLINKED_KNOWN_TERM_COUNT=$UNLINKED_COUNT"
 echo "ALIAS_REDIRECT_COUNT=$ALIAS_COUNT"
 
+if [ "$MISSING_COUNT" -ne 0 ]; then
+  echo
+  cat build-reports/missing-wiki-links.txt
+  echo 'MISSING_WIKI_LINK_GATE=FAIL'
+  exit 1
+fi
+
+echo 'MISSING_WIKI_LINK_GATE=PASS'
+
+if [ "$UNLINKED_COUNT" -ne 0 ]; then
+  echo
+  cat build-reports/unlinked-known-terms.txt
+  echo 'UNLINKED_KNOWN_TERM_GATE=FAIL'
+  exit 1
+fi
+
+echo 'UNLINKED_KNOWN_TERM_GATE=PASS'
+
 echo
-echo 'NOTE: STUB and MISSING links are advisory during development.'
+echo 'NOTE: source/planned stubs are permitted during dictionary expansion.'
 
 echo
 echo '===== OUTPUT ====='

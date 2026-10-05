@@ -1,0 +1,424 @@
+{
+  "version": 1,
+  "terms": [
+    {
+      "canonical_id": "ad.active-directory",
+      "slug": "active-directory",
+      "status": "article",
+      "categories": ["Active Directory"],
+      "ja": {
+        "title": "Active Directory",
+        "aliases": ["AD"],
+        "summary": "Active Directoryの辞書項目。"
+      },
+      "en": {
+        "title": "Active Directory",
+        "aliases": ["AD"],
+        "summary": "CyPedia entry for Active Directory."
+      }
+    },
+    {
+      "canonical_id": "auth.kerberos",
+      "slug": "kerberos",
+      "status": "article",
+      "categories": ["Authentication", "Active Directory"],
+      "ja": {
+        "title": "Kerberos",
+        "aliases": ["Kerberos V5"],
+        "summary": "Kerberos V5の辞書項目。"
+      },
+      "en": {
+        "title": "Kerberos",
+        "aliases": ["Kerberos V5"],
+        "summary": "CyPedia entry for Kerberos."
+      }
+    },
+    {
+      "canonical_id": "kerberos.ticket-granting-ticket",
+      "slug": "ticket-granting-ticket",
+      "status": "article",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Ticket-Granting Ticket",
+        "aliases": ["TGT"],
+        "summary": "Ticket-Granting Ticket（TGT）の辞書項目。"
+      },
+      "en": {
+        "title": "Ticket-Granting Ticket",
+        "aliases": ["TGT"],
+        "summary": "CyPedia entry for the Ticket-Granting Ticket."
+      }
+    },
+    {
+      "canonical_id": "attack.kerberoasting",
+      "slug": "kerberoasting",
+      "status": "article",
+      "categories": ["Active Directory", "Kerberos"],
+      "ja": {
+        "title": "Kerberoasting",
+        "aliases": ["Kerberoast"],
+        "summary": "Kerberoastingの辞書項目。"
+      },
+      "en": {
+        "title": "Kerberoasting",
+        "aliases": ["Kerberoast"],
+        "summary": "CyPedia entry for Kerberoasting."
+      }
+    },
+
+    {
+      "canonical_id": "kerberos.kdc",
+      "slug": "key-distribution-center",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Key Distribution Center",
+        "aliases": ["KDC"],
+        "summary": "Key Distribution Center（KDC）の辞書項目。"
+      },
+      "en": {
+        "title": "Key Distribution Center",
+        "aliases": ["KDC"],
+        "summary": "CyPedia entry for the Key Distribution Center."
+      }
+    },
+    {
+      "canonical_id": "kerberos.principal",
+      "slug": "principal",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Principal",
+        "aliases": ["principal"],
+        "summary": "Kerberos Principalの辞書項目。"
+      },
+      "en": {
+        "title": "Principal",
+        "aliases": ["principal"],
+        "summary": "CyPedia entry for Kerberos principals."
+      }
+    },
+    {
+      "canonical_id": "kerberos.realm",
+      "slug": "realm",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Realm",
+        "aliases": ["realm"],
+        "summary": "Kerberos Realmの辞書項目。"
+      },
+      "en": {
+        "title": "Realm",
+        "aliases": ["realm"],
+        "summary": "CyPedia entry for Kerberos realms."
+      }
+    },
+    {
+      "canonical_id": "kerberos.authentication-server",
+      "slug": "authentication-server",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Authentication Server",
+        "aliases": ["AS"],
+        "summary": "Kerberos Authentication Serverの辞書項目。"
+      },
+      "en": {
+        "title": "Authentication Server",
+        "aliases": ["AS"],
+        "summary": "CyPedia entry for the Kerberos Authentication Server."
+      }
+    },
+    {
+      "canonical_id": "kerberos.ticket-granting-server",
+      "slug": "ticket-granting-server",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Ticket-Granting Server",
+        "aliases": ["TGS"],
+        "summary": "Kerberos Ticket-Granting Serverの辞書項目。"
+      },
+      "en": {
+        "title": "Ticket-Granting Server",
+        "aliases": ["TGS"],
+        "summary": "CyPedia entry for the Kerberos Ticket-Granting Server."
+      }
+    },
+    {
+      "canonical_id": "kerberos.ticket",
+      "slug": "kerberos-ticket",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Kerberos Ticket",
+        "aliases": ["Ticket", "ticket"],
+        "summary": "Kerberos Ticketの辞書項目。"
+      },
+      "en": {
+        "title": "Kerberos Ticket",
+        "aliases": ["Ticket", "ticket"],
+        "summary": "CyPedia entry for Kerberos tickets."
+      }
+    },
+    {
+      "canonical_id": "kerberos.service-ticket",
+      "slug": "service-ticket",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Service Ticket",
+        "aliases": [],
+        "summary": "Kerberos Service Ticketの辞書項目。"
+      },
+      "en": {
+        "title": "Service Ticket",
+        "aliases": [],
+        "summary": "CyPedia entry for Kerberos service tickets."
+      }
+    },
+    {
+      "canonical_id": "kerberos.session-key",
+      "slug": "session-key",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Session Key",
+        "aliases": ["session key"],
+        "summary": "Kerberos Session Keyの辞書項目。"
+      },
+      "en": {
+        "title": "Session Key",
+        "aliases": ["session key"],
+        "summary": "CyPedia entry for Kerberos session keys."
+      }
+    },
+    {
+      "canonical_id": "kerberos.authenticator",
+      "slug": "authenticator",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Authenticator",
+        "aliases": [],
+        "summary": "Kerberos Authenticatorの辞書項目。"
+      },
+      "en": {
+        "title": "Authenticator",
+        "aliases": [],
+        "summary": "CyPedia entry for Kerberos authenticators."
+      }
+    },
+    {
+      "canonical_id": "kerberos.pre-authentication",
+      "slug": "pre-authentication",
+      "status": "planned",
+      "categories": ["Kerberos", "Authentication"],
+      "ja": {
+        "title": "Pre-Authentication",
+        "aliases": ["pre-authentication"],
+        "summary": "Kerberos Pre-Authenticationの辞書項目。"
+      },
+      "en": {
+        "title": "Pre-Authentication",
+        "aliases": ["pre-authentication"],
+        "summary": "CyPedia entry for Kerberos pre-authentication."
+      }
+    },
+    {
+      "canonical_id": "kerberos.pkinit",
+      "slug": "pkinit",
+      "status": "planned",
+      "categories": ["Kerberos", "Authentication"],
+      "ja": {
+        "title": "PKINIT",
+        "aliases": ["Public Key Cryptography for Initial Authentication in Kerberos"],
+        "summary": "PKINITの辞書項目。"
+      },
+      "en": {
+        "title": "PKINIT",
+        "aliases": ["Public Key Cryptography for Initial Authentication in Kerberos"],
+        "summary": "CyPedia entry for PKINIT."
+      }
+    },
+    {
+      "canonical_id": "kerberos.replay-cache",
+      "slug": "replay-cache",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Replay Cache",
+        "aliases": ["replay cache"],
+        "summary": "Kerberos Replay Cacheの辞書項目。"
+      },
+      "en": {
+        "title": "Replay Cache",
+        "aliases": ["replay cache"],
+        "summary": "CyPedia entry for Kerberos replay caches."
+      }
+    },
+    {
+      "canonical_id": "kerberos.cross-realm-authentication",
+      "slug": "cross-realm-authentication",
+      "status": "planned",
+      "categories": ["Kerberos"],
+      "ja": {
+        "title": "Cross-Realm Authentication",
+        "aliases": ["cross-realm authentication"],
+        "summary": "Kerberos Cross-Realm Authenticationの辞書項目。"
+      },
+      "en": {
+        "title": "Cross-Realm Authentication",
+        "aliases": ["cross-realm authentication"],
+        "summary": "CyPedia entry for Kerberos cross-realm authentication."
+      }
+    },
+
+    {
+      "canonical_id": "ad.domain-controller",
+      "slug": "domain-controller",
+      "status": "planned",
+      "categories": ["Active Directory"],
+      "ja": {
+        "title": "Domain Controller",
+        "aliases": ["DC"],
+        "summary": "Domain Controllerの辞書項目。"
+      },
+      "en": {
+        "title": "Domain Controller",
+        "aliases": ["DC"],
+        "summary": "CyPedia entry for Domain Controllers."
+      }
+    },
+    {
+      "canonical_id": "ad.service-principal-name",
+      "slug": "service-principal-name",
+      "status": "planned",
+      "categories": ["Active Directory", "Kerberos"],
+      "ja": {
+        "title": "Service Principal Name",
+        "aliases": ["SPN"],
+        "summary": "Service Principal Name（SPN）の辞書項目。"
+      },
+      "en": {
+        "title": "Service Principal Name",
+        "aliases": ["SPN"],
+        "summary": "CyPedia entry for Service Principal Names."
+      }
+    },
+    {
+      "canonical_id": "ad.service-account",
+      "slug": "service-account",
+      "status": "planned",
+      "categories": ["Active Directory"],
+      "ja": {
+        "title": "Service Account",
+        "aliases": ["サービスアカウント", "service account"],
+        "summary": "Service Accountの辞書項目。"
+      },
+      "en": {
+        "title": "Service Account",
+        "aliases": ["service account"],
+        "summary": "CyPedia entry for service accounts."
+      }
+    },
+    {
+      "canonical_id": "ad.krbtgt",
+      "slug": "krbtgt",
+      "status": "planned",
+      "categories": ["Active Directory", "Kerberos"],
+      "ja": {
+        "title": "KRBTGT",
+        "aliases": ["KRBTGT Account", "KRBTGT account"],
+        "summary": "Active DirectoryのKRBTGTアカウントの辞書項目。"
+      },
+      "en": {
+        "title": "KRBTGT",
+        "aliases": ["KRBTGT Account", "KRBTGT account"],
+        "summary": "CyPedia entry for the Active Directory KRBTGT account."
+      }
+    },
+    {
+      "canonical_id": "windows.privilege-attribute-certificate",
+      "slug": "privilege-attribute-certificate",
+      "status": "planned",
+      "categories": ["Windows", "Kerberos"],
+      "ja": {
+        "title": "Privilege Attribute Certificate",
+        "aliases": ["PAC"],
+        "summary": "Privilege Attribute Certificate（PAC）の辞書項目。"
+      },
+      "en": {
+        "title": "Privilege Attribute Certificate",
+        "aliases": ["PAC"],
+        "summary": "CyPedia entry for the Privilege Attribute Certificate."
+      }
+    },
+    {
+      "canonical_id": "protocol.ldap",
+      "slug": "ldap",
+      "status": "planned",
+      "categories": ["Network / Protocol", "Active Directory"],
+      "ja": {
+        "title": "LDAP",
+        "aliases": ["Lightweight Directory Access Protocol"],
+        "summary": "LDAPの辞書項目。"
+      },
+      "en": {
+        "title": "LDAP",
+        "aliases": ["Lightweight Directory Access Protocol"],
+        "summary": "CyPedia entry for LDAP."
+      }
+    },
+
+    {
+      "canonical_id": "attack.as-rep-roasting",
+      "slug": "as-rep-roasting",
+      "status": "planned",
+      "categories": ["Active Directory", "Kerberos"],
+      "ja": {
+        "title": "AS-REP Roasting",
+        "aliases": ["ASREP Roasting"],
+        "summary": "AS-REP Roastingの辞書項目。"
+      },
+      "en": {
+        "title": "AS-REP Roasting",
+        "aliases": ["ASREP Roasting"],
+        "summary": "CyPedia entry for AS-REP Roasting."
+      }
+    },
+    {
+      "canonical_id": "attack.golden-ticket",
+      "slug": "golden-ticket",
+      "status": "planned",
+      "categories": ["Active Directory", "Kerberos"],
+      "ja": {
+        "title": "Golden Ticket",
+        "aliases": ["ゴールデンチケット"],
+        "summary": "Golden Ticketの辞書項目。"
+      },
+      "en": {
+        "title": "Golden Ticket",
+        "aliases": [],
+        "summary": "CyPedia entry for Golden Ticket."
+      }
+    },
+    {
+      "canonical_id": "attack.silver-ticket",
+      "slug": "silver-ticket",
+      "status": "planned",
+      "categories": ["Active Directory", "Kerberos"],
+      "ja": {
+        "title": "Silver Ticket",
+        "aliases": ["シルバーチケット"],
+        "summary": "Silver Ticketの辞書項目。"
+      },
+      "en": {
+        "title": "Silver Ticket",
+        "aliases": [],
+        "summary": "CyPedia entry for Silver Ticket."
+      }
+    }
+  ]
+}
