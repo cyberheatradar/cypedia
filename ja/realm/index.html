@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Realmのauthentication domain、KDC、Principal naming、inter-realm authentication、Active Directoryとの関係を解説する。"><title>Realm - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/realm/">日本語</a><span> / </span><a href="/cypedia/en/realm/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Realm</h1><div class="article-meta"><strong>別名:</strong> realm</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p><a href="./">Realm</a>は<a href="../kerberos/">Kerberos</a>におけるauthentication administrative domainです。</p>
+<p>Realmには<a href="../principal/">Principal</a>と、そのauthenticationを担当する<a href="../key-distribution-center/">Key Distribution Center（KDC）</a>が関連付けられます。</p>
+<h2 id="realm-name">Realm Name</h2>
+<p>Realm nameはPrincipalを一意に識別するためのnamespaceの一部として使用されます。</p>
+<p>Realm nameはDNS-style nameを使用することが多いですが、Kerberos RealmとDNS namespaceは概念上同一ではありません。</p>
+<h2 id="principalとの関係">Principalとの関係</h2>
+<p>PrincipalはRealmと組み合わせて識別されます。</p>
+<p>たとえばPrincipalの表示では <code>user@EXAMPLE.COM</code> のようにRealmを付加することがあります。</p>
+<p>異なるRealmに同じlocal principal nameが存在しても、Realmが異なれば別のKerberos identityとして扱えます。</p>
+<h2 id="kdc">KDC</h2>
+<p>各RealmにはそのRealmのPrincipalを扱うKDCがあります。</p>
+<p>KDCは<a href="../authentication-server/">Authentication Server</a>と<a href="../ticket-granting-server/">Ticket-Granting Server</a> functionalityを提供します。</p>
+<h2 id="cross-realm-authentication">Cross-Realm Authentication</h2>
+<p>複数Realm間でauthenticationを成立させる仕組みが<a href="../cross-realm-authentication/">Cross-Realm Authentication</a>です。</p>
+<p>Realm間で共有されるinter-realm keyやtrust pathを使用して、別Realmのserviceへ到達するためのticketを取得します。</p>
+<h2 id="active-directory">Active Directory</h2>
+<p><a href="../active-directory/">Active Directory</a>では、MicrosoftはKerberos RealmをWindows <a href="../active-directory-domain/">Domain</a>に相当するauthentication administrative domainとして説明しています。</p>
+<p>RFC 4120ではdomain-style Realm nameをInternet domain nameから設定する場合、慣例としてuppercaseへ変換することを推奨しています。</p>
+<p>Kerberos Realm自体はActive Directory専用概念ではありません。</p>
+<h2 id="trustとの関係">Trustとの関係</h2>
+<p>AD DSで別DomainへのKerberos referralを成立させる際には<a href="../active-directory-trust/">Active Directory Trust</a>が重要です。</p>
+<p>KDCはtrusted domain informationを利用して別Domainへのreferral TGTを発行できます。</p>
+<h2 id="security上の意味">Security上の意味</h2>
+<p>Realm間authenticationはauthentication boundaryをまたぐため、inter-realm keyやtrust configurationの保護が重要です。</p>
+<p>不要なtrust pathや誤ったRealm mappingは意図しないauthentication pathにつながる可能性があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../cross-realm-authentication/">Cross-Realm Authentication</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../dns/">DNS</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/key-distribution">Microsoft - Key Distribution</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/bac4dc69-352d-416c-a9f4-730b81ababb3">MS-KILE - Cross-Domain Trust and Referrals</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/authenticator/">Authenticator</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/principal/">Principal</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

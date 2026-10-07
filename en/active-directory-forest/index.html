@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Forest structure, shared directory components, trust relationships, and security-boundary implications."><title>Active Directory Forest - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/active-directory-forest/">日本語</a><span> / </span><a href="/cypedia/en/active-directory-forest/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Active Directory Forest</h1><div class="article-meta"><strong>Aliases:</strong> Forest, AD Forest</div><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></p>
+</blockquote>
+<p>An Active Directory Forest is the top-level logical structure in <a href="../active-directory/">Active Directory Domain Services</a>.</p>
+<p>A Forest contains one or more <a href="../active-directory-domain/">Domains</a>.</p>
+<p>Domains in the same Forest share infrastructure including the <a href="../active-directory-schema/">Active Directory Schema</a>, configuration information, and <a href="../global-catalog/">Global Catalog</a>.</p>
+<h2 id="relationship-to-domains">Relationship to Domains</h2>
+<p>A Forest can contain multiple Domains.</p>
+<p>Domains partition directory data and administrative scope, while the Forest provides the higher-level structure joining those Domains.</p>
+<p>Domains inside the same Forest are automatically connected through two-way, transitive <a href="../active-directory-trust/">Trust</a> relationships.</p>
+<h2 id="shared-information">Shared Information</h2>
+<p>Important Forest-wide information includes:</p>
+<ul>
+<li>Active Directory Schema;</li>
+<li>configuration information;</li>
+<li><a href="../active-directory-site/">Site</a> and replication topology;</li>
+<li>Global Catalog information.</li>
+</ul>
+<p>The Schema and Configuration directory partitions contain Forest-wide information.</p>
+<h2 id="security-boundary">Security Boundary</h2>
+<p>Microsoft treats the Forest as an Active Directory security boundary.</p>
+<p>Domains inside the same Forest should therefore not be considered fully independent security boundaries.</p>
+<p>Compromise of Forest-level administrative control or sufficiently privileged <a href="../domain-controller/">Domain Controllers</a> can have consequences beyond one Domain.</p>
+<h2 id="design-implications">Design Implications</h2>
+<p>Multiple Forests can be used when stronger administrative or security isolation is required.</p>
+<p>A single Forest simplifies sharing of Schema information, Global Catalog information, and automatic Domain trusts.</p>
+<p>Forest design is therefore both a directory-architecture and security-boundary decision.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/en/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/en/active-directory-schema/">Active Directory Schema</a></li><li><a href="/cypedia/en/active-directory-site/">Active Directory Site</a></li><li><a href="/cypedia/en/active-directory-trust/">Active Directory Trust</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/en/distinguished-name/">Distinguished Name</a></li><li><a href="/cypedia/en/dns/">DNS</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/en/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/en/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/knowledge-consistency-checker/">Knowledge Consistency Checker</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/organizational-unit/">Organizational Unit</a></li><li><a href="/cypedia/en/security-group/">Security Group</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

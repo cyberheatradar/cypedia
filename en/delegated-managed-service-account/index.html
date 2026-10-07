@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Delegated Managed Service Accounts (dMSAs), introduced with Windows Server 2025 as device-bound managed service identities."><title>Delegated Managed Service Account - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/delegated-managed-service-account/">日本語</a><span> / </span><a href="/cypedia/en/delegated-managed-service-account/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Delegated Managed Service Account</h1><div class="article-meta"><strong>Aliases:</strong> dMSA</div><div class="article-meta"><strong>Categories:</strong> Active Directory / Service Identity</div><div class="article-body"><h2 id="overview">Overview</h2>
+<p>A <a href="./">Delegated Managed Service Account (dMSA)</a> is a managed <a href="../service-account/">Service Account</a> type introduced with Windows Server 2025.</p>
+<p>Microsoft describes dMSAs as supporting migration from traditional service accounts to machine-managed identities while linking authentication to authorized device identity.</p>
+<h2 id="device-bound-authentication">Device-Bound Authentication</h2>
+<p>dMSA authentication is associated with specific authorized machine identities.</p>
+<p>Only machines mapped for the account in <a href="../active-directory/">Active Directory</a> can use that identity.</p>
+<p>This is an important distinction from a <a href="../group-managed-service-account/">gMSA</a>, which is designed to support a common service identity across authorized servers.</p>
+<h2 id="managed-keys">Managed Keys</h2>
+<p>Windows manages the keys associated with the dMSA.</p>
+<p>Microsoft documents fully randomized keys and, when migrating from a traditional service account, disabling the original account password.</p>
+<h2 id="migration">Migration</h2>
+<p>dMSAs support migration from an existing traditional Service Account to a managed machine-bound identity.</p>
+<p>This shifts service authentication away from reliance on the original account password.</p>
+<p>Microsoft also documents creation of a standalone dMSA without migrating an existing service account.</p>
+<h2 id="kerberoasting-relationship">Kerberoasting Relationship</h2>
+<p>Microsoft identifies resistance to credential harvesting from compromised traditional service accounts, including <a href="../kerberoasting/">Kerberoasting</a>, as one of the security motivations for dMSA.</p>
+<h2 id="gmsa-comparison">gMSA Comparison</h2>
+<p>A <a href="../group-managed-service-account/">gMSA</a> is a domain-managed service identity that can be used across multiple authorized servers.</p>
+<p>A dMSA focuses on device-bound authentication and is specific to the newer Windows Server 2025 managed-account model.</p>
+<h2 id="smsa-relationship">sMSA Relationship</h2>
+<p>A <a href="../standalone-managed-service-account/">sMSA</a> also provides managed credentials but is the earlier Managed Service Account model intended for services on one computer.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../group-managed-service-account/">Group Managed Service Account</a></li>
+<li><a href="../standalone-managed-service-account/">Standalone Managed Service Account</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/delegated-managed-service-accounts/delegated-managed-service-accounts-overview">Microsoft - Delegated Managed Service Accounts Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/delegated-managed-service-accounts/delegated-managed-service-accounts-set-up-dmsa">Microsoft - Setting up Delegated Managed Service Accounts</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/understand-service-accounts">Microsoft - Service Accounts in Windows Server</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/en/service-account/">Service Account</a></li><li><a href="/cypedia/en/standalone-managed-service-account/">Standalone Managed Service Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

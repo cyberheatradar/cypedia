@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="SYSVOLのGroup Policy Template、sign-in script、Domain Controller間replicationを解説する。"><title>SYSVOL - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/sysvol/">日本語</a><span> / </span><a href="/cypedia/en/sysvol/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>SYSVOL</h1><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a></p>
+</blockquote>
+<p>SYSVOLは<a href="../domain-controller/">Domain Controller</a>上に存在するshared folderで、<a href="../active-directory-domain/">Domain</a>で利用されるfile-based dataを保持します。</p>
+<p>代表的にはGroup Policy object fileやsign-in scriptなどがSYSVOLに格納されます。</p>
+<h2 id="group-policyとの関係">Group Policyとの関係</h2>
+<p><a href="../group-policy/">Group Policy</a> Object（GPO）は大きく2つのcomponentを持ちます。</p>
+<ul>
+<li>Group Policy Container</li>
+<li>Group Policy Template</li>
+</ul>
+<p>Group Policy ContainerはActive DirectoryのDomain Partitionに保存されます。</p>
+<p>Group Policy TemplateはSYSVOLに保存されます。</p>
+<p>したがってGPOはdirectory dataだけでもSYSVOLだけでも完結しません。</p>
+<h2 id="replication">Replication</h2>
+<p>SYSVOL内容はDomain Controller間でreplicateされます。</p>
+<p>現在のWindows ServerではDistributed File System Replication（DFSR）がSYSVOL replicationに使用されます。</p>
+<p><a href="../active-directory-replication/">Active Directory Replication</a>とSYSVOL replicationは別のmechanismです。</p>
+<h2 id="歴史">歴史</h2>
+<p>Windows 2000 ServerおよびWindows Server 2003ではFile Replication Service（FRS）がSYSVOL replicationに使われていました。</p>
+<p>現在のWindows Server環境ではDFSRへの移行が前提となります。</p>
+<h2 id="security上の重要性">Security上の重要性</h2>
+<p>SYSVOLにはDomain-wideに配布されるpolicy dataやscriptが存在するため、integrityの保護が重要です。</p>
+<p>不正な変更が複数Domain Controllerへreplicateされると、広範囲のcomputerやuserへ影響する可能性があります。</p>
+<h2 id="ntdsditとの違い">NTDS.ditとの違い</h2>
+<p><a href="../ntds-dit/">NTDS.dit</a>はActive Directory databaseです。</p>
+<p>SYSVOLはfile-basedなDomain dataを保持するshared folderです。</p>
+<p>Group PolicyではActive Directory database側とSYSVOL側の両方が利用されます。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../ntds-dit/">NTDS.dit</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/migrate-sysvol-to-dfsr">Microsoft - Migrate SYSVOL replication from FRS to DFS Replication</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/group-policy/">Group Policy</a></li><li><a href="/cypedia/ja/ntds-dit/">NTDS.dit</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

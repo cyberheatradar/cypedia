@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="単一computer上のservice向けにcredentialとSPN管理を自動化するStandalone Managed Service Account（sMSA）を解説する。"><title>Standalone Managed Service Account - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/standalone-managed-service-account/">日本語</a><span> / </span><a href="/cypedia/en/standalone-managed-service-account/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Standalone Managed Service Account</h1><div class="article-meta"><strong>別名:</strong> sMSA</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Service Identity</div><div class="article-body"><h2 id="概要">概要</h2>
+<p><a href="./">Standalone Managed Service Account（sMSA）</a>は、<a href="../active-directory/">Active Directory</a>で管理される<a href="../service-account/">Service Account</a>の一種です。</p>
+<p>MicrosoftはsMSAを、単一computer上のserviceで利用するmanaged domain accountとして説明しています。</p>
+<h2 id="password-management">Password Management</h2>
+<p>sMSAではWindowsがaccount passwordを自動的に管理できます。</p>
+<p>通常の<a href="../user-account/">User Account</a>をservice identityとして利用する場合に必要となるmanual password rotationの負担を減らせます。</p>
+<h2 id="spn-management">SPN Management</h2>
+<p>sMSAは<a href="../service-principal-name/">Service Principal Name（SPN）</a>管理を簡素化するための仕組みも提供します。</p>
+<p>SPNは<a href="../kerberos/">Kerberos</a>でservice identityを識別する重要な情報です。</p>
+<h2 id="single-computer-scope">Single-Computer Scope</h2>
+<p>sMSAは基本的に1台の<a href="../computer-account/">Computer Account</a>に対応するservice用途を想定しています。</p>
+<p>複数serverで同じservice identityを共有する用途には<a href="../group-managed-service-account/">Group Managed Service Account（gMSA）</a>が用意されています。</p>
+<h2 id="security-position">Security Position</h2>
+<p>sMSAはservice credentialをadministratorが長期間手動管理する必要を減らし、serviceごとのidentity分離を行いやすくします。</p>
+<p>ただし利用可能なcomputer scopeが単一computerであることは、gMSAとの重要な違いです。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../group-managed-service-account/">Group Managed Service Account</a></li>
+<li><a href="../delegated-managed-service-account/">Delegated Managed Service Account</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/understand-service-accounts">Microsoft - Service Accounts in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/group-managed-service-accounts-overview">Microsoft - Group Managed Service Accounts Overview</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/ja/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

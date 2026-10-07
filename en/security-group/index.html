@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Security Groups, security-principal aggregation, permission assignment, and group scope."><title>Security Group - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/security-group/">日本語</a><span> / </span><a href="/cypedia/en/security-group/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Security Group</h1><div class="article-meta"><strong>Categories:</strong> Active Directory / Identity / Authorization</div><div class="article-body"><h2 id="overview">Overview</h2>
+<p>A <a href="./">Security Group</a> is a <a href="../security-principal/">Security Principal</a> used to collect <a href="../user-account/">User Accounts</a>, <a href="../computer-account/">Computer Accounts</a>, and other groups into manageable units.</p>
+<p>Microsoft describes Security Groups as a mechanism for assigning rights and permissions to collections of accounts and groups.</p>
+<p>A Security Group also has its own <a href="../security-identifier/">Security Identifier (SID)</a>.</p>
+<h2 id="security-and-distribution-groups">Security and Distribution Groups</h2>
+<p>Active Directory supports security-enabled groups as well as groups intended for distribution purposes.</p>
+<p>Security Groups can participate in authorization and permission assignment, while distribution groups are not security enabled and cannot be used for security permission assignment.</p>
+<h2 id="group-scope">Group Scope</h2>
+<p>Active Directory defines three primary group scopes:</p>
+<ul>
+<li>Universal</li>
+<li>Global</li>
+<li>Domain Local</li>
+</ul>
+<p>Scope affects which principals can become members and where the group can be used when assigning permissions.</p>
+<h2 id="global-groups">Global Groups</h2>
+<p>A Global group primarily contains accounts and Global groups from the same <a href="../active-directory-domain/">Active Directory Domain</a>.</p>
+<p>It can be used when assigning permissions within the same forest and in trusted environments subject to the documented scope rules.</p>
+<h2 id="domain-local-groups">Domain Local Groups</h2>
+<p>A Domain Local group is commonly used on the resource side of authorization design and can contain a broad set of members, including principals from trusted Domains.</p>
+<p>Its permission-assignment scope is primarily the Domain in which the group exists.</p>
+<h2 id="universal-groups">Universal Groups</h2>
+<p>A Universal group can contain supported members from multiple Domains in the same <a href="../active-directory-forest/">Active Directory Forest</a>.</p>
+<p>It is useful when authorization design spans multiple Domains.</p>
+<h2 id="authorization">Authorization</h2>
+<p>Security Group membership allows permission assignments to be aggregated across multiple Security Principals.</p>
+<p>Group membership is therefore important when evaluating least privilege, privileged access, and resource authorization.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">Security Identifier</a></li>
+<li><a href="../user-account/">User Account</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-groups">Microsoft - Active Directory Security Groups</a></li>
+<li><a href="https://learn.microsoft.com/windows/security/identity-protection/access-control/active-directory-accounts">Microsoft - Active Directory Accounts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-control-list/">Access Control List</a></li><li><a href="/cypedia/en/computer-account/">Computer Account</a></li><li><a href="/cypedia/en/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/en/security-principal/">Security Principal</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li><li><a href="/cypedia/en/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

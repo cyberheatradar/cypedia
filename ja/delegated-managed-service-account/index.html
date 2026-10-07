@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows Server 2025で導入されたdevice-bound managed service identityであるDelegated Managed Service Account（dMSA）を解説する。"><title>Delegated Managed Service Account - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/delegated-managed-service-account/">日本語</a><span> / </span><a href="/cypedia/en/delegated-managed-service-account/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Delegated Managed Service Account</h1><div class="article-meta"><strong>別名:</strong> dMSA</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Service Identity</div><div class="article-body"><h2 id="概要">概要</h2>
+<p><a href="./">Delegated Managed Service Account（dMSA）</a>は、Windows Server 2025で導入された新しいmanaged <a href="../service-account/">Service Account</a> typeです。</p>
+<p>MicrosoftはdMSAを、traditional service accountからmachine-managed identityへmigrationでき、authenticationをauthorized device identityへ関連付ける仕組みとして説明しています。</p>
+<h2 id="device-bound-authentication">Device-Bound Authentication</h2>
+<p>dMSA authenticationは特定のauthorized machine identityに関連付けられます。</p>
+<p><a href="../active-directory/">Active Directory</a>でmappingされたmachineだけがaccountを利用できる設計です。</p>
+<p>この点は複数hostで共有可能な<a href="../group-managed-service-account/">gMSA</a>との重要な違いです。</p>
+<h2 id="managed-keys">Managed Keys</h2>
+<p>dMSAではservice identity用のkeyをWindowsが管理します。</p>
+<p>Microsoftはfully randomized keysを使用し、traditional service accountからmigrationする場合にはoriginal account passwordをdisableする仕組みを説明しています。</p>
+<h2 id="migration">Migration</h2>
+<p>dMSAは既存のtraditional Service Accountからmigrationする用途を持ちます。</p>
+<p>migration後はservice authenticationをmanaged machine identityへ移行し、旧account passwordへの依存を減らします。</p>
+<p>Microsoftは新規standalone dMSAを作成する手順も文書化しています。</p>
+<h2 id="kerberoastingとの関係">Kerberoastingとの関係</h2>
+<p>MicrosoftはdMSAの目的の一つとして、compromised traditional service accountからcredentialをharvestするrisk、特に<a href="../kerberoasting/">Kerberoasting</a>への耐性向上を挙げています。</p>
+<h2 id="gmsaとの違い">gMSAとの違い</h2>
+<p><a href="../group-managed-service-account/">gMSA</a>は複数serverで共有できるdomain-managed service identityです。</p>
+<p>dMSAはdevice identityとのbindingを中心に設計されたWindows Server 2025のmanaged identityです。</p>
+<h2 id="smsaとの関係">sMSAとの関係</h2>
+<p><a href="../standalone-managed-service-account/">sMSA</a>もmanaged credentialを提供しますが、単一computer上のservice向けの従来型Managed Service Accountです。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../group-managed-service-account/">Group Managed Service Account</a></li>
+<li><a href="../standalone-managed-service-account/">Standalone Managed Service Account</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/delegated-managed-service-accounts/delegated-managed-service-accounts-overview">Microsoft - Delegated Managed Service Accounts Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/delegated-managed-service-accounts/delegated-managed-service-accounts-set-up-dmsa">Microsoft - Setting up Delegated Managed Service Accounts</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/understand-service-accounts">Microsoft - Service Accounts in Windows Server</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/standalone-managed-service-account/">Standalone Managed Service Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

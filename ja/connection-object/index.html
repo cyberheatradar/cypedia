@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="source Domain Controllerからdestination Domain Controllerへのreplication connectionを表すActive Directory Connection Objectを解説する。"><title>Connection Object - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/connection-object/">日本語</a><span> / </span><a href="/cypedia/en/connection-object/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Connection Object</h1><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Replication</div><div class="article-body"><h2 id="概要">概要</h2>
+<p><a href="./">Connection Object</a>は、source <a href="../domain-controller/">Domain Controller</a>からdestination Domain Controllerへの<a href="../active-directory-replication/">replication</a> connectionを表すActive Directory objectです。</p>
+<h2 id="配置">配置</h2>
+<p>Connection Objectはdestination Domain Controllerを表すserver object配下のNTDS Settings objectの子として格納されます。</p>
+<p>この構造により、そのDomain Controllerがどのsourceからinbound replicationを受けるかが表現されます。</p>
+<h2 id="保持する情報">保持する情報</h2>
+<p>Microsoft documentationでは、Connection Objectはreplication source serverを識別し、replication scheduleおよびreplication transportに関する情報を持つと説明されています。</p>
+<h2 id="kccとの関係">KCCとの関係</h2>
+<p><a href="../knowledge-consistency-checker/">Knowledge Consistency Checker（KCC）</a>はConnection Objectを自動生成できます。</p>
+<p>administratorがmanual Connection Objectを作成することもできます。</p>
+<p>Microsoftは、manualまたはadministratorによって変更されたConnection Objectについて、KCCが通常のautomatic objectと同じように変更しないことを説明しています。</p>
+<h2 id="site-linkとの関係">Site Linkとの関係</h2>
+<p>inter-site replicationではKCCが<a href="../site-link/">Site Link</a> propertiesを利用してtopologyを計算し、その結果としてDomain Controller間のConnection Objectが構成されます。</p>
+<p>Site LinkはSite間のlogical path、Connection Objectは具体的なDomain Controller間replication relationshipを表すという違いがあります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../site-link/">Site Link</a></li>
+<li><a href="../knowledge-consistency-checker/">Knowledge Consistency Checker</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/ja/knowledge-consistency-checker/">Knowledge Consistency Checker</a></li><li><a href="/cypedia/ja/site-link/">Site Link</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

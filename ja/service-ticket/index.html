@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Service TicketのTGS発行、service key、Session Key、SPN、KerberoastingやSilver Ticketとの関係を解説する。"><title>Service Ticket - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/service-ticket/">日本語</a><span> / </span><a href="/cypedia/en/service-ticket/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Service Ticket</h1><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p><a href="./">Service Ticket</a>は、<a href="../kerberos/">Kerberos</a> clientが特定のapplication serviceへauthenticationするために使用する<a href="../kerberos-ticket/">Kerberos Ticket</a>です。</p>
+<p>Service Ticketは<a href="../ticket-granting-server/">Ticket-Granting Server（TGS）</a>によって発行されます。</p>
+<h2 id="取得">取得</h2>
+<p>clientは<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>と<a href="../authenticator/">Authenticator</a>をTGSへ提示し、target service用のticketを要求します。</p>
+<p>requestが有効であればTGSはTGS-REPでService Ticketを返します。</p>
+<h2 id="service-session-key">Service Session Key</h2>
+<p>TGSはclientとtarget serviceの間で使用される<a href="../session-key/">Session Key</a>を生成します。</p>
+<p>Service Ticket内部にはservice側が利用するSession Keyのcopyなどが含まれます。</p>
+<p>client側には同じSession Keyを利用するためのinformationがTGS-REPとして返されます。</p>
+<h2 id="service側のkey">Service側のKey</h2>
+<p>通常のService Ticketでは、encrypted partはtarget serviceのsecret keyで保護されます。</p>
+<p>RFC 4120のuser-to-user authenticationでは例外として、ENC-TKT-IN-SKEY optionによりserver側の<a href="../ticket-granting-ticket/">TGT</a>から得られるSession KeyでService Ticketを暗号化できます。</p>
+<p>通常のAP exchangeでは、target serviceは自身が保持するkey materialを使ってticketを処理します。</p>
+<h2 id="active-directoryとspn">Active DirectoryとSPN</h2>
+<p><a href="../active-directory/">Active Directory</a>ではservice instanceは<a href="../service-principal-name/">Service Principal Name（SPN）</a>によって識別されます。</p>
+<p>SPNは通常computer accountまたは<a href="../service-account/">Service Account</a>などへ登録されます。</p>
+<p>TGSは要求されたSPNに基づいて適切なservice identityへticketを発行します。</p>
+<h2 id="pac">PAC</h2>
+<p>Windows KerberosのService Ticketには<a href="../privilege-attribute-certificate/">Privilege Attribute Certificate（PAC）</a>によるauthorization dataが含まれる場合があります。</p>
+<p>PACはWindows access decisionに必要なgroup membershipなどのinformationを運びます。</p>
+<h2 id="ap-exchange">AP Exchange</h2>
+<p>clientはService TicketとAuthenticatorをapplication serverへ提示します。</p>
+<p>serverはticketとAuthenticatorを検証し、Kerberos authenticationを成立させます。</p>
+<h2 id="kerberoasting">Kerberoasting</h2>
+<p><a href="../kerberoasting/">Kerberoasting</a>では、正規に取得可能なService Ticketのencrypted dataがoffline password guessingへ利用される場合があります。</p>
+<p>特にService Accountのpassword strengthや使用されるencryption typeがsecurity上重要です。</p>
+<h2 id="silver-ticket">Silver Ticket</h2>
+<p><a href="../silver-ticket/">Silver Ticket</a>は、service側のkey materialを利用してService Ticketを偽造するtechniqueです。</p>
+<p>TGTを偽造する<a href="../golden-ticket/">Golden Ticket</a>とは対象となるticketとkeyが異なります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../authenticator/">Authenticator</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../privilege-attribute-certificate/">PAC</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/key-distribution-center">Microsoft - Key Distribution Center</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service principal names</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/9bf9252a-0bc9-497e-8c25-c77d28d4767b">MS-KILE - Authentication to Services</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/c25d48df-67f0-4c5f-9e46-27a7d5710909">MS-KILE - PAC Generation</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/002/">MITRE ATT&amp;CK T1558.002 - Silver Ticket</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/authenticator/">Authenticator</a></li><li><a href="/cypedia/ja/computer-account/">Computer Account</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/principal/">Principal</a></li><li><a href="/cypedia/ja/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/session-key/">Session Key</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

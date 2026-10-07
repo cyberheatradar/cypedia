@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Cross-Realm Authenticationのinter-realm trust、referral TGT、authentication path、Active Directory trustを解説する。"><title>Cross-Realm Authentication - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/cross-realm-authentication/">日本語</a><span> / </span><a href="/cypedia/en/cross-realm-authentication/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Cross-Realm Authentication</h1><div class="article-meta"><strong>別名:</strong> cross-realm authentication</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p><a href="./">Cross-Realm Authentication</a>は、ある<a href="../realm/">Kerberos Realm</a>のclientが別Realmに属するserviceへauthenticationする仕組みです。</p>
+<p>Realm間のtrust relationshipとinter-realm keyを利用してauthentication pathを構成します。</p>
+<h2 id="inter-realm-principal">Inter-Realm Principal</h2>
+<p>Realm間trustではticket-granting serviceを表すinter-realm <a href="../principal/">Principal</a>と、Realm間で共有されるkey materialが利用されます。</p>
+<p>これにより<a href="../key-distribution-center/">KDC</a>は別Realm向けの<a href="../ticket-granting-ticket/">TGT</a>を発行できます。</p>
+<h2 id="authentication-path">Authentication Path</h2>
+<p>clientのhome Realmとtarget Realmが直接trustしていない場合、複数Realmを経由したauthentication pathが利用される場合があります。</p>
+<p>clientはpath上のKDCから順にreferralまたはcross-realm TGTを取得し、最終的にtarget service用の<a href="../service-ticket/">Service Ticket</a>を取得します。</p>
+<h2 id="referrals">Referrals</h2>
+<p>Kerberos implementationはtarget serviceのRealmを判断し、適切なKDCへclientをreferralできます。</p>
+<p>この仕組みによってclientが最初からすべてのintermediate Realmを知る必要を減らせます。</p>
+<h2 id="active-directory">Active Directory</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/bac4dc69-352d-416c-a9f4-730b81ababb3">MS-KILE - Cross-Domain Trust and Referrals</a></p>
+</blockquote>
+<p><a href="../active-directory/">Active Directory</a>では別<a href="../active-directory-domain/">Domain</a>へのKerberos authenticationに<a href="../active-directory-trust/">Trust</a>が利用されます。</p>
+<p>Windows KDCはTrusted Domain Objectなどからcross-domain trust informationを取得し、必要に応じてreferral TGTを発行します。</p>
+<h2 id="forest">Forest</h2>
+<p>同じ<a href="../active-directory-forest/">Forest</a>内のDomainにはautomatic two-way transitive trustがあります。</p>
+<p>Forest間に適切なForest Trustが存在する場合も、Kerberos referral pathが成立することがあります。</p>
+<h2 id="security上の論点">Security上の論点</h2>
+<p>Cross-Realm Authenticationは、Realm間に設定されたtrust relationshipとinter-realm keyを利用してauthenticationを別Realmへ拡張します。</p>
+<p>そのため次の保護が重要です。</p>
+<ul>
+<li>inter-realm key</li>
+<li>trust configuration</li>
+<li>trust direction</li>
+<li>SID filteringなどWindows trust security control</li>
+<li>target service identity</li>
+</ul>
+<p>攻撃者にtrust pathを利用されると、侵害範囲が単一RealmやDomainを越える可能性があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/bac4dc69-352d-416c-a9f4-730b81ababb3">MS-KILE - Cross-Domain Trust and Referrals</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/cd20fbd1-eabe-4da2-bba3-31ab3036d019">MS-ADTS - Kerberos Usages of trustAuthInfo Attributes</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

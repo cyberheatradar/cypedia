@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Read-Only Domain Controllers, read-only AD DS replicas, Password Replication Policy, credential caching, and RODC-specific KRBTGT accounts."><title>Read-Only Domain Controller - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/read-only-domain-controller/">日本語</a><span> / </span><a href="/cypedia/en/read-only-domain-controller/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Read-Only Domain Controller</h1><div class="article-meta"><strong>Aliases:</strong> RODC</div><div class="article-meta"><strong>Categories:</strong> Active Directory / Domain Controller</div><div class="article-body"><h2 id="overview">Overview</h2>
+<p>A <a href="./">Read-Only Domain Controller (RODC)</a> is a <a href="../domain-controller/">Domain Controller</a> that hosts read-only <a href="../active-directory/">Active Directory</a> database partitions.</p>
+<p>RODCs are primarily intended for locations such as branch offices where physical security, network connectivity, or local administrative conditions make deployment of a writable Domain Controller less desirable.</p>
+<h2 id="read-only-replica">Read-Only Replica</h2>
+<p>An RODC does not accept originating updates and does not perform outbound replication.</p>
+<p>Directory changes originate on writable Domain Controllers and reach the RODC through inbound <a href="../active-directory-replication/">Active Directory Replication</a>.</p>
+<h2 id="password-replication-policy">Password Replication Policy</h2>
+<p>The Password Replication Policy (PRP) controls which account credentials may be replicated and cached on an RODC.</p>
+<p>Current Windows Server configuration interfaces expose RODC options for allowing or denying password replication.</p>
+<p>Restricting cached credentials for <a href="../user-account/">User Accounts</a> and <a href="../computer-account/">Computer Accounts</a> is therefore an important part of the RODC security model.</p>
+<h2 id="delegated-administration">Delegated Administration</h2>
+<p>Local administration of an RODC can be delegated to a designated account without making that account a Domain-wide administrator.</p>
+<p>This supports branch-office administration while limiting broader administrative privilege.</p>
+<h2 id="krbtgt">KRBTGT</h2>
+<p>An RODC uses a different <a href="../krbtgt/">KRBTGT</a> account and password from the KDC on a writable Domain Controller when it signs or encrypts <a href="../ticket-granting-ticket/">TGT</a> requests.</p>
+<p>Microsoft documents that the RODC recognizes TGTs signed with its RODC-specific KRBTGT account, while requests involving a TGT signed by another Domain Controller are forwarded to a writable Domain Controller.</p>
+<h2 id="replication-and-sites">Replication and Sites</h2>
+<p>An RODC is placed in an <a href="../active-directory-site/">Active Directory Site</a> and receives directory information from writable Domain Controllers.</p>
+<p>RODC planning therefore involves physical security, WAN connectivity, replication behavior, and credential-caching requirements.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../user-account/">User Account</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/planning-domain-controller-placement">Microsoft - Planning Domain Controller Placement</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/ad-ds-installation-and-removal-wizard-page-descriptions">Microsoft - AD DS Configuration Wizard Page Descriptions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-default-user-accounts">Microsoft - Default Active Directory accounts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/powershell/module/addsdeployment/add-addsreadonlydomaincontrolleraccount?view=windowsserver2025-ps">Microsoft - Add-ADDSReadOnlyDomainControllerAccount</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adod/afa7460b-713c-476d-9af1-5f9a5fe6ab27">Microsoft Open Specifications - MS-ADOD Glossary</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/forest-recovery-guide/ad-forest-recovery-reset-the-krbtgt-password">Microsoft - Active Directory Forest Recovery: reset the krbtgt password</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/en/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

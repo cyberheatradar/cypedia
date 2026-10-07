@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="KerberoastingのService Ticket取得、SPN・Service Accountとの関係、offline password guessing、検知と緩和を解説する。"><title>Kerberoasting - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/kerberoasting/">日本語</a><span> / </span><a href="/cypedia/en/kerberoasting/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Kerberoasting</h1><div class="article-meta"><strong>別名:</strong> Kerberoast</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></p>
+</blockquote>
+<p><a href="./">Kerberoasting</a>は、<a href="../kerberos/">Kerberos</a>の通常のticket issuanceを利用し、<a href="../service-principal-name/">Service Principal Name（SPN）</a>に対応する<a href="../service-ticket/">Service Ticket</a>のcryptographic materialをoffline password guessingへ利用するcredential access techniqueです。</p>
+<p><a href="../active-directory/">Active Directory</a>ではservice identityがcomputer accountや<a href="../service-account/">Service Account</a>に関連付けられています。</p>
+<h2 id="前提">前提</h2>
+<p>一般的なKerberoastingでは、<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>を持つauthenticated principalが、target SPN向けのService Ticketを要求します。</p>
+<p><a href="../ticket-granting-server/">Ticket-Granting Server（TGS）</a>は通常のKerberos処理としてticketを発行します。</p>
+<p>攻撃者がDomain ControllerやKDCを侵害していること自体は、このticket requestの必須条件ではありません。</p>
+<h2 id="service-accountとの関係">Service Accountとの関係</h2>
+<p>Service Ticketのencrypted portionは、target service側が利用可能なkey materialによって保護されます。</p>
+<p>traditional Service Accountではaccount passwordから導出されるkeyが関係するため、passwordが推測可能な場合にはoffline guessingが成立しやすくなります。</p>
+<p>長くrandomなcredentialを自動管理するgMSAなどは、このriskを大幅に下げます。</p>
+<h2 id="encryption-type">Encryption Type</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/detect-remediate-rc4-kerberos">Microsoft - Detect and Remediate RC4 Usage in Kerberos</a></p>
+</blockquote>
+<p>RC4-HMACなどlegacy Kerberos encryption typeはKerberoasting対策上重要な監査対象です。</p>
+<p>Microsoftは現行Windows Server向けにEvent ID 4768/4769を利用したRC4 usageの監査とremediation guidanceを提供しています。</p>
+<p>ただしKerberoastingの本質は「RC4そのもの」ではなく、Service Ticketのkeyが推測可能なService Account credentialへ依存していることです。</p>
+<h2 id="offline-guessing">Offline Guessing</h2>
+<p>取得したticket materialに対するpassword guessingはKDCから切り離してofflineで実施できます。</p>
+<p>したがって、account lockoutだけではService Account passwordのguessabilityを十分に補償できません。</p>
+<h2 id="検知">検知</h2>
+<p>MITRE ATT&amp;CKはKerberos Service Ticket requestの異常を主要な観測点として挙げています。</p>
+<p>特に次のような観点が有効です。</p>
+<ul>
+<li>Event ID 4769の異常な増加</li>
+<li>通常利用されないSPNへのrequest</li>
+<li>RC4などlegacy encryption type</li>
+<li>短時間で多数のservice identityへ行われるrequest</li>
+<li>privileged Service Accountへの不自然なticket request</li>
+</ul>
+<p>正常なKerberos利用でも4769は発生するため、volume・requester・target・encryption typeを組み合わせたbaselineが必要です。</p>
+<h2 id="緩和">緩和</h2>
+<p>重要な対策は次です。</p>
+<ul>
+<li>gMSA等のmanaged Service Accountを優先する</li>
+<li>traditional Service Accountには長くrandomなpasswordを使用する</li>
+<li>unnecessary privilegeをService Accountへ与えない</li>
+<li>不要なSPNを削除する</li>
+<li>duplicate/stale SPNを管理する</li>
+<li>RC4 dependencyを把握しAESへ移行する</li>
+<li>Service Ticket requestを監査する</li>
+</ul>
+<h2 id="他のkerberos-attackとの違い">他のKerberos Attackとの違い</h2>
+<p><a href="../as-rep-roasting/">AS-REP Roasting</a>はPre-Authenticationを要求しないaccountの<a href="../authentication-server/">Authentication Server（AS）</a> exchangeを対象とします。</p>
+<p><a href="../golden-ticket/">Golden Ticket</a>と<a href="../silver-ticket/">Silver Ticket</a>はticket materialをoffline guessingするのではなく、既に侵害されたkey materialを利用したticket forgeryです。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../group-managed-service-account/">Group Managed Service Account</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/detect-remediate-rc4-kerberos">Microsoft - Detect and Remediate RC4 Usage in Kerberos</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/understand-service-accounts">Microsoft - Service Accounts in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service Principal Names</a></li>
+<li><a href="https://learn.microsoft.com/en-us/entra/architecture/service-accounts-group-managed">Microsoft - Secure group managed service accounts</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/ja/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

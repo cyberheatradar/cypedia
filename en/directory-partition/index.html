@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Directory Partitions, Naming Contexts, and replication scope."><title>Directory Partition - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/directory-partition/">日本語</a><span> / </span><a href="/cypedia/en/directory-partition/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Directory Partition</h1><div class="article-meta"><strong>Aliases:</strong> Naming Context</div><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/naming-contexts-and-partitions">Microsoft - Naming Contexts and Directory Partitions</a></p>
+</blockquote>
+<p>A Directory Partition divides the <a href="../active-directory/">Active Directory</a> directory into independently replicated portions.</p>
+<p>Directory Partitions are also called Naming Contexts (NCs).</p>
+<h2 id="main-partitions">Main Partitions</h2>
+<p>A typical AD DS environment includes:</p>
+<ul>
+<li>Schema Partition;</li>
+<li>Configuration Partition;</li>
+<li>Domain Partition;</li>
+<li>Application Directory Partition.</li>
+</ul>
+<h2 id="schema-partition">Schema Partition</h2>
+<p>The Schema Partition contains the <a href="../active-directory-schema/">Active Directory Schema</a>.</p>
+<p>Domain Controllers throughout the Forest maintain replicas of the Schema Partition.</p>
+<h2 id="configuration-partition">Configuration Partition</h2>
+<p>The Configuration Partition contains Forest-wide configuration information such as <a href="../active-directory-site/">Site</a> and replication-topology information.</p>
+<h2 id="domain-partition">Domain Partition</h2>
+<p>A Domain Partition contains directory objects associated with one <a href="../active-directory-domain/">Domain</a>, including users, computers, and groups.</p>
+<p>A writable <a href="../domain-controller/">Domain Controller</a> stores a full writable replica of its own Domain Partition.</p>
+<p>A <a href="../read-only-domain-controller/">Read-Only Domain Controller (RODC)</a> instead hosts a read-only replica and does not accept originating updates.</p>
+<h2 id="application-directory-partition">Application Directory Partition</h2>
+<p>Application Directory Partitions can be used to store application data.</p>
+<p>Their replicas can be placed on selected Domain Controllers, allowing a replication scope different from a normal Domain Partition.</p>
+<h2 id="replication">Replication</h2>
+<p><a href="../active-directory-replication/">Active Directory Replication</a> operates on Directory Partitions.</p>
+<p>The set of Domain Controllers holding a replica determines the replication scope for that partition.</p>
+<p>The <a href="../global-catalog/">Global Catalog</a> also stores partial information concerning Domain Partitions from other Domains in the Forest.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/naming-contexts-and-partitions">Microsoft - Naming Contexts and Directory Partitions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/planning-domain-controller-placement">Microsoft - Planning Domain Controller Placement</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/en/active-directory-forest/">Active Directory Forest</a></li><li><a href="/cypedia/en/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/en/active-directory-schema/">Active Directory Schema</a></li><li><a href="/cypedia/en/connection-object/">Connection Object</a></li><li><a href="/cypedia/en/dcsync/">DCSync</a></li><li><a href="/cypedia/en/dns/">DNS</a></li><li><a href="/cypedia/en/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/en/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/en/knowledge-consistency-checker/">Knowledge Consistency Checker</a></li><li><a href="/cypedia/en/ldap/">LDAP</a></li><li><a href="/cypedia/en/ntds-dit/">NTDS.dit</a></li><li><a href="/cypedia/en/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/en/site-link/">Site Link</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

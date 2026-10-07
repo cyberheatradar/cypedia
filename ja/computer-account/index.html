@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Computer Accountによるmachine identity、domain join、Security Principal、SID、service authenticationとの関係を解説する。"><title>Computer Account - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/computer-account/">日本語</a><span> / </span><a href="/cypedia/en/computer-account/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Computer Account</h1><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Identity</div><div class="article-body"><h2 id="概要">概要</h2>
+<p><a href="./">Computer Account</a>は、<a href="../active-directory-domain/">Active Directory Domain</a>へ参加したcomputerを表す<a href="../active-directory/">Active Directory</a> objectです。</p>
+<p>User Accountと同様に<a href="../security-principal/">Security Principal</a>であり、固有の<a href="../security-identifier/">Security Identifier（SID）</a>を持ちます。</p>
+<h2 id="machine-identity">Machine Identity</h2>
+<p>Computer Accountはhuman userではなくmachine identityを表します。</p>
+<p>Domain参加computerはこのidentityを利用してDomainとのtrust relationshipを維持し、domain resourceやserviceとのauthenticationに参加します。</p>
+<h2 id="domain-join">Domain Join</h2>
+<p>Microsoftのdomain join documentationでは、computerをDomainへ参加させる際、対応するComputer Accountを新規作成する場合と、事前作成済みaccountを再利用する場合が説明されています。</p>
+<p>Computer Accountの作成・再利用には適切なActive Directory permissionが必要です。</p>
+<h2 id="credential">Credential</h2>
+<p>Computer Accountにもcredentialが存在し、machineとDomain間で管理されます。</p>
+<p>このcredentialは通常のinteractive user passwordとは運用方法が異なり、Windowsによってmachine account secretが管理されます。</p>
+<h2 id="spnとの関係">SPNとの関係</h2>
+<p>Computer Accountにはhost-based serviceなどの<a href="../service-principal-name/">Service Principal Name（SPN）</a>が関連付けられる場合があります。</p>
+<p>そのためComputer Accountは<a href="../service-ticket/">Service Ticket</a>やservice authenticationを理解するうえでも重要です。</p>
+<h2 id="group-policy">Group Policy</h2>
+<p><a href="../group-policy/">Group Policy</a>はSite、Domain、<a href="../organizational-unit/">OU</a>へlinkできます。computer向けに適用可能なGPOは、computerが属するSite、Domain membership、およびComputer Accountのparent OU hierarchyなどに基づいて決定されます。</p>
+<h2 id="security-group">Security Group</h2>
+<p>Computer Accountは<a href="../security-group/">Security Group</a>のmemberになることができ、group membershipを通じてauthorizationを管理できます。</p>
+<h2 id="セキュリティ上の論点">セキュリティ上の論点</h2>
+<p>不要なComputer Account、古いmachine identity、過剰なgroup membership、domain join permission、Computer Accountを作成・再利用できる権限は監査対象です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">Security Identifier</a></li>
+<li><a href="../user-account/">User Account</a></li>
+<li><a href="../security-group/">Security Group</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/windows/security/identity-protection/access-control/active-directory-accounts">Microsoft - Active Directory Accounts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/active-directory-domain-join-permissions">Microsoft - Active Directory Domain Join Permissions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-scope">Microsoft - Group Policy scope</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/domain-member-maximum-machine-account-password-age">Microsoft - Domain member: Maximum machine account password age</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/ja/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/ja/security-group/">Security Group</a></li><li><a href="/cypedia/ja/security-principal/">Security Principal</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

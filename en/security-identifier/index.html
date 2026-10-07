@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows Security Identifiers (SIDs), Domain SID structure, RIDs, and their relationship to Security Principals."><title>Security Identifier - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/security-identifier/">日本語</a><span> / </span><a href="/cypedia/en/security-identifier/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Security Identifier</h1><div class="article-meta"><strong>Aliases:</strong> SID</div><div class="article-meta"><strong>Categories:</strong> Windows / Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers">Microsoft - Security Identifiers</a> / <a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/access-control/access-control">Microsoft - Access Control Overview</a></p>
+</blockquote>
+<p>A Security Identifier (SID) is an identifier used by Windows to represent a <a href="../security-principal/">Security Principal</a>.</p>
+<p>Users, groups, computers, and other <a href="../security-principal/">Security Principals</a> are identified to the Windows security subsystem through SIDs.</p>
+<h2 id="difference-from-an-account-name">Difference from an Account Name</h2>
+<p>Windows access control relies on SIDs rather than only on display names or account names.</p>
+<p>Permissions in security descriptors and ACLs are associated with SID values.</p>
+<h2 id="domain-sid-and-rid">Domain SID and RID</h2>
+<p>A <a href="../security-principal/">Security Principal</a> created in an <a href="../active-directory-domain/">Active Directory Domain</a> receives a SID constructed using Domain-related SID information and a Relative ID (RID).</p>
+<p>The RID distinguishes <a href="../security-principal/">Security Principals</a> within the Domain.</p>
+<h2 id="rid-master">RID Master</h2>
+<p>The RID Master, one of the <a href="../fsmo-roles/">FSMO Roles</a>, allocates RID pools to <a href="../domain-controller/">Domain Controllers</a>.</p>
+<p>Domain Controllers use allocated RIDs when creating new Domain <a href="../security-principal/">Security Principals</a>.</p>
+<h2 id="access-control">Access Control</h2>
+<p>Windows ACLs use SIDs to associate permissions with <a href="../security-principal/">Security Principals</a>.</p>
+<p>During resource-access checks, SIDs in the authenticated security context are evaluated against access-control information.</p>
+<h2 id="well-known-sids">Well-Known SIDs</h2>
+<p>Windows defines well-known SIDs for selected built-in identities and groups.</p>
+<p>These identifiers are defined by the Windows security model rather than being allocated in the same way as ordinary Domain account RIDs.</p>
+<h2 id="security-significance">Security Significance</h2>
+<p>SIDs are fundamental to Windows authorization.</p>
+<p>Understanding them is important for interpreting ACLs, group memberships, privileges, and Active Directory access-control behavior.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../fsmo-roles/">FSMO Roles</a></li>
+<li><a href="../access-control-list/">Access Control List</a></li>
+<li><a href="../security-descriptor/">Security Descriptor</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers">Microsoft - Security Identifiers</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/access-control/access-control">Microsoft - Access Control Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/78eb9013-1c3a-4970-ad1f-2b1dad588a25">Microsoft Open Specifications - MS-DTYP SID</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-control-entry/">Access Control Entry</a></li><li><a href="/cypedia/en/access-control-list/">Access Control List</a></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/computer-account/">Computer Account</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/en/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/en/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/ntlm/">NTLM</a></li><li><a href="/cypedia/en/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/en/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/en/security-group/">Security Group</a></li><li><a href="/cypedia/en/security-principal/">Security Principal</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li><li><a href="/cypedia/en/user-account/">User Account</a></li><li><a href="/cypedia/en/windows-access-token/">Windows Access Token</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

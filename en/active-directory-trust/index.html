@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Trust direction, transitivity, and authentication relationships between Domains and Forests."><title>Active Directory Trust - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/active-directory-trust/">日本語</a><span> / </span><a href="/cypedia/en/active-directory-trust/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Active Directory Trust</h1><div class="article-meta"><strong>Aliases:</strong> Domain Trust, Forest Trust</div><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></p>
+</blockquote>
+<p>An Active Directory Trust establishes an authentication relationship between <a href="../active-directory-domain/">Domains</a> or <a href="../active-directory-forest/">Forests</a>.</p>
+<p>A trust can allow an identity authenticated in one Domain to be considered when access to resources in another Domain is evaluated.</p>
+<h2 id="same-forest-trusts">Same-Forest Trusts</h2>
+<p>Domains inside the same Forest are automatically connected through two-way, transitive trusts.</p>
+<p>These trusts create authentication paths between Domains in the Forest.</p>
+<p>Microsoft defines the Forest itself as an Active Directory security boundary. Automatic two-way, transitive trusts between Domains in the same Forest are authentication relationships inside that boundary.</p>
+<h2 id="forest-trust">Forest Trust</h2>
+<p>A Forest Trust can establish an authentication relationship between separate Forests.</p>
+<p>It provides a Forest-level mechanism for cross-Forest authentication.</p>
+<h2 id="external-trust">External Trust</h2>
+<p>An External Trust can be used to establish a trust relationship with a specific Domain without creating a Forest-wide trust relationship.</p>
+<h2 id="direction">Direction</h2>
+<p>Trust relationships have direction.</p>
+<p>The direction determines which side accepts identities authenticated by the other side when resource access is evaluated.</p>
+<p>A two-way trust establishes trust in both directions.</p>
+<h2 id="transitivity">Transitivity</h2>
+<p>A transitive trust can extend an authentication path through related trust relationships.</p>
+<p>Same-Forest Domain trusts are transitive.</p>
+<p>Not every trust type has identical transitivity behavior.</p>
+<h2 id="kerberos">Kerberos</h2>
+<p><a href="../kerberos/">Kerberos</a> is important to cross-Domain authentication in Active Directory.</p>
+<p>Domain and Forest trust relationships participate in establishing cross-domain authentication paths.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Trusts can create authentication paths within a Forest or between Forests.</p>
+<p>Because Microsoft defines a Forest as a security boundary, cross-Forest trusts require particular care when authentication relationships are extended across that boundary.</p>
+<p>Misconfiguration can create unintended resource-access paths.</p>
+<p>Attackers can perform <a href="../domain-trust-discovery/">Domain Trust Discovery</a> to identify trust relationships that may support lateral movement or privilege expansion.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../domain-trust-discovery/">Domain Trust Discovery</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/e9a2d23c-c31e-4a6f-88a0-6646fdb51a3c">Microsoft Open Specifications - MS-ADTS trustAttributes</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5026a939-44ba-47b2-99cf-386a9e674b04">Microsoft Open Specifications - MS-ADTS trustDirection</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/en/active-directory-forest/">Active Directory Forest</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/en/realm/">Realm</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active DirectoryのsIDHistory attributeによる過去SID保持、domain migration、access continuity、security riskを解説する。"><title>SIDHistory - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/sidhistory/">日本語</a><span> / </span><a href="/cypedia/en/sidhistory/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>SIDHistory</h1><div class="article-meta"><strong>別名:</strong> SID History</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Authorization</div><div class="article-body"><h2 id="概要">概要</h2>
+<p><a href="./">SIDHistory</a>は、<a href="../active-directory/">Active Directory</a>の<a href="../security-principal/">Security Principal</a> objectに以前使用されていた<a href="../security-identifier/">Security Identifier（SID）</a>を保持するためのattributeです。</p>
+<p>LDAP display nameは <code>sIDHistory</code> で、multi-valued attributeです。</p>
+<h2 id="domain-migration">Domain Migration</h2>
+<p>objectがある<a href="../active-directory-domain/">Active Directory Domain</a>から別のDomainへ移動すると、新しいSIDがcurrent objectSIDとして割り当てられ、以前のSIDをsIDHistoryへ保持できます。</p>
+<p>これによりmigration直後でも、旧SIDを参照しているresource permissionとの互換性を維持できます。</p>
+<h2 id="authorizationとの関係">Authorizationとの関係</h2>
+<p>Windows access controlではresourceの<a href="../access-control-list/">Access Control List（ACL）</a>などにSIDが記録されます。</p>
+<p>migration後の<a href="../security-principal/">Security Principal</a>が以前のSIDをSIDHistoryとして持つことで、旧identityを参照するauthorizationとの互換性を維持できる場合があります。</p>
+<p><a href="../user-account/">User Account</a>などのmigrationで特に重要なmechanismです。</p>
+<h2 id="active-directory-forestとの関係">Active Directory Forestとの関係</h2>
+<p>SIDHistoryはDomain間や<a href="../active-directory-forest/">Active Directory Forest</a>間のmigration scenarioと関係します。</p>
+<p>MicrosoftのDsAddSidHistory APIは、あるDomainの<a href="../security-principal/">Security Principal</a>のSIDを別Forestの<a href="../security-principal/">Security Principal</a>のsIDHistoryへ追加する機能を提供します。</p>
+<h2 id="セキュリティ上の論点">セキュリティ上の論点</h2>
+<p>SIDHistoryはauthorizationへ影響するため、security-sensitiveなattributeです。</p>
+<p>MicrosoftはDsAddSidHistoryについて、source identityがaccessできるresourceへのaccessをdestination identityへ事実上付与し得るsecurity-sensitive operationとして説明しています。</p>
+<p>MITRE ATT&amp;CKでは不正にSIDHistoryへSIDを追加してprivilege escalationやaccess-control bypassを行う手法をSID-History Injection（T1134.005）として整理しています。</p>
+<h2 id="trustとsid-filtering">TrustとSID Filtering</h2>
+<p>Windowsのtrustでは、追加SIDやSIDHistoryの受け入れをtrust typeに応じた設定で制御できます。</p>
+<p>Microsoftのnetdom trustでは、external trustの /Quarantine:Yes はdirectly trusted Domain由来のSIDだけを受け入れる設定です。一方、outbound forest trustの /EnableSIDHistory はtrusted Forestのmigrated userがSIDHistoryをresource accessに利用できるかを制御します。</p>
+<p>SIDHistoryを利用するmigrationでは、trust typeとSID filtering / SIDHistory設定を明示的に確認する必要があります。</p>
+<h2 id="detectionとreview">DetectionとReview</h2>
+<p>unexpectedなsIDHistory modification、privileged SIDの追加、migration window外での変更などは監視対象になります。</p>
+<p>MITRE ATT&amp;CKはunauthorized SID-History modificationと、その後のprivileged accessを関連付ける検知戦略を示しています。</p>
+<h2 id="domain-trust-discoveryとの関係">Domain Trust Discoveryとの関係</h2>
+<p><a href="../domain-trust-discovery/">Domain Trust Discovery</a>で得られるtrust relationshipの情報は、SIDHistoryやcross-domain authorization pathを評価する文脈でも利用され得ます。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../security-identifier/">Security Identifier</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../access-control-list/">Access Control List</a></li>
+<li><a href="../user-account/">User Account</a></li>
+<li><a href="../security-group/">Security Group</a></li>
+<li><a href="../domain-trust-discovery/">Domain Trust Discovery</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../ldap/">LDAP</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-ada3/1c47c6a0-e614-49e5-bef3-f42f71f5eeb2">Microsoft Open Specifications - Attribute sIDHistory</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/adschema/a-sidhistory">Microsoft - SID-History attribute</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/api/ntdsapi/nf-ntdsapi-dsaddsidhistoryw">Microsoft - DsAddSidHistoryW</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1134/005/">MITRE ATT&amp;CK - T1134.005 SID-History Injection</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netdom-trust">Microsoft - netdom trust</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/domain-trust-discovery/">Domain Trust Discovery</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

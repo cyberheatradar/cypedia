@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Ticket-Granting Ticket issuance, TGS exchange, caching, and its KRBTGT relationship in Active Directory."><title>Ticket-Granting Ticket - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/ticket-granting-ticket/">日本語</a><span> / </span><a href="/cypedia/en/ticket-granting-ticket/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Ticket-Granting Ticket</h1><div class="article-meta"><strong>Aliases:</strong> TGT</div><div class="article-meta"><strong>Categories:</strong> Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/ticket-granting-tickets">Microsoft - Ticket-Granting Tickets</a></p>
+</blockquote>
+<p>A Ticket-Granting Ticket (<a href="./">TGT</a>) is a <a href="../kerberos-ticket/">Kerberos Ticket</a> that allows a <a href="../kerberos/">Kerberos</a> client to request <a href="../service-ticket/">Service Tickets</a> for individual services.</p>
+<p>After initial authentication, the client can present the TGT to the <a href="../ticket-granting-server/">Ticket-Granting Server (TGS)</a> instead of repeatedly using the user’s long-term secret for each service request.</p>
+<h2 id="issuance">Issuance</h2>
+<p>The TGT is issued by the <a href="../authentication-server/">Authentication Server (AS)</a> component of the <a href="../key-distribution-center/">Key Distribution Center (KDC)</a>.</p>
+<p>The client sends an AS-REQ.</p>
+<p>When the KDC accepts the request, it returns an AS-REP containing the TGT and information concerning a <a href="../session-key/">Session Key</a> used between the client and the TGS.</p>
+<h2 id="pre-authentication">Pre-Authentication</h2>
+<p>Depending on policy and implementation, the AS exchange can require <a href="../pre-authentication/">Pre-Authentication</a>.</p>
+<p>Pre-Authentication allows the KDC to require authentication evidence before issuing the TGT.</p>
+<h2 id="ticket-cache">Ticket Cache</h2>
+<p>The client stores the TGT in its ticket cache.</p>
+<p>While valid, the TGT can be reused to request tickets for multiple services without requiring the user’s password for every service connection.</p>
+<h2 id="tgs-exchange">TGS Exchange</h2>
+<p>When a Service Ticket is needed, the client sends the TGT and a <a href="../authenticator/">Kerberos Authenticator</a> to the TGS.</p>
+<p>After validating the request, the TGS can issue a Service Ticket for the target service.</p>
+<h2 id="realm">Realm</h2>
+<p>A TGT is associated with the ticket-granting service of a <a href="../realm/">Kerberos Realm</a>.</p>
+<p><a href="../cross-realm-authentication/">Cross-Realm Authentication</a> can involve additional TGTs that establish an authentication path between Realms.</p>
+<h2 id="active-directory">Active Directory</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a> / <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE</a></p>
+</blockquote>
+<p>In <a href="../active-directory/">Active Directory</a>, a <a href="../domain-controller/">Domain Controller</a> provides KDC functionality.</p>
+<p>The cryptographic protection of AD DS TGTs is associated with key material belonging to the <a href="../krbtgt/">KRBTGT</a> account.</p>
+<p>Windows Kerberos tickets can also carry authorization information in a <a href="../privilege-attribute-certificate/">Privilege Attribute Certificate (PAC)</a>.</p>
+<h2 id="security-significance">Security Significance</h2>
+<p>A TGT is a credential used to obtain additional Kerberos tickets.</p>
+<p>If a valid TGT is stolen, it may be abused within the constraints of its validity and the surrounding Kerberos environment.</p>
+<p>If KRBTGT key material is compromised, attackers can potentially forge TGTs in the technique known as <a href="../golden-ticket/">Golden Ticket</a>.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../authenticator/">Authenticator</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/ticket-granting-tickets">Microsoft - Ticket-Granting Tickets</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/en/authenticator/">Authenticator</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/en/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/pkinit/">PKINIT</a></li><li><a href="/cypedia/en/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/en/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/en/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/en/realm/">Realm</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/session-key/">Session Key</a></li><li><a href="/cypedia/en/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

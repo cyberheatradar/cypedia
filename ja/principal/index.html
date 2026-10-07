@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Principalのidentity、name、Realm、client/server principal、Active Directoryとの関係を解説する。"><title>Principal - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/principal/">日本語</a><span> / </span><a href="/cypedia/en/principal/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Principal</h1><div class="article-meta"><strong>別名:</strong> principal</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p><a href="./">Principal</a>は、<a href="../kerberos/">Kerberos</a>によって識別・authenticationされるentityです。</p>
+<p>user、host、application serviceなどがPrincipalになり得ます。</p>
+<p>Kerberosではclient側とserver側の双方がPrincipalとして表現されます。</p>
+<h2 id="principal-name">Principal Name</h2>
+<p>RFC 4120ではPrincipal Nameは複数のname componentとname typeから構成されます。</p>
+<p>Principalを一意に扱う際には<a href="../realm/">Realm</a>も重要です。</p>
+<p>一般的な表示では、PrincipalとRealmを組み合わせて <code>name@REALM</code> のように表現します。</p>
+<h2 id="client-principal">Client Principal</h2>
+<p>client Principalはauthenticationを要求する主体を識別します。</p>
+<p>userだけでなくhostやserviceがclientとしてKerberos exchangeを開始することもできます。</p>
+<h2 id="server-principal">Server Principal</h2>
+<p>server Principalはclientがaccessしようとするservice側identityです。</p>
+<p><a href="../active-directory/">Active Directory</a>ではservice instanceを識別するために<a href="../service-principal-name/">Service Principal Name（SPN）</a>が使用されます。</p>
+<h2 id="kdcとの関係">KDCとの関係</h2>
+<p><a href="../key-distribution-center/">Key Distribution Center（KDC）</a>はRealm内のPrincipalとauthenticationに必要なkey informationを扱います。</p>
+<p>clientは<a href="../authentication-server/">Authentication Server</a>からinitial credentialを取得し、後続のticket requestに利用します。</p>
+<h2 id="ticketとの関係">Ticketとの関係</h2>
+<p><a href="../kerberos-ticket/">Kerberos Ticket</a>にはclientやserverのPrincipal informationが関係します。</p>
+<p><a href="../service-ticket/">Service Ticket</a>は特定のserver Principal向けに発行されます。</p>
+<h2 id="active-directory">Active Directory</h2>
+<p>Windows Serverではuser、computer、serviceなどのidentityがAD DS上のaccountと関連付けられ、Kerberos authenticationに使用されます。</p>
+<p>一方、Windowsの<a href="../security-principal/">Security Principal</a>とKerberos Principalは同一概念ではありません。</p>
+<p>Security PrincipalはWindows authorization model上のentity、Kerberos PrincipalはKerberos protocol上のidentityです。</p>
+<h2 id="security上の意味">Security上の意味</h2>
+<p>Principal nameの誤設定はservice identityの誤認やauthentication failureの原因になります。</p>
+<p>service identityではSPNを正しく登録し、意図したaccountへ一意に関連付けることが重要です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service Principal Names</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/authenticator/">Authenticator</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/security-principal/">Security Principal</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/session-key/">Session Key</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

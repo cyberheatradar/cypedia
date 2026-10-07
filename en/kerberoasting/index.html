@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberoasting Service Ticket acquisition, SPN and Service Account relationships, offline password guessing, detection, and mitigation."><title>Kerberoasting - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/kerberoasting/">日本語</a><span> / </span><a href="/cypedia/en/kerberoasting/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Kerberoasting</h1><div class="article-meta"><strong>Aliases:</strong> Kerberoast</div><div class="article-meta"><strong>Categories:</strong> Active Directory / Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></p>
+</blockquote>
+<p><a href="./">Kerberoasting</a> is a credential-access technique that uses normal <a href="../kerberos/">Kerberos</a> ticket issuance to obtain cryptographic material from a <a href="../service-ticket/">Service Ticket</a> associated with a <a href="../service-principal-name/">Service Principal Name (SPN)</a> and subject it to offline password guessing.</p>
+<p>In <a href="../active-directory/">Active Directory</a>, service identities are associated with computer accounts or <a href="../service-account/">Service Accounts</a>.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>In a common Kerberoasting scenario, an authenticated principal holding a valid <a href="../ticket-granting-ticket/">Ticket-Granting Ticket (TGT)</a> requests a Service Ticket for a target SPN.</p>
+<p>The <a href="../ticket-granting-server/">Ticket-Granting Server (TGS)</a> issues the ticket as part of normal Kerberos behavior.</p>
+<p>Compromise of the Domain Controller or KDC is not itself required merely to make this ticket request.</p>
+<h2 id="service-accounts">Service Accounts</h2>
+<p>The encrypted portion of a Service Ticket is protected with key material available to the target service.</p>
+<p>For a traditional Service Account, password-derived key material can therefore make a guessable service password relevant to offline cracking risk.</p>
+<p>Managed identities such as gMSAs use long, automatically managed credentials and substantially reduce this risk.</p>
+<h2 id="encryption-types">Encryption Types</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/detect-remediate-rc4-kerberos">Microsoft - Detect and Remediate RC4 Usage in Kerberos</a></p>
+</blockquote>
+<p>Legacy Kerberos encryption such as RC4-HMAC is an important Kerberoasting risk and monitoring consideration.</p>
+<p>Microsoft provides current Windows Server guidance for auditing RC4 usage through Kerberos events including Event IDs 4768 and 4769.</p>
+<p>The underlying issue, however, is not RC4 alone: Kerberoasting becomes useful where Service Ticket key material ultimately depends on a Service Account credential that can be guessed.</p>
+<h2 id="offline-guessing">Offline Guessing</h2>
+<p>Password guessing against collected ticket material occurs offline, away from the KDC.</p>
+<p>Account lockout therefore does not by itself compensate for a weak Service Account password.</p>
+<h2 id="detection">Detection</h2>
+<p>MITRE ATT&amp;CK identifies anomalous Kerberos Service Ticket requests as an important signal.</p>
+<p>Useful observations include:</p>
+<ul>
+<li>unusual Event ID 4769 volume;</li>
+<li>requests for SPNs not normally used by the requester;</li>
+<li>legacy encryption types such as RC4;</li>
+<li>bursts of requests across many service identities;</li>
+<li>unusual requests targeting privileged Service Accounts.</li>
+</ul>
+<p>Because legitimate Kerberos activity also produces 4769 events, detection should combine request volume, requester identity, target service, and encryption type.</p>
+<h2 id="mitigation">Mitigation</h2>
+<p>Important controls include:</p>
+<ul>
+<li>preferring managed Service Accounts such as <a href="../group-managed-service-account/">gMSAs</a>;</li>
+<li>using long, random credentials for traditional Service Accounts;</li>
+<li>applying least privilege to service identities;</li>
+<li>removing unnecessary or stale SPNs;</li>
+<li>reducing RC4 dependencies and moving toward AES;</li>
+<li>monitoring Service Ticket requests.</li>
+</ul>
+<h2 id="differences-from-other-kerberos-attacks">Differences from Other Kerberos Attacks</h2>
+<p><a href="../as-rep-roasting/">AS-REP Roasting</a> targets accounts for which Pre-Authentication is not required.</p>
+<p><a href="../golden-ticket/">Golden Ticket</a> and <a href="../silver-ticket/">Silver Ticket</a> involve ticket forgery after key material has already been compromised rather than offline guessing of Service Ticket protection.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/detect-remediate-rc4-kerberos">Microsoft - Detect and Remediate RC4 Usage in Kerberos</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/understand-service-accounts">Microsoft - Service Accounts in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service Principal Names</a></li>
+<li><a href="https://learn.microsoft.com/en-us/entra/architecture/service-accounts-group-managed">Microsoft - Secure group managed service accounts</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/en/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/service-account/">Service Account</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

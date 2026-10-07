@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="NTDS.ditのActive Directory databaseとしての役割、格納情報、security上の重要性を解説する。"><title>NTDS.dit - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/ntds-dit/">日本語</a><span> / </span><a href="/cypedia/en/ntds-dit/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>NTDS.dit</h1><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/ad-ds-installation-and-removal-wizard-page-descriptions">Microsoft - AD DS Configuration Wizard Page Descriptions</a></p>
+</blockquote>
+<p>NTDS.ditは<a href="../domain-controller/">Domain Controller</a>で使用される<a href="../active-directory/">Active Directory Domain Services</a>のdatabase fileです。</p>
+<p>AD DS installation時にはdatabase file、transaction log、<a href="../sysvol/">SYSVOL</a>の配置場所を設定できます。</p>
+<h2 id="格納される情報">格納される情報</h2>
+<p>Active Directory databaseにはuser、computer、group、<a href="../security-principal/">Security Principal</a>、directory configurationなどのobject informationが格納されます。</p>
+<p>NTDS.ditはそのdirectory dataを保持する中核fileです。</p>
+<h2 id="domain-controllerとの関係">Domain Controllerとの関係</h2>
+<p>Domain Controllerは自分が保持する<a href="../directory-partition/">Directory Partition</a>のreplicaをdatabase内で管理します。</p>
+<p>directory changeは<a href="../active-directory-replication/">Active Directory Replication</a>によって他のDomain Controllerへ同期されます。</p>
+<h2 id="sysvolとの違い">SYSVOLとの違い</h2>
+<p>NTDS.ditとSYSVOLは同じものではありません。</p>
+<p>directory objectやGPOのdirectory-side dataはActive Directory database側に存在します。</p>
+<p>一方、<a href="../group-policy/">Group Policy</a>のfile-basedなGroup Policy TemplateなどはSYSVOL側に保存されます。</p>
+<h2 id="security上の重要性">Security上の重要性</h2>
+<p>Microsoftは、password at restがActive Directory database（NTDS.DIT file）の複数のattributeに保存されると説明しています。</p>
+<p>そのため、NTDS.ditやそれを含むbackup、snapshotなどへの不正accessはcredential exposureにつながる重大なsecurity incidentになり得ます。</p>
+<h2 id="ntds-credential-dumping">NTDS Credential Dumping</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></p>
+</blockquote>
+<p><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a>では、攻撃者がActive Directory databaseまたはそのcopyを取得し、credential materialを抽出しようとします。</p>
+<p>Domain Controller上でdatabase fileが通常使用中であることやaccess controlが存在するため、実際のattackではbackup、snapshot、Volume Shadow Copyなど別の取得経路が利用される場合があります。</p>
+<h2 id="dcsyncとの違い">DCSyncとの違い</h2>
+<p><a href="../dcsync/">DCSync</a>はNTDS.dit fileそのものを直接copyする手法ではありません。</p>
+<p>DCSyncはActive Directory replication protocolとreplication privilegeを悪用してcredential informationを要求する別の手法です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../sysvol/">SYSVOL</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/ad-ds-installation-and-removal-wizard-page-descriptions">Microsoft - AD DS Configuration Wizard Page Descriptions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/active-directory-domain-services">Microsoft - Active Directory Domain Services overview</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/passwords-technical-overview">Microsoft - Passwords technical overview</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1003/006/">MITRE ATT&amp;CK T1003.006 - DCSync</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/dcsync/">DCSync</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/ja/sysvol/">SYSVOL</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

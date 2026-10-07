@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Global Catalogのreplica構成、Forest-wide search、replicationとの関係を解説する。"><title>Global Catalog - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/global-catalog/">日本語</a><span> / </span><a href="/cypedia/en/global-catalog/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Global Catalog</h1><div class="article-meta"><strong>別名:</strong> GC</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/global-catalog">Microsoft - Global Catalog</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></p>
+</blockquote>
+<p>Global Catalog（GC）は<a href="../active-directory-forest/">Active Directory Forest</a>全体のobjectを検索できるようにするdirectory機能です。</p>
+<p>Global Catalog serverは<a href="../domain-controller/">Domain Controller</a>です。</p>
+<h2 id="保持するdirectory-data">保持するDirectory Data</h2>
+<p>writable Global Catalog serverは、自身の<a href="../active-directory-domain/">Domain</a>についてfull writable replicaを保持し、Forest内の他Domainについてpartial read-only replicaを保持します。</p>
+<p>他Domainのpartial replicaには各objectと、Partial Attribute Setに含まれるattributeのsubsetが保持されます。</p>
+<p><a href="../read-only-domain-controller/">Read-Only Domain Controller（RODC）</a>もGlobal Catalogとして構成できますが、そのDomain Controller自体はread-onlyのままであり、RODC固有のreplication restrictionに従います。</p>
+<h2 id="forest-wide-search">Forest-wide Search</h2>
+<p>Global Catalogによって、applicationやuserはobjectがどのDomainに存在するかを事前に把握せずにForest全体を検索できます。</p>
+<p>multi-domain Forestでは特に重要な機能です。</p>
+<h2 id="partial-attribute-set">Partial Attribute Set</h2>
+<p>他DomainからGlobal Catalogへreplicateされるattributeの集合はPartial Attribute Setとして管理されます。</p>
+<p>Forest-wide searchで必要となる代表的なattributeがGlobal Catalogへ保持されます。</p>
+<h2 id="replicationとの関係">Replicationとの関係</h2>
+<p>Global Catalogが保持するdirectory dataは<a href="../active-directory-replication/">Active Directory Replication</a>によって維持されます。</p>
+<p>Global Catalog serverは通常のDomain Controllerとしてのreplicationに加え、他Domainのpartial replicaも受け取ります。</p>
+<h2 id="security上の論点">Security上の論点</h2>
+<p>Global Catalog serverはForest全体に関するdirectory metadataを保持します。</p>
+<p>そのため他のDomain Controllerと同様に高いsecurity priorityが必要です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/global-catalog">Microsoft - Global Catalog</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/planning-global-catalog-server-placement">Microsoft - Planning Global Catalog Server Placement</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-forest/">Active Directory Forest</a></li><li><a href="/cypedia/ja/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/ja/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/ldap/">LDAP</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

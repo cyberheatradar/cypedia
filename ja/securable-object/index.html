@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Security Descriptorを持つことができるWindows Securable Objectと代表例を解説する。"><title>Securable Object - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/securable-object/">日本語</a><span> / </span><a href="/cypedia/en/securable-object/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Securable Object</h1><div class="article-meta"><strong>別名:</strong> Securable Objects</div><div class="article-meta"><strong>カテゴリ:</strong> Windows</div><div class="article-body"><blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/securable-objects">Microsoft - Securable Objects</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/security-descriptors">Microsoft - Security Descriptors</a></p>
+</blockquote>
+<p><a href="./">Securable Object</a>は、<a href="../security-descriptor/">Security Descriptor</a>を持つことができるWindows objectです。</p>
+<p>Security Descriptorによって、ownerやACLなどのsecurity informationをobjectへ関連付けられます。</p>
+<h2 id="representative-objects">Representative Objects</h2>
+<p>Microsoft documentationでは、代表的なSecurable Objectとして次のようなobject typeが示されています。</p>
+<ul>
+<li>NTFS file / directory</li>
+<li>registry key</li>
+<li>process</li>
+<li>thread</li>
+<li>file-mapping object</li>
+<li>access token</li>
+<li>window station / desktop</li>
+<li>Windows service</li>
+<li>printer</li>
+<li>network share</li>
+<li>synchronization object</li>
+<li>job object</li>
+</ul>
+<p>directory service objectもWindows access-control modelの対象になります。</p>
+<h2 id="security-descriptor">Security Descriptor</h2>
+<p>Securable Objectには、objectのsecurity informationを表すSecurity Descriptorを関連付けることができます。</p>
+<p>Security Descriptorにはowner、primary group、<a href="../discretionary-access-control-list/">DACL</a>、<a href="../system-access-control-list/">SACL</a>などが含まれ得ます。</p>
+<h2 id="object-specific-rights">Object-Specific Rights</h2>
+<p>Securable Objectのtypeごとに、利用可能な<a href="../access-rights/">Access Rights</a>は異なります。</p>
+<p>そのため同じAccess Maskのconceptを利用していても、specific rightの意味はobject typeによって変わります。</p>
+<h2 id="access-control">Access Control</h2>
+<p>object accessを要求するとき、requesterの<a href="../windows-access-token/">Windows Access Token</a>とobjectのSecurity Descriptorが<a href="../access-check/">Access Check</a>で重要になります。</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>「Windows object」であることと「Securable Object」であることは完全に同義ではありません。</p>
+<p>本記事ではWindows Object Manager全体のobject taxonomyは扱わず、Security Descriptorによってaccess controlされるobjectという観点に限定します。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../security-descriptor/">Security Descriptor</a></li>
+<li><a href="../access-control-list/">Access Control List</a></li>
+<li><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></li>
+<li><a href="../system-access-control-list/">System Access Control List</a></li>
+<li><a href="../access-rights/">Access Rights</a></li>
+<li><a href="../windows-access-token/">Windows Access Token</a></li>
+<li><a href="../access-check/">Access Check</a></li>
+<li><a href="../access-mask/">Access Mask</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/securable-objects">Microsoft - Securable Objects</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/security-descriptors">Microsoft - Security Descriptors</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control">Microsoft - Access Control</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-check/">Access Check</a></li><li><a href="/cypedia/ja/access-control-entry/">Access Control Entry</a></li><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/access-mask/">Access Mask</a></li><li><a href="/cypedia/ja/access-rights/">Access Rights</a></li><li><a href="/cypedia/ja/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/ja/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/ja/security-principal/">Security Principal</a></li><li><a href="/cypedia/ja/system-access-control-list/">System Access Control List</a></li><li><a href="/cypedia/ja/windows-access-token/">Windows Access Token</a></li><li><a href="/cypedia/ja/windows-privilege/">Windows Privilege</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

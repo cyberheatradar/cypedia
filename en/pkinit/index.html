@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="PKINIT public-key Kerberos initial authentication, certificates, key establishment, and Windows smart-card integration."><title>PKINIT - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/pkinit/">日本語</a><span> / </span><a href="/cypedia/en/pkinit/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>PKINIT</h1><div class="article-meta"><strong>Aliases:</strong> Public Key Cryptography for Initial Authentication in Kerberos</div><div class="article-meta"><strong>Categories:</strong> Kerberos / Authentication</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556 - Public Key Cryptography for Initial Authentication in Kerberos</a></p>
+</blockquote>
+<p><a href="./">PKINIT</a> is a <a href="../pre-authentication/">Pre-Authentication</a> mechanism that adds public-key cryptography to the initial <a href="../kerberos/">Kerberos</a> authentication exchange.</p>
+<p>It is standardized in RFC 4556.</p>
+<h2 id="as-exchange">AS Exchange</h2>
+<p>PKINIT operates during the <a href="../authentication-server/">Authentication Server (AS)</a> exchange.</p>
+<p>The client includes information based on public/private key material and a certificate in its AS-REQ.</p>
+<p>The <a href="../key-distribution-center/">KDC</a> validates the relevant signature and certificate information before producing a successful AS-REP.</p>
+<h2 id="key-establishment">Key Establishment</h2>
+<p>PKINIT uses public-key cryptography to establish key material for initial Kerberos authentication.</p>
+<p>This allows an authentication flow that does not rely exclusively on a traditional password-derived initial key.</p>
+<h2 id="certificates">Certificates</h2>
+<p>PKINIT uses X.509 certificates.</p>
+<p>Certificate trust for the client and authentication of the KDC are both important.</p>
+<p>PKI configuration and certificate validation are therefore part of PKINIT security.</p>
+<h2 id="windows-implementation">Windows Implementation</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/MS-PKCA/d0cf1763-3541-4008-a75f-a577fa5e8c5b">MS-PKCA - Public Key Cryptography for Initial Authentication in Kerberos Protocol</a></p>
+</blockquote>
+<p>Windows implements PKINIT based on RFC 4556 and documents Windows-specific behavior in MS-PKCA.</p>
+<p>Smart-card logon in <a href="../active-directory/">Active Directory</a> is a major Windows use case.</p>
+<h2 id="tgt">TGT</h2>
+<p>A successful PKINIT AS exchange results in acquisition of a <a href="../ticket-granting-ticket/">Ticket-Granting Ticket (TGT)</a>, like other successful Kerberos initial authentication flows.</p>
+<p>Subsequent <a href="../ticket-granting-server/">TGS</a> exchanges continue through the normal Kerberos ticket flow.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>PKINIT security depends on factors including:</p>
+<ul>
+<li>protection of private keys;</li>
+<li>certificate issuance;</li>
+<li>certificate mapping;</li>
+<li>KDC certificate validation;</li>
+<li>CA trust;</li>
+<li>revocation handling.</li>
+</ul>
+<p>PKI misconfiguration can therefore directly affect Kerberos authentication security.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556 - Public Key Cryptography for Initial Authentication in Kerberos</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/MS-PKCA/d0cf1763-3541-4008-a75f-a577fa5e8c5b">MS-PKCA - Public Key Cryptography for Initial Authentication in Kerberos Protocol</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/smart-cards/smart-card-certificate-requirements-and-enumeration">Microsoft - Smart Card Certificate Requirements and Enumeration</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/pre-authentication/">Pre-Authentication</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

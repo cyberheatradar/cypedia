@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows access checking and the AccessCheck API, relating access tokens, security descriptors, DACLs, and requested rights."><title>Access Check - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/access-check/">日本語</a><span> / </span><a href="/cypedia/en/access-check/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Access Check</h1><div class="article-meta"><strong>Aliases:</strong> AccessCheck</div><div class="article-meta"><strong>Categories:</strong> Windows</div><div class="article-body"><blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/how-dacls-control-access-to-an-object">Microsoft - How DACLs Control Access to an Object</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-accesscheck">Microsoft - AccessCheck</a></p>
+</blockquote>
+<p>An <a href="./">Access Check</a> is an authorization decision that determines whether a requesting security context can obtain requested <a href="../access-rights/">Access Rights</a> to a <a href="../securable-object/">Securable Object</a>.</p>
+<h2 id="authorization-inputs">Authorization Inputs</h2>
+<p>The Windows access-control model involves security information including:</p>
+<ul>
+<li>the requester’s <a href="../windows-access-token/">Windows Access Token</a>;</li>
+<li>the target object’s <a href="../security-descriptor/">Security Descriptor</a>;</li>
+<li>the <a href="../discretionary-access-control-list/">DACL</a> in that descriptor;</li>
+<li>applicable <a href="../access-control-entry/">ACEs</a>; and</li>
+<li>the requested <a href="../access-mask/">Access Mask</a>.</li>
+</ul>
+<p>These inputs are evaluated to determine whether the requested access can be granted.</p>
+<h2 id="dacl-evaluation">DACL Evaluation</h2>
+<p>Allow and deny ACEs in a DACL participate in the access decision.</p>
+<p>ACE ordering can affect the result, so the DACL needs to be evaluated as a sequence rather than by looking only for the existence of an allow entry.</p>
+<p>NULL and empty DACLs also have different semantics. A NULL DACL permits requested access, while an empty DACL contains no ACE that grants access.</p>
+<h2 id="win32-accesscheck-api">Win32 AccessCheck API</h2>
+<p>Windows exposes an <code>AccessCheck()</code> API.</p>
+<p>The function determines whether a specified Security Descriptor grants requested rights to a client represented by an Access Token and returns granted access through an Access Mask.</p>
+<p>CyPedia does not equate this one Win32 API with every internal Windows authorization path. The API is used here as a documented interface illustrating the access-check model.</p>
+<h2 id="auditing">Auditing</h2>
+<p><code>AccessCheck()</code> itself does not generate an audit.</p>
+<p>Windows provides separate access-check-and-audit APIs for applications that require auditing behavior.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../windows-access-token/">Windows Access Token</a></li>
+<li><a href="../securable-object/">Securable Object</a></li>
+<li><a href="../security-descriptor/">Security Descriptor</a></li>
+<li><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></li>
+<li><a href="../access-control-entry/">Access Control Entry</a></li>
+<li><a href="../access-rights/">Access Rights</a></li>
+<li><a href="../access-mask/">Access Mask</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/how-dacls-control-access-to-an-object">Microsoft - How DACLs Control Access to an Object</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-accesscheck">Microsoft - AccessCheck function</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control">Microsoft - Access Control</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-control-list/">Access Control List</a></li><li><a href="/cypedia/en/access-mask/">Access Mask</a></li><li><a href="/cypedia/en/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/en/securable-object/">Securable Object</a></li><li><a href="/cypedia/en/windows-access-token/">Windows Access Token</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

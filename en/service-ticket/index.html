@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Service Ticket issuance, service keys, Session Keys, SPNs, Kerberoasting, and Silver Ticket relationships."><title>Service Ticket - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/service-ticket/">日本語</a><span> / </span><a href="/cypedia/en/service-ticket/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Service Ticket</h1><div class="article-meta"><strong>Categories:</strong> Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p>A <a href="./">Service Ticket</a> is a <a href="../kerberos-ticket/">Kerberos Ticket</a> used by a <a href="../kerberos/">Kerberos</a> client to authenticate to a particular application service.</p>
+<p>The Service Ticket is issued by the <a href="../ticket-granting-server/">Ticket-Granting Server (TGS)</a>.</p>
+<h2 id="acquisition">Acquisition</h2>
+<p>The client presents a <a href="../ticket-granting-ticket/">Ticket-Granting Ticket (TGT)</a> and a <a href="../authenticator/">Kerberos Authenticator</a> to the TGS and requests credentials for the target service.</p>
+<p>If the request is accepted, the TGS returns the Service Ticket in a TGS-REP.</p>
+<h2 id="service-session-key">Service Session Key</h2>
+<p>The TGS generates a <a href="../session-key/">Session Key</a> for the client and target service.</p>
+<p>The ticket contains information allowing the service to obtain its copy of the Session Key.</p>
+<p>The client receives information needed to use the corresponding Session Key in the TGS response.</p>
+<h2 id="service-key">Service Key</h2>
+<p>In the normal case, the encrypted portion of a Service Ticket is protected with the target service’s secret key.</p>
+<p>RFC 4120 defines a user-to-user authentication exception in which the ENC-TKT-IN-SKEY option causes the Service Ticket to be encrypted with a Session Key from the server’s <a href="../ticket-granting-ticket/">TGT</a>.</p>
+<p>In a normal AP exchange, the target service processes the ticket using key material available to that service.</p>
+<h2 id="active-directory-and-spns">Active Directory and SPNs</h2>
+<p>In <a href="../active-directory/">Active Directory</a>, a service instance is identified by a <a href="../service-principal-name/">Service Principal Name (SPN)</a>.</p>
+<p>The SPN is normally registered on an account such as a computer account or <a href="../service-account/">Service Account</a>.</p>
+<p>The requested SPN determines the service identity for which the TGS issues the ticket.</p>
+<h2 id="pac">PAC</h2>
+<p>Windows Kerberos Service Tickets can contain a <a href="../privilege-attribute-certificate/">Privilege Attribute Certificate (PAC)</a> carrying authorization data such as group-related information.</p>
+<h2 id="ap-exchange">AP Exchange</h2>
+<p>The client presents the Service Ticket and Authenticator to the application server.</p>
+<p>The server validates the ticket and Authenticator as part of Kerberos application authentication.</p>
+<h2 id="kerberoasting">Kerberoasting</h2>
+<p><a href="../kerberoasting/">Kerberoasting</a> can use encrypted data from legitimately requested Service Tickets for offline password guessing.</p>
+<p>The security of Service Account passwords and the encryption types in use are therefore important.</p>
+<h2 id="silver-ticket">Silver Ticket</h2>
+<p><a href="../silver-ticket/">Silver Ticket</a> refers to forging Service Tickets using service-side key material.</p>
+<p>This differs from <a href="../golden-ticket/">Golden Ticket</a>, which targets TGTs and KRBTGT key material.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../authenticator/">Authenticator</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../privilege-attribute-certificate/">PAC</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/key-distribution-center">Microsoft - Key Distribution Center</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service principal names</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/9bf9252a-0bc9-497e-8c25-c77d28d4767b">MS-KILE - Authentication to Services</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/c25d48df-67f0-4c5f-9e46-27a7d5710909">MS-KILE - PAC Generation</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/002/">MITRE ATT&amp;CK T1558.002 - Silver Ticket</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/authenticator/">Authenticator</a></li><li><a href="/cypedia/en/computer-account/">Computer Account</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/en/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/principal/">Principal</a></li><li><a href="/cypedia/en/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/en/service-account/">Service Account</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/en/session-key/">Session Key</a></li><li><a href="/cypedia/en/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/en/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="複数serverで利用可能なmanaged service identityとしてpasswordとSPN管理を自動化するGroup Managed Service Account（gMSA）を解説する。"><title>Group Managed Service Account - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/group-managed-service-account/">日本語</a><span> / </span><a href="/cypedia/en/group-managed-service-account/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Group Managed Service Account</h1><div class="article-meta"><strong>別名:</strong> gMSA</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Service Identity</div><div class="article-body"><h2 id="概要">概要</h2>
+<p><a href="./">Group Managed Service Account（gMSA）</a>は、<a href="../standalone-managed-service-account/">sMSA</a>のmanaged service identity機能を複数serverへ拡張した<a href="../service-account/">Service Account</a>です。</p>
+<p><a href="../active-directory/">Active Directory</a>の<a href="../domain-controller/">Domain Controller</a>がpasswordを管理し、利用を許可されたhostがそのcredentialを取得します。</p>
+<h2 id="multi-server-service-identity">Multi-Server Service Identity</h2>
+<p>gMSAはserver farmや複数server上で同一service identityを利用する用途を想定しています。</p>
+<p>Microsoftは、mutual authenticationを利用するservice instanceが同じidentityを必要とする場合に、gMSAを複数serverで使用できるaccountとして説明しています。</p>
+<h2 id="password-management">Password Management</h2>
+<p>gMSA passwordはadministratorが通常のservice passwordとして手動配布・同期するのではなく、Domain側で管理されます。</p>
+<p>authorized hostが必要なcredentialを取得するため、複数serverで同一service identityを利用する場合のcredential管理を簡素化できます。</p>
+<h2 id="spn-management">SPN Management</h2>
+<p>gMSAは<a href="../service-principal-name/">Service Principal Name（SPN）</a>管理も簡素化します。</p>
+<p>これは<a href="../kerberos/">Kerberos</a>を利用するservice authenticationで重要です。</p>
+<h2 id="kerberoastingとの関係">Kerberoastingとの関係</h2>
+<p>traditional service accountで弱い・長期固定passwordを利用する場合、<a href="../kerberoasting/">Kerberoasting</a>によるoffline password guessingのriskが問題になります。</p>
+<p>MicrosoftはgMSAを自動管理credentialを持つservice identityとして提供しており、manualなstatic service passwordへの依存を減らせます。</p>
+<h2 id="smsaとの違い">sMSAとの違い</h2>
+<p><a href="../standalone-managed-service-account/">sMSA</a>は単一computer向けですが、gMSAは複数serverで利用できます。</p>
+<h2 id="dmsaとの違い">dMSAとの違い</h2>
+<p><a href="../delegated-managed-service-account/">dMSA</a>はWindows Server 2025で導入された別のmanaged account typeで、authenticationをauthorized machine identityへ関連付ける設計を持ちます。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../standalone-managed-service-account/">Standalone Managed Service Account</a></li>
+<li><a href="../delegated-managed-service-account/">Delegated Managed Service Account</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/manage-group-managed-service-accounts">Microsoft - Manage Group Managed Service Accounts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/group-managed-service-accounts-overview">Microsoft - Group Managed Service Accounts Overview</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/understand-service-accounts">Microsoft - Service Accounts in Windows Server</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/standalone-managed-service-account/">Standalone Managed Service Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

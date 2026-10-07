@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="NTLM authenticationのchallenge-response、local/domain verification、Kerberosとの位置づけ、NTLMv1削除とNTLMv2非推奨化を解説する。"><title>NTLM - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/ntlm/">日本語</a><span> / </span><a href="/cypedia/en/ntlm/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>NTLM</h1><div class="article-meta"><strong>カテゴリ:</strong> Authentication / Windows</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/ntlm-overview">Microsoft - NTLM overview</a></p>
+</blockquote>
+<p><a href="./">NTLM</a>はWindowsで使用されてきたchallenge-response型authentication protocol familyです。</p>
+<p>MicrosoftのNTLM overviewではLAN Manager version 1/2、NTLM version 1/2をNTLM authentication familyとして説明しています。</p>
+<p>現在の<a href="../active-directory/">Active Directory</a>環境では<a href="../kerberos/">Kerberos</a>がpreferred authentication methodです。</p>
+<h2 id="challenge-response">Challenge-Response</h2>
+<p>NTLMではclientがpasswordそのものをnetworkへ送信する代わりに、passwordに由来するsecretとserver challengeを利用してresponseを生成します。</p>
+<p>server側またはDomain authentication serviceはresponseを検証し、clientがaccount secretを知っていることを確認します。</p>
+<h2 id="local-account">Local Account</h2>
+<p>local accountをauthenticationする場合、resource serverはlocal account databaseを利用してidentityを検証できます。</p>
+<p>このためNTLMはDomain環境以外のWindows authenticationでも利用されます。</p>
+<h2 id="domain-account">Domain Account</h2>
+<p>Domain accountの場合、resource serverはaccount Domainのauthentication serviceへ検証を依頼できます。</p>
+<p><a href="../domain-controller/">Domain Controller</a>がDomain authenticationに関与します。</p>
+<h2 id="kerberosとの違い">Kerberosとの違い</h2>
+<p>Kerberosは<a href="../key-distribution-center/">Key Distribution Center</a>が発行するticketを中心としたauthentication protocolです。</p>
+<p>NTLMはchallenge-responseを中心とし、Kerberos Ticketを使用しません。</p>
+<p>AD DS environmentではKerberosがpreferredですが、applicationやprotocol条件によってNTLMが利用される場合があります。</p>
+<h2 id="negotiate">Negotiate</h2>
+<p>WindowsではNegotiate security packageを利用すると、利用可能なauthentication mechanismを選択できます。</p>
+<p>Kerberosが利用可能な条件ではKerberosを選択し、条件によってNTLMへfallbackする場合があります。</p>
+<h2 id="ntlmv1">NTLMv1</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/whats-new/whats-new-windows-11-version-24h2">Microsoft - What’s new in Windows 11 version 24H2</a></p>
+</blockquote>
+<p>NTLMv1はWindows 11 version 24H2およびWindows Server 2025から削除されています。</p>
+<p>したがって新しいWindows設計でNTLMv1 compatibilityを前提にするべきではありません。</p>
+<h2 id="ntlmv2の将来">NTLMv2の将来</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/get-started/removed-deprecated-features-windows-server">Microsoft - Features removed or no longer developed in Windows Server</a></p>
+</blockquote>
+<p>MicrosoftはNTLMv2をactive development対象外かつdeprecatedとし、将来のWindows Server releaseで削除する方針を示しています。</p>
+<p>legacy applicationのNTLM dependencyは将来のcompatibility riskとしてinventoryし、Kerberosやmodern authenticationへ移行する必要があります。</p>
+<h2 id="security上の論点">Security上の論点</h2>
+<p>NTLMでは次のsecurity issueが重要です。</p>
+<ul>
+<li>credential hashの保護</li>
+<li>NTLM relay</li>
+<li>credential forwarding</li>
+<li>legacy protocol dependency</li>
+<li>weakまたはobsolete versionの排除</li>
+<li>NTLM usageのaudit</li>
+</ul>
+<p>MicrosoftはNTLM利用状況を把握し、選択的にrestrictionを導入するためのpolicyやloggingを提供しています。</p>
+<h2 id="現在の位置づけ">現在の位置づけ</h2>
+<p>NTLMは完全に消滅したprotocolではなく、現行Windowsでも一部scenarioで利用されます。</p>
+<p>一方で方向性は明確に縮小です。</p>
+<p>新規system設計ではNTLM dependencyを増やすのではなく、Kerberosやよりmodernなauthentication mechanismを優先すべきです。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/ntlm-overview">Microsoft - NTLM overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-nlmp/">MS-NLMP - NT LAN Manager Authentication Protocol</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/whats-new/whats-new-windows-11-version-24h2">Microsoft - What’s new in Windows 11 version 24H2</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/get-started/removed-deprecated-features-windows-server">Microsoft - Features removed or no longer developed in Windows Server</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

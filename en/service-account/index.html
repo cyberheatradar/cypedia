@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows Service Account security contexts, traditional accounts, sMSA/gMSA/dMSA, SPNs, Kerberos, and credential management."><title>Service Account - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/service-account/">日本語</a><span> / </span><a href="/cypedia/en/service-account/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Service Account</h1><div class="article-meta"><strong>Aliases:</strong> service account</div><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/understand-service-accounts">Microsoft - Service Accounts in Windows Server</a></p>
+</blockquote>
+<p>A <a href="./">Service Account</a> provides a security context for a Windows service or application.</p>
+<p>When a service accesses local or network resources, its identity and permissions are determined by the security context under which it runs.</p>
+<h2 id="traditional-service-accounts">Traditional Service Accounts</h2>
+<p>A normal <a href="../active-directory/">Active Directory</a> user account can be configured as the identity for a service.</p>
+<p>With this traditional model, administrators are responsible for password creation, storage, and rotation.</p>
+<p>Long-lived passwords and excessive privileges can create security risk.</p>
+<h2 id="managed-service-accounts">Managed Service Accounts</h2>
+<p>Windows Server provides several account types intended to improve service-identity management.</p>
+<h3 id="smsa">sMSA</h3>
+<p>A standalone Managed Service Account (sMSA) is a managed domain account intended for services on one computer.</p>
+<p>Windows automates password management and simplifies <a href="../service-principal-name/">Service Principal Name (SPN)</a> administration.</p>
+<h3 id="gmsa">gMSA</h3>
+<p>A group Managed Service Account (gMSA) extends managed-account functionality across multiple servers.</p>
+<p>It is useful for server farms and load-balanced services that need one service identity.</p>
+<p>Windows and <a href="../domain-controller/">Domain Controllers</a> manage the credential, while authorized hosts obtain the required account secret.</p>
+<h3 id="dmsa">dMSA</h3>
+<p>A Delegated Managed Service Account (dMSA) is a newer managed account type designed to bind service authentication more strongly to authorized machine identities.</p>
+<p>Current Windows Server supports migration scenarios from traditional service accounts to dMSAs.</p>
+<h3 id="virtual-accounts">Virtual Accounts</h3>
+<p>A Virtual Account is a locally managed service identity.</p>
+<p>For network authentication it can use the computer account’s credentials.</p>
+<h2 id="kerberos">Kerberos</h2>
+<p>When a network service running under a Service Account uses <a href="../kerberos/">Kerberos</a>, the service identity requires an appropriate SPN.</p>
+<p>The <a href="../ticket-granting-server/">Ticket-Granting Server</a> issues a <a href="../service-ticket/">Service Ticket</a> for the account associated with the requested SPN.</p>
+<h2 id="service-ticket-protection">Service Ticket Protection</h2>
+<p>The encrypted portion of a Service Ticket is protected using key material available to the target service.</p>
+<p>For a traditional Service Account, account password-derived keys can therefore be directly relevant to ticket security.</p>
+<h2 id="kerberoasting">Kerberoasting</h2>
+<p><a href="../kerberoasting/">Kerberoasting</a> can request Service Tickets for service identities with registered SPNs and use ticket material for offline password guessing.</p>
+<p>Traditional Service Accounts should therefore use strong, appropriately rotated passwords.</p>
+<p>Where practical, managed identities such as gMSAs reduce dependence on manually maintained service passwords.</p>
+<h2 id="least-privilege">Least Privilege</h2>
+<p>A Service Account should not receive unnecessary Domain or local privileges.</p>
+<p>Permissions should be limited to resources and operations actually required by the service.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../user-account/">User Account</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../standalone-managed-service-account/">Standalone Managed Service Account</a></li>
+<li><a href="../group-managed-service-account/">Group Managed Service Account</a></li>
+<li><a href="../delegated-managed-service-account/">Delegated Managed Service Account</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/understand-service-accounts">Microsoft - Service Accounts in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/group-managed-service-accounts-overview">Microsoft - Group Managed Service Accounts overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/manage-group-managed-service-accounts">Microsoft - Manage Group Managed Service Accounts</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/computer-account/">Computer Account</a></li><li><a href="/cypedia/en/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/session-key/">Session Key</a></li><li><a href="/cypedia/en/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/en/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/en/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

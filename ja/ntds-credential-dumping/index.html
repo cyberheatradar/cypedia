@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="NTDS Credential DumpingによるNTDS.ditやbackupからのDomain credential取得、影響、検知、防御、DCSyncとの違いを解説する。"><title>NTDS Credential Dumping - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/ntds-credential-dumping/">日本語</a><span> / </span><a href="/cypedia/en/ntds-credential-dumping/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>NTDS Credential Dumping</h1><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Credential Access</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></p>
+</blockquote>
+<p><a href="./">NTDS Credential Dumping</a>は、<a href="../domain-controller/">Domain Controller</a>上の<a href="../ntds-dit/">NTDS.dit</a>またはそのcopy・backupから<a href="../active-directory/">Active Directory</a> credential informationを取得するcredential access techniqueです。</p>
+<h2 id="ntdsdit">NTDS.dit</h2>
+<p>NTDS.ditはAD DS directory databaseです。</p>
+<p>user、computer、groupなどのdirectory objectとともにauthenticationに関連するsensitive dataを保持します。</p>
+<p>MITRE ATT&amp;CKはdefault locationを <code>%SystemRoot%\NTDS\Ntds.dit</code> としています。</p>
+<h2 id="credential-impact">Credential Impact</h2>
+<p>directory databaseが適切な関連materialとともに侵害されると、Domain accountのpassword hash等が攻撃者に取得される可能性があります。</p>
+<p><a href="../krbtgt/">KRBTGT</a>やprivileged accountのcredential materialが含まれるため、Domain-wide compromiseへ発展する可能性があります。</p>
+<h2 id="active-databaseとbackup">Active DatabaseとBackup</h2>
+<p>credential exposure sourceは稼働中Domain Controllerのdatabaseだけではありません。</p>
+<p>MITRE ATT&amp;CKは、active Domain Controllerだけでなく、同じまたは類似したdirectory informationを含むbackupも攻撃者の探索対象になり得るとしています。</p>
+<p>directory databaseを含むbackupもcredential exposure sourceになり得るため、sensitive credential materialを含むassetとして保護する必要があります。</p>
+<h2 id="dcsyncとの違い">DCSyncとの違い</h2>
+<p><a href="../dcsync/">DCSync</a>は<a href="../active-directory-replication/">Active Directory Replication</a> protocolを利用してcredential materialをremote requestします。</p>
+<p>NTDS Credential Dumpingはdatabase fileまたはそのcopyへaccessする点が異なります。</p>
+<h2 id="golden-ticketとの関係">Golden Ticketとの関係</h2>
+<p>NTDS.dit compromiseによってKRBTGT key materialまで取得された場合、<a href="../golden-ticket/">Golden Ticket</a>など後続のKerberos forgery riskにつながります。</p>
+<h2 id="検知">検知</h2>
+<p>重要な観測点は次です。</p>
+<ul>
+<li>Domain Controller上でのNTDS.dit access</li>
+<li>directory database copyやbackup操作</li>
+<li>unusual Volume Shadow Copy activity</li>
+<li>backup infrastructureへの不審access</li>
+<li>privileged processによるdirectory database関連操作</li>
+</ul>
+<p>正常なbackupやmaintenanceとの区別が必要なため、authorized operationのbaseline化が重要です。</p>
+<h2 id="緩和">緩和</h2>
+<ul>
+<li>Domain Controllerへのinteractive/admin accessを最小化する</li>
+<li>backupをDomain Controller相当のsensitive assetとして扱う</li>
+<li>privileged credentialを保護する</li>
+<li>database/backup accessを監視する</li>
+<li>Domain Controllerが完全に侵害された場合は、Domain credential materialが広範に露出した可能性をincident scopeで評価する</li>
+</ul>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../ntds-dit/">NTDS.dit</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services Overview</a></li>
+<li><a href="https://attack.mitre.org/detectionstrategies/DET0586/">MITRE ATT&amp;CK DET0586 - Detection of NTDS.dit Credential Dumping</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/dcsync/">DCSync</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/ntds-dit/">NTDS.dit</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

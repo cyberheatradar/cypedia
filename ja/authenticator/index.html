@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Authenticatorの構造、Session Keyによる保護、timestamp、replay protection、TGS/AP exchangeでの利用を解説する。"><title>Authenticator - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/authenticator/">日本語</a><span> / </span><a href="/cypedia/en/authenticator/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Authenticator</h1><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p><a href="./">Authenticator</a>は、<a href="../kerberos/">Kerberos</a>で<a href="../kerberos-ticket/">ticket</a>を提示するclientが、そのticketに対応する<a href="../session-key/">Session Key</a>を保持していることを証明するために使用されるdata structureです。</p>
+<p>Authenticatorはticketとは別にclientが生成します。</p>
+<h2 id="主なfield">主なField</h2>
+<p>RFC 4120のAuthenticatorには、代表的に次のfieldがあります。</p>
+<ul>
+<li>client <a href="../realm/">Realm</a></li>
+<li>client <a href="../principal/">Principal</a></li>
+<li>current time</li>
+<li>microsecond component</li>
+<li>optional checksum</li>
+<li>optional subkey</li>
+<li>optional sequence number</li>
+<li>optional authorization data</li>
+</ul>
+<h2 id="encryption">Encryption</h2>
+<p>Authenticatorは対応するSession Keyによって保護されます。</p>
+<p>service側は<a href="../service-ticket/">Service Ticket</a>などから得たSession Keyを利用してAuthenticatorを処理します。</p>
+<h2 id="tgs-exchange">TGS Exchange</h2>
+<p>clientが<a href="../ticket-granting-server/">Ticket-Granting Server</a>へService Ticketを要求する際にもAuthenticatorが使用されます。</p>
+<p>TGSは<a href="../ticket-granting-ticket/">TGT</a>とAuthenticatorを組み合わせてrequestを検証します。</p>
+<h2 id="application-exchange">Application Exchange</h2>
+<p>clientがapplication serviceへ接続するときはService TicketとAuthenticatorをAP-REQで提示します。</p>
+<p>serviceはticketとAuthenticatorの双方を検証します。</p>
+<h2 id="timestampとreplay-protection">TimestampとReplay Protection</h2>
+<p>Authenticatorにはcurrent time informationが含まれます。</p>
+<p>serviceは許容clock skewを考慮しながらtimestampを検証します。RFC 4120では、application側が別の適切なanti-replay mechanismを提供しない限り、serverは<a href="../replay-cache/">Replay Cache</a>を利用してAuthenticatorの再利用を検出する必要があります。</p>
+<h2 id="ticketとの違い">Ticketとの違い</h2>
+<p>Kerberos TicketはKDCが生成します。</p>
+<p>Authenticatorはclientが各authentication exchangeで生成します。</p>
+<p>同じticketがlifetime内で再利用される場合でも、Authenticatorはexchangeごとに新しい値として生成されます。</p>
+<h2 id="security上の意味">Security上の意味</h2>
+<p>Authenticatorのreplay検出はKerberos securityの重要な要素です。</p>
+<p>clock synchronizationやReplay Cacheが正しく機能しない場合、replay protectionへ影響する可能性があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../replay-cache/">Replay Cache</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/replay-cache/">Replay Cache</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/session-key/">Session Key</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

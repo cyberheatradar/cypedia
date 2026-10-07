@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Service Principal Name（SPN）のKerberos service identity、形式、AD登録、一意性、Kerberoastingとの関係を解説する。"><title>Service Principal Name - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/service-principal-name/">日本語</a><span> / </span><a href="/cypedia/en/service-principal-name/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Service Principal Name</h1><div class="article-meta"><strong>別名:</strong> SPN</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service principal names</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/ad/name-formats-for-unique-spns">Microsoft - Name Formats for Unique SPNs</a></p>
+</blockquote>
+<p><a href="./">Service Principal Name（SPN）</a>は、<a href="../active-directory/">Active Directory</a>と<a href="../kerberos/">Kerberos</a>でservice instanceを識別するための名前です。</p>
+<p>Kerberos clientは接続対象serviceをSPNで表現し、<a href="../key-distribution-center/">Key Distribution Center（KDC）</a>へそのservice向けの<a href="../service-ticket/">Service Ticket</a>を要求します。</p>
+<p>SPNが示すservice identityはKerberosのserver <a href="../principal/">Principal</a>と関係します。</p>
+<h2 id="active-directoryへの登録">Active Directoryへの登録</h2>
+<p>SPNは、serviceが使用するcomputer accountや<a href="../service-account/">Service Account</a>の <code>servicePrincipalName</code> attributeへ登録されます。</p>
+<p>serviceのsign-in accountを変更した場合、必要に応じてSPNも新しいaccountへ正しく再登録する必要があります。</p>
+<h2 id="一意性">一意性</h2>
+<p>SPNは登録される<a href="../active-directory-forest/">Forest</a>内で一意である必要があります。</p>
+<p>同じSPNが複数accountへ登録されると、KDCが対象service accountを一意に決定できず、Kerberos authenticationが失敗する場合があります。</p>
+<p><code>setspn -S</code> はduplicate SPNを確認しながらSPNを登録するために利用できます。</p>
+<h2 id="形式">形式</h2>
+<p>Microsoftが示す一般的なSPN形式は次です。</p>
+<p><code>serviceclass/host:port/servicename</code></p>
+<p>必須要素はservice classとhostです。</p>
+<p>portとservice nameはserviceを一意に識別するために必要な場合に追加できます。</p>
+<p>host-based serviceでは一般に次のような形式になります。</p>
+<p><code>serviceclass/host</code></p>
+<h2 id="dnsとの関係">DNSとの関係</h2>
+<p>SPNのhost componentにはFQDNなどが利用されます。</p>
+<p>そのため<a href="../dns/">DNS</a> name resolutionやclientがtarget hostnameをどのように構成するかは、Kerberos service authenticationへ影響します。</p>
+<p>ただしDNS recordとSPNは同じものではありません。</p>
+<h2 id="service-ticket">Service Ticket</h2>
+<p>clientがserviceへ接続する際、requested SPNをTGS-REQに使用します。</p>
+<p><a href="../ticket-granting-server/">Ticket-Granting Server</a>はSPNに対応するaccountを特定し、そのservice用のService Ticketを発行します。</p>
+<h2 id="kerberoasting">Kerberoasting</h2>
+<p><a href="../kerberoasting/">Kerberoasting</a>では、SPNが登録されたservice identity向けに正規のService Ticketを要求できるKerberos機能が利用されます。</p>
+<p>traditional Service Accountが弱いpasswordを使用している場合などには、取得したticket materialがoffline password guessingへ利用される可能性があります。</p>
+<h2 id="security上の注意">Security上の注意</h2>
+<p>SPN管理では次が重要です。</p>
+<ul>
+<li>duplicate SPNを避ける</li>
+<li>service account変更時に古いSPNを残さない</li>
+<li>不要なSPNを登録しない</li>
+<li>Service Accountを適切に保護する</li>
+<li>強力なcredentialまたはmanaged service accountを利用する</li>
+</ul>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../dns/">DNS</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service principal names</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/name-formats-for-unique-spns">Microsoft - Name Formats for Unique SPNs</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/how-to-configure-spn">Microsoft - How to configure SPN for Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/setspn">Microsoft - setspn</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/computer-account/">Computer Account</a></li><li><a href="/cypedia/ja/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/principal/">Principal</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

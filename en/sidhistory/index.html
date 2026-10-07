@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory sIDHistory, previous SID retention, domain migration, authorization continuity, and security implications."><title>SIDHistory - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/sidhistory/">日本語</a><span> / </span><a href="/cypedia/en/sidhistory/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>SIDHistory</h1><div class="article-meta"><strong>Aliases:</strong> SID History</div><div class="article-meta"><strong>Categories:</strong> Active Directory / Authorization</div><div class="article-body"><h2 id="overview">Overview</h2>
+<p><a href="./">SIDHistory</a> is an <a href="../active-directory/">Active Directory</a> attribute used to retain previous <a href="../security-identifier/">Security Identifiers (SIDs)</a> associated with a <a href="../security-principal/">Security Principal</a> object.</p>
+<p>Its LDAP display name is <code>sIDHistory</code>, and the attribute is multi-valued.</p>
+<h2 id="domain-migration">Domain Migration</h2>
+<p>When an object moves from one <a href="../active-directory-domain/">Active Directory Domain</a> to another Domain, a new SID becomes the current objectSID and the previous SID can be retained in sIDHistory.</p>
+<p>This can preserve compatibility with resource permissions that still reference the previous SID after migration.</p>
+<h2 id="authorization">Authorization</h2>
+<p>Windows access control stores SIDs in structures such as resource <a href="../access-control-list/">Access Control Lists (ACLs)</a>.</p>
+<p>When a migrated <a href="../security-principal/">Security Principal</a> retains an older SID in SIDHistory, authorization paths that still reference the old identity can continue to function where the SID is honored.</p>
+<p>This is particularly relevant to migration of identities such as <a href="../user-account/">User Accounts</a>.</p>
+<h2 id="active-directory-forests">Active Directory Forests</h2>
+<p>SIDHistory is relevant to migration scenarios between Domains and <a href="../active-directory-forest/">Active Directory Forests</a>.</p>
+<p>Microsoft’s DsAddSidHistory API can add the SID of a <a href="../security-principal/">Security Principal</a> from one Domain to the sIDHistory of a <a href="../security-principal/">Security Principal</a> in another Forest.</p>
+<h2 id="security-implications">Security Implications</h2>
+<p>SIDHistory affects authorization and is therefore security-sensitive.</p>
+<p>Microsoft describes DsAddSidHistory as a security-sensitive operation because adding a source SID can effectively give the destination identity access to resources available to the source identity.</p>
+<p>MITRE ATT&amp;CK tracks malicious insertion of SIDs into SIDHistory for privilege escalation or access-control bypass as SID-History Injection, T1134.005.</p>
+<h2 id="trusts-and-sid-filtering">Trusts and SID Filtering</h2>
+<p>Windows trust types expose different controls for accepting additional SIDs or SIDHistory.</p>
+<p>Microsoft documents /Quarantine:Yes for an external trust as accepting only SIDs from the directly trusted Domain. For an outbound forest trust, /EnableSIDHistory controls whether migrated users in the trusted Forest can use SIDHistory to access resources.</p>
+<p>SIDHistory-based migrations therefore need to account explicitly for the trust type and its SID filtering or SIDHistory configuration.</p>
+<h2 id="detection-and-review">Detection and Review</h2>
+<p>Unexpected sIDHistory modifications, addition of privileged SIDs, and changes outside approved migration windows are useful review targets.</p>
+<p>MITRE ATT&amp;CK documents detection strategies that correlate unauthorized SID-History modification with later privileged access.</p>
+<h2 id="domain-trust-discovery">Domain Trust Discovery</h2>
+<p>Information obtained through <a href="../domain-trust-discovery/">Domain Trust Discovery</a> can be relevant when evaluating SIDHistory and cross-domain authorization paths.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../security-identifier/">Security Identifier</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../access-control-list/">Access Control List</a></li>
+<li><a href="../user-account/">User Account</a></li>
+<li><a href="../security-group/">Security Group</a></li>
+<li><a href="../domain-trust-discovery/">Domain Trust Discovery</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../ldap/">LDAP</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-ada3/1c47c6a0-e614-49e5-bef3-f42f71f5eeb2">Microsoft Open Specifications - Attribute sIDHistory</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/adschema/a-sidhistory">Microsoft - SID-History attribute</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/api/ntdsapi/nf-ntdsapi-dsaddsidhistoryw">Microsoft - DsAddSidHistoryW</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1134/005/">MITRE ATT&amp;CK - T1134.005 SID-History Injection</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netdom-trust">Microsoft - netdom trust</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/domain-trust-discovery/">Domain Trust Discovery</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

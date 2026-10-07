@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows Security Principalの認証主体、SID、account、group、access controlとの関係を解説する。"><title>Security Principal - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/security-principal/">日本語</a><span> / </span><a href="/cypedia/en/security-principal/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Security Principal</h1><div class="article-meta"><strong>別名:</strong> security principal, セキュリティプリンシパル</div><div class="article-meta"><strong>カテゴリ:</strong> Windows / Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></p>
+</blockquote>
+<p>WindowsにおけるSecurity Principalは、operating systemによってauthentication可能なentityです。</p>
+<p>user account、computer account、security groupなどが代表例です。</p>
+<p>各Security Principalは<a href="../security-identifier/">Security Identifier（SID）</a>によって識別されます。</p>
+<h2 id="active-directoryとの関係">Active Directoryとの関係</h2>
+<p><a href="../active-directory/">Active Directory</a> <a href="../active-directory-domain/">Domain</a>で作成されるSecurity PrincipalはActive Directory objectとして保存されます。</p>
+<p>これらのobjectはDomain resourceへのaccess controlに利用できます。</p>
+<h2 id="user--computer--group">User / Computer / Group</h2>
+<p>Security Principalには、たとえば次があります。</p>
+<ul>
+<li>user account</li>
+<li>computer account</li>
+<li>security group</li>
+<li>service identityに関連するaccount</li>
+</ul>
+<p>security group自体もSIDを持つSecurity Principalです。</p>
+<h2 id="authenticationとauthorization">AuthenticationとAuthorization</h2>
+<p>authenticationはidentityを確認するprocessです。</p>
+<p>その後、authorizationではSecurity Principalに付与されたpermissionやgroup membershipなどを使用してresource accessを判断します。</p>
+<h2 id="sid">SID</h2>
+<p>SIDはSecurity Principalの一意なidentifierとしてWindows access controlで使用されます。</p>
+<p>resourceのACLではaccount名そのものではなくSIDがpermission entryに利用されます。</p>
+<h2 id="access-control">Access Control</h2>
+<p>file、registry key、Active Directory objectなどのsecurable objectではACLによってSecurity Principalへpermissionを付与または拒否できます。</p>
+<p>groupを利用することで多数のuserへ共通permissionを管理できます。</p>
+<h2 id="kerberos-principalとの違い">Kerberos Principalとの違い</h2>
+<p>Windows Security Principalと<a href="../principal/">Kerberos Principal</a>は同一の用語ではありません。</p>
+<p>Kerberos Principalは<a href="../kerberos/">Kerberos</a> protocol上のidentity conceptです。</p>
+<p>Windows Security PrincipalはWindows security modelでauthenticationやauthorizationの対象となるentityを表します。</p>
+<p>Active Directoryでは両者が実際のauthentication処理で関係する場合がありますが、概念として区別する必要があります。</p>
+<h2 id="domain-controllerとの関係">Domain Controllerとの関係</h2>
+<p><a href="../domain-controller/">Domain Controller</a>はDomain Security Principalのaccount informationやcredential-related dataをActive Directory databaseで管理します。</p>
+<p>Domainで新しいSecurity Principalが作成される際のSID生成には<a href="../fsmo-roles/">RID Master</a>が管理するRID poolが関係します。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li>
+<p><a href="../active-directory/">Active Directory</a></p>
+</li>
+<li>
+<p><a href="../active-directory-domain/">Domain</a></p>
+</li>
+<li>
+<p><a href="../domain-controller/">Domain Controller</a></p>
+</li>
+<li>
+<p><a href="../security-identifier/">SID</a></p>
+</li>
+<li>
+<p><a href="../fsmo-roles/">FSMO Roles</a></p>
+</li>
+<li>
+<p><a href="../principal/">Kerberos Principal</a></p>
+</li>
+<li>
+<p><a href="../user-account/">User Account</a></p>
+</li>
+<li>
+<p><a href="../computer-account/">Computer Account</a></p>
+</li>
+<li>
+<p><a href="../security-group/">Security Group</a></p>
+</li>
+<li>
+<p><a href="../access-control-list/">Access Control List</a></p>
+</li>
+<li>
+<p><a href="../securable-object/">Securable Object</a></p>
+</li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/access-control/access-control">Microsoft - Access Control Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/78eb9013-1c3a-4970-ad1f-2b1dad588a25">Microsoft Open Specifications - MS-DTYP SID</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/computer-account/">Computer Account</a></li><li><a href="/cypedia/ja/dcsync/">DCSync</a></li><li><a href="/cypedia/ja/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/ja/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/ja/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/ja/ldap/">LDAP</a></li><li><a href="/cypedia/ja/ntds-dit/">NTDS.dit</a></li><li><a href="/cypedia/ja/ntlm/">NTLM</a></li><li><a href="/cypedia/ja/principal/">Principal</a></li><li><a href="/cypedia/ja/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/ja/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/ja/security-group/">Security Group</a></li><li><a href="/cypedia/ja/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/sidhistory/">SIDHistory</a></li><li><a href="/cypedia/ja/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/ja/user-account/">User Account</a></li><li><a href="/cypedia/ja/windows-access-token/">Windows Access Token</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

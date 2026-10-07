@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="LDAPのdirectory model、Bind/Search/Modifyなどのoperation、DN、Active Directoryでの利用、signing・TLS・channel bindingを解説する。"><title>LDAP - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/ldap/">日本語</a><span> / </span><a href="/cypedia/en/ldap/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>LDAP</h1><div class="article-meta"><strong>別名:</strong> Lightweight Directory Access Protocol</div><div class="article-meta"><strong>カテゴリ:</strong> Network / Protocol / Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4511.html">RFC 4511 - Lightweight Directory Access Protocol (LDAP): The Protocol</a></p>
+</blockquote>
+<p><a href="./">Lightweight Directory Access Protocol（LDAP）</a>は、directory serviceへaccessするためのapplication protocolです。</p>
+<p>RFC 4511はLDAP protocol element、そのsemantics、encodingを規定しています。</p>
+<p>LDAPは特定のdirectory製品専用ではなく、X.500 directory modelを基礎とする標準protocolです。</p>
+<h2 id="directory-model">Directory Model</h2>
+<p>LDAP directoryはentryの集合として扱われます。</p>
+<p>各entryにはDistinguished Name（DN）があり、attributeとattribute valueを保持します。</p>
+<p>entryの構造や利用可能なattributeはdirectory schemaによって制約されます。</p>
+<p><a href="../active-directory/">Active Directory</a>では<a href="../active-directory-schema/">Active Directory Schema</a>がobject classやattribute definitionを管理します。</p>
+<h2 id="distinguished-name">Distinguished Name</h2>
+<p>DNはdirectory tree内でentryを識別する名前です。</p>
+<p>DNはRelative Distinguished Name（RDN）を階層的に組み合わせて構成されます。</p>
+<p>AD DSではuser、computer、OUなどのdirectory objectをLDAP DNで参照できます。</p>
+<h2 id="主なoperation">主なOperation</h2>
+<p>RFC 4511では代表的に次のoperationが定義されています。</p>
+<ul>
+<li>Bind</li>
+<li>Unbind</li>
+<li>Search</li>
+<li>Modify</li>
+<li>Add</li>
+<li>Delete</li>
+<li>Modify DN</li>
+<li>Compare</li>
+<li>Abandon</li>
+<li>Extended Operation</li>
+</ul>
+<p>Searchではbase object、scope、filter、requested attributeなどを指定してdirectory entryを取得します。</p>
+<h2 id="bind">Bind</h2>
+<p>Bind operationはLDAP sessionへauthentication informationを設定するために使用されます。</p>
+<p>LDAPはsimple authenticationやSASLを利用できます。</p>
+<p>Bindとdirectory authorizationは別概念であり、authentication後にどのobjectやattributeへaccessできるかはserver側policyによって決まります。</p>
+<h2 id="active-directory">Active Directory</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/active-directory-domain-services">Microsoft - Active Directory Domain Services</a></p>
+</blockquote>
+<p><a href="../domain-controller/">Domain Controller</a>はAD DS directory dataへLDAP interfaceを提供します。</p>
+<p>LDAPによってuser、computer、group、OU、configuration objectなどを検索・参照・変更できます。</p>
+<p>AD DS内部のdirectory dataは<a href="../directory-partition/">Directory Partition</a>へ分割され、replication scopeもpartition単位で管理されます。</p>
+<p><a href="../global-catalog/">Global Catalog</a>もdirectory searchに利用されますが、保持するattribute setやreplica scopeは通常のDomain partition replicaとは異なります。</p>
+<h2 id="ldap-signing">LDAP Signing</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/ldap-signing">Microsoft - LDAP signing for Active Directory Domain Services</a></p>
+</blockquote>
+<p>LDAP signingはAD DSのLDAP communicationにcryptographic integrity protectionを提供します。</p>
+<p>unsigned LDAP trafficを許容すると、network上の改ざんやman-in-the-middle attackに対するriskが高まります。</p>
+<p>MicrosoftはLDAP signing requirementを構成し、対応clientを確認するためのevent monitoring方法を提供しています。</p>
+<h2 id="tlsとchannel-binding">TLSとChannel Binding</h2>
+<p>LDAP sessionではTLSを利用してconfidentialityとserver authenticationを提供できます。</p>
+<p>RFC 4511にはStartTLS extended operationが定義されています。</p>
+<p>AD DSではLDAP channel bindingも利用でき、TLS channelとapplication-layer authenticationを結び付けます。</p>
+<h2 id="security上の注意">Security上の注意</h2>
+<p>重要な論点は次です。</p>
+<ul>
+<li>unsigned LDAPを不要に許可しない</li>
+<li>credentialを平文で保護されないchannelへ送信しない</li>
+<li>TLS certificate validationを正しく行う</li>
+<li>LDAP signingとchannel bindingのcompatibilityを監査する</li>
+<li>directory ACLをleast privilegeで設計する</li>
+</ul>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../distinguished-name/">Distinguished Name</a></li>
+<li><a href="../access-control-list/">Access Control List</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4510.html">RFC 4510 - LDAP: Technical Specification Road Map</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4511.html">RFC 4511 - LDAP: The Protocol</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4512.html">RFC 4512 - LDAP: Directory Information Models</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4513.html">RFC 4513 - LDAP: Authentication Methods and Security Mechanisms</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/ldap-signing">Microsoft - LDAP signing for Active Directory Domain Services</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/ldap-channel-binding">Microsoft - LDAP channel binding overview for Active Directory Domain Services</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/distinguished-name/">Distinguished Name</a></li><li><a href="/cypedia/ja/dns/">DNS</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/ja/sidhistory/">SIDHistory</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

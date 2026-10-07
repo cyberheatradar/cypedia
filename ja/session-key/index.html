@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Session Keyの生成・配布、client/TGS・client/service間での利用、long-term keyとの違いを解説する。"><title>Session Key - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/session-key/">日本語</a><span> / </span><a href="/cypedia/en/session-key/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Session Key</h1><div class="article-meta"><strong>別名:</strong> session key</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p><a href="./">Session Key</a>は、<a href="../kerberos/">Kerberos</a> exchangeの中で一定のauthentication sessionに利用されるtemporary cryptographic keyです。</p>
+<p><a href="../key-distribution-center/">Key Distribution Center（KDC）</a>が生成・配布し、clientとKerberos serviceの双方が同じkeyを利用できるようにします。</p>
+<h2 id="long-term-keyとの違い">Long-Term Keyとの違い</h2>
+<p>Principalのlong-term keyはpasswordやservice account keyなどに由来し、identityに長期的に関連します。</p>
+<p>Session Keyは特定のauthentication exchangeやticketに関連する一時的なkeyです。</p>
+<p>この分離によってlong-term secretを各application serviceへ直接渡す必要を減らします。</p>
+<h2 id="as-exchange">AS Exchange</h2>
+<p><a href="../authentication-server/">Authentication Server</a>から<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>を取得するとき、clientとTGSの間で利用するSession Keyが確立されます。</p>
+<p>clientはそのkeyを後続のTGS requestで使用します。</p>
+<h2 id="tgs-exchange">TGS Exchange</h2>
+<p>clientが<a href="../ticket-granting-server/">Ticket-Granting Server</a>へ<a href="../service-ticket/">Service Ticket</a>を要求すると、clientとtarget service向けの新しいSession Keyが生成されます。</p>
+<p>そのkeyはclient側とservice側がそれぞれ利用できる形で配布されます。</p>
+<h2 id="authenticator">Authenticator</h2>
+<p>clientはSession Keyを使って<a href="../authenticator/">Authenticator</a>を保護します。</p>
+<p>これによりticketを提示しているclientが対応するSession Keyを保持していることをservice側が確認できます。</p>
+<h2 id="ticketとの関係">Ticketとの関係</h2>
+<p><a href="../kerberos-ticket/">Kerberos Ticket</a>のencrypted partには、ticketを受け取るserviceが使用するSession Key informationが含まれます。</p>
+<p>client側にも同じSession Keyを利用するために必要なinformationがKDC responseで提供されます。</p>
+<h2 id="lifetime">Lifetime</h2>
+<p>Session Keyは通常、関連するticketやauthentication contextのlifetimeに制約されます。</p>
+<p>長期保存を前提としたsecretではありません。</p>
+<h2 id="security上の意味">Security上の意味</h2>
+<p>Session Keyが第三者に取得されると、そのkeyが有効な範囲でauthentication trafficのsecurityへ影響する可能性があります。</p>
+<p>client memory、ticket cache、service processなど、Session Keyを扱う場所の保護が重要です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../authenticator/">Authenticator</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/authenticator/">Authenticator</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/replay-cache/">Replay Cache</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

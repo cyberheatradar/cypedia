@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Pre-AuthenticationのPA-DATA、AS exchange、RFC 6113 framework、PKINIT、AS-REP Roastingとの関係を解説する。"><title>Pre-Authentication - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/pre-authentication/">日本語</a><span> / </span><a href="/cypedia/en/pre-authentication/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Pre-Authentication</h1><div class="article-meta"><strong>別名:</strong> pre-authentication</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos / Authentication</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120</a> / <a href="https://www.rfc-editor.org/rfc/rfc6113.html">RFC 6113 - A Generalized Framework for Kerberos Pre-Authentication</a></p>
+</blockquote>
+<p><a href="./">Pre-Authentication</a>は、<a href="../authentication-server/">Authentication Server（AS）</a>がinitial <a href="../kerberos/">Kerberos</a> authenticationでcredentialを発行する前に、clientへ追加のauthentication evidenceを要求する仕組みです。</p>
+<p>Pre-Authenticationは単一の固定mechanismではなく、複数のmechanismを運ぶframeworkです。</p>
+<h2 id="pa-data">PA-DATA</h2>
+<p>Kerberos messageではpre-authentication informationをPA-DATAとして運べます。</p>
+<p>AS-REQに必要なpre-authentication dataが存在しない場合、KDCはclientへ必要なmethod informationを返し、clientが再度AS-REQを構築する場合があります。</p>
+<h2 id="目的">目的</h2>
+<p>Pre-Authentication mechanismは、たとえば次の目的に利用できます。</p>
+<ul>
+<li>client identityの追加証明</li>
+<li>initial exchangeのkey establishment</li>
+<li>public-key authentication</li>
+<li>password-based credentialの保護強化</li>
+</ul>
+<p>具体的なsecurity propertyは使用するmechanismによって異なります。</p>
+<h2 id="password-based-pre-authentication">Password-Based Pre-Authentication</h2>
+<p>password-based Kerberos implementationでは、password-derived keyを利用したtimestamp-based pre-authenticationが使われる場合があります。</p>
+<p><a href="../key-distribution-center/">KDC</a>は受信したdataを検証し、成功した場合に<a href="../ticket-granting-ticket/">TGT</a>を発行します。</p>
+<h2 id="pkinit">PKINIT</h2>
+<p><a href="../pkinit/">PKINIT</a>はpublic-key cryptographyを使用するPre-Authentication mechanismです。</p>
+<p>RFC 4556で定義され、certificateやpublic/private key pairをinitial AS exchangeへ統合します。</p>
+<h2 id="rfc-6113">RFC 6113</h2>
+<p>RFC 6113はKerberos Pre-Authentication mechanismのgeneralized frameworkを定義します。</p>
+<p>複数mechanismの組み合わせや共通processing modelを整理しています。</p>
+<h2 id="active-directory">Active Directory</h2>
+<p><a href="../active-directory/">Active Directory</a> KerberosでもPre-Authenticationは重要です。</p>
+<p>Windows固有のbehaviorやextensionはMS-KILE、PKINIT関連はMS-PKCAで定義されています。</p>
+<h2 id="as-rep-roasting">AS-REP Roasting</h2>
+<p><a href="../as-rep-roasting/">AS-REP Roasting</a>は、password-based accountでPre-Authenticationを要求しない構成が存在する場合に問題になります。</p>
+<p>攻撃者がAS-REPを取得できると、暗号化部分がoffline password guessingの対象になる場合があります。</p>
+<p>したがって、不要にPre-Authenticationを無効化しないことが重要です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../pkinit/">PKINIT</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6113.html">RFC 6113 - A Generalized Framework for Kerberos Pre-Authentication</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/pkinit/">PKINIT</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Domain Controllerのdirectory storage、authentication、replication、security上の重要性を解説する。"><title>Domain Controller - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/domain-controller/">日本語</a><span> / </span><a href="/cypedia/en/domain-controller/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Domain Controller</h1><div class="article-meta"><strong>別名:</strong> DC</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a></p>
+</blockquote>
+<p>Domain Controller（DC）は<a href="../active-directory/">Active Directory Domain Services</a>をホストするWindows Serverです。</p>
+<p>Domain Controllerはdirectory dataを保持し、authentication、directory query、<a href="../active-directory-replication/">replication</a>などの中核機能を提供します。</p>
+<h2 id="directory-data">Directory Data</h2>
+<p>writable Domain Controllerは、自分が所属する<a href="../active-directory-domain/">Domain</a>のDomain Partitionについてfull writable replicaを保持します。</p>
+<p><a href="../read-only-domain-controller/">Read-Only Domain Controller（RODC）</a>はread-only replicaを保持し、originating updateを受け付けません。</p>
+<p>Domain ControllerはForest-wideな<a href="../active-directory-schema/">Schema</a> PartitionやConfiguration Partitionも保持します。</p>
+<p>Active Directoryの主要なdatabase fileは<a href="../ntds-dit/">NTDS.dit</a>です。</p>
+<h2 id="authentication">Authentication</h2>
+<p>AD DS環境ではDomain Controllerが<a href="../kerberos/">Kerberos</a>の<a href="../key-distribution-center/">KDC</a>として動作します。</p>
+<p>互換性が必要な場合には<a href="../ntlm/">NTLM</a> authenticationにも関与します。</p>
+<h2 id="ldap">LDAP</h2>
+<p>Domain Controllerは<a href="../ldap/">LDAP</a>を利用したdirectory queryやdirectory updateを処理します。</p>
+<p>Active Directoryは標準LDAPに加えてMicrosoft固有のextensionやbehaviorを持ちます。</p>
+<h2 id="replication">Replication</h2>
+<p>複数のwritable Domain Controllerを配置することでdirectory serviceのavailabilityを高められます。</p>
+<p>directory changeはActive Directory Replicationによって他のDomain Controllerへ伝播します。</p>
+<p>Domain Controllerは<a href="../global-catalog/">Global Catalog</a> serverとして構成される場合もあります。</p>
+<h2 id="sysvol">SYSVOL</h2>
+<p>Domain Controllerは<a href="../sysvol/">SYSVOL</a>を提供します。</p>
+<p>SYSVOLには<a href="../group-policy/">Group Policy</a>などで利用されるfile-based dataが保存されます。</p>
+<h2 id="security上の重要性">Security上の重要性</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/securing-domain-controllers-against-attack">Microsoft - Securing Domain Controllers Against Attack</a></p>
+</blockquote>
+<p>Domain ControllerはActive Directory環境で最も重要なsecurity assetの1つです。</p>
+<p>Domain Controllerへのprivileged accessを攻撃者に取得された場合、AD DS database、credential material、authentication infrastructure、policy administrationなどへ重大な影響が及ぶ可能性があります。</p>
+<p>Domain Controllerは一般的なmember serverやworkstationより厳格にhardeningする必要があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+<li><a href="../ntds-dit/">NTDS.dit</a></li>
+<li><a href="../sysvol/">SYSVOL</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">KDC</a></li>
+<li><a href="../ntlm/">NTLM</a></li>
+<li><a href="../ldap/">LDAP</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/securing-domain-controllers-against-attack">Microsoft - Securing Domain Controllers Against Attack</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/planning-domain-controller-placement">Microsoft - Planning Domain Controller Placement</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/active-directory-forest/">Active Directory Forest</a></li><li><a href="/cypedia/ja/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/ja/active-directory-schema/">Active Directory Schema</a></li><li><a href="/cypedia/ja/active-directory-site/">Active Directory Site</a></li><li><a href="/cypedia/ja/active-directory-trust/">Active Directory Trust</a></li><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/connection-object/">Connection Object</a></li><li><a href="/cypedia/ja/dcsync/">DCSync</a></li><li><a href="/cypedia/ja/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/ja/dns/">DNS</a></li><li><a href="/cypedia/ja/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/ja/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/ja/group-policy/">Group Policy</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/knowledge-consistency-checker/">Knowledge Consistency Checker</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/ldap/">LDAP</a></li><li><a href="/cypedia/ja/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/ja/ntds-dit/">NTDS.dit</a></li><li><a href="/cypedia/ja/ntlm/">NTLM</a></li><li><a href="/cypedia/ja/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/ja/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/ja/security-principal/">Security Principal</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/site-link/">Site Link</a></li><li><a href="/cypedia/ja/sysvol/">SYSVOL</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

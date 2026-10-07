@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Golden TicketによるKRBTGT key materialを利用したTGT forgery、PAC、影響、検知、KRBTGT recoveryとの関係を解説する。"><title>Golden Ticket - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/golden-ticket/">日本語</a><span> / </span><a href="/cypedia/en/golden-ticket/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Golden Ticket</h1><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1558/001/">MITRE ATT&amp;CK T1558.001 - Golden Ticket</a></p>
+</blockquote>
+<p><a href="./">Golden Ticket</a>は、<a href="../krbtgt/">KRBTGT</a> accountのkey materialを侵害した攻撃者が、偽造<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>を作成するKerberos ticket forgery techniqueです。</p>
+<p>KRBTGTは<a href="../active-directory-domain/">Active Directory Domain</a>のKDC trustに関係するため、Golden Ticketは単一serviceの侵害より広いimpactを持ち得ます。</p>
+<h2 id="krbtgt">KRBTGT</h2>
+<p><a href="../domain-controller/">Domain Controller</a>上の<a href="../key-distribution-center/">Key Distribution Center（KDC）</a>はKRBTGT key materialを利用してTGTを処理します。</p>
+<p>このkey materialが侵害されると、正規KDCから発行されたものではないTGTをcryptographically成立させられる可能性があります。</p>
+<h2 id="pac">PAC</h2>
+<p>Windows Kerberos Ticketでは<a href="../privilege-attribute-certificate/">Privilege Attribute Certificate（PAC）</a>がauthorization informationを運びます。</p>
+<p>forged TGTではPAC内のauthorization dataも攻撃対象になり得ます。</p>
+<p><a href="../security-identifier/">SID</a>やgroup-related informationはWindows authorization判断に重要です。</p>
+<h2 id="impact">Impact</h2>
+<p>偽造TGTを利用すると、攻撃者はそのTGTを<a href="../ticket-granting-server/">Ticket-Granting Server</a>へ提示し、複数service向けの<a href="../service-ticket/">Service Ticket</a>を取得できる可能性があります。</p>
+<p>そのためGolden Ticketはpersistence、privilege escalation、lateral movementと結び付くことがあります。</p>
+<h2 id="krbtgt-keyの取得経路">KRBTGT Keyの取得経路</h2>
+<p>Golden Ticket成立には事前にKRBTGT key materialの侵害が必要です。</p>
+<p>そのようなcredential exposureは<a href="../dcsync/">DCSync</a>や<a href="../ntds-credential-dumping/">NTDS Credential Dumping</a>など、Domain-level credential compromiseと関連する場合があります。</p>
+<h2 id="検知">検知</h2>
+<p>MITRE ATT&amp;CKは次のようなanomaly correlationをdetection strategyとして挙げています。</p>
+<ul>
+<li>unusual ticket lifetime</li>
+<li>environment baselineと異なるencryption type</li>
+<li>anomalous privileged activity</li>
+<li>preceding TGT requestと整合しないService Ticket activity</li>
+</ul>
+<p>単一eventだけでGolden Ticketを確定することは難しく、Kerberos activityとaccount behaviorを組み合わせる必要があります。</p>
+<h2 id="recovery">Recovery</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/forest-recovery-guide/ad-forest-recovery-reset-the-krbtgt-password">Microsoft - AD Forest Recovery - Reset the krbtgt password</a></p>
+</blockquote>
+<p>KRBTGT compromiseへのrecoveryでは、MicrosoftのForest Recovery guidanceはKRBTGT passwordを2回resetする手順を示しています。</p>
+<p>既定構成ではreset間に10時間待つ必要があり、Kerberos ticket lifetimeを変更している場合は、そのconfigured maximum lifetimeより長い待機時間が必要です。</p>
+<p>MicrosoftはKRBTGT password history valueを2と説明しており、2回のresetによってold passwordをhistoryから排除します。</p>
+<h2 id="silver-ticketとの違い">Silver Ticketとの違い</h2>
+<p><a href="../silver-ticket/">Silver Ticket</a>はtarget service account keyを利用してService Ticketを偽造します。</p>
+<p>Golden TicketはKRBTGT key materialを利用してTGTを偽造するため、通常はより広いDomain-wide impactを持ちます。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../privilege-attribute-certificate/">PAC</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a></li>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1558/001/">MITRE ATT&amp;CK T1558.001 - Golden Ticket</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/forest-recovery-guide/ad-forest-recovery-reset-the-krbtgt-password">Microsoft - Active Directory Forest Recovery - Reset the krbtgt password</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/">MS-PAC - Privilege Attribute Certificate Data Structure</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/3122bf00-ea87-4c3f-92a0-91c0a99f5eec">MS-PAC - KDC Signature</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/dcsync/">DCSync</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/ja/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

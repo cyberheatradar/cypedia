@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="The Knowledge Consistency Checker (KCC), which automatically generates and maintains Active Directory replication topology."><title>Knowledge Consistency Checker - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/knowledge-consistency-checker/">日本語</a><span> / </span><a href="/cypedia/en/knowledge-consistency-checker/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Knowledge Consistency Checker</h1><div class="article-meta"><strong>Aliases:</strong> KCC</div><div class="article-meta"><strong>Categories:</strong> Active Directory / Replication</div><div class="article-body"><h2 id="overview">Overview</h2>
+<p>The <a href="./">Knowledge Consistency Checker (KCC)</a> is a built-in process that runs on <a href="../domain-controller/">Domain Controllers</a> and generates <a href="../active-directory-replication/">Active Directory Replication</a> topology.</p>
+<p>Current Microsoft Windows Server documentation describes the KCC as generating replication topology for the forest, with separate handling for intra-site and inter-site replication.</p>
+<h2 id="replication-topology">Replication Topology</h2>
+<p>Because replication within an <a href="../active-directory-site/">Active Directory Site</a> differs from replication between Sites, the KCC builds topology for those contexts separately.</p>
+<p>It dynamically adjusts topology when Domain Controllers are added, removed, moved between Sites, become unavailable, or when relevant costs and schedules change.</p>
+<h2 id="connection-objects">Connection Objects</h2>
+<p>The relationships calculated by the KCC are represented through <a href="../connection-object/">Connection Objects</a>.</p>
+<p>A Connection Object is stored under the NTDS Settings object of the destination Domain Controller and represents inbound replication from a source Domain Controller.</p>
+<p>The KCC can create these objects automatically, while administrators can also create manual connections.</p>
+<h2 id="site-links">Site Links</h2>
+<p>For inter-site replication, the KCC uses <a href="../site-link/">Site Links</a> and their connectivity, cost, and scheduling information when constructing replication paths.</p>
+<p>A Site Link represents a logical replication relationship rather than the literal physical route taken by network packets.</p>
+<h2 id="operational-significance">Operational Significance</h2>
+<p>Normal Active Directory operation relies heavily on automatically generated topology rather than requiring administrators to manually create every replication connection.</p>
+<p>Troubleshooting replication therefore commonly requires examining Sites, Site Links, Connection Objects, and <a href="../directory-partition/">Directory Partitions</a> together.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../site-link/">Site Link</a></li>
+<li><a href="../connection-object/">Connection Object</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/setting-site-link-properties">Microsoft - Setting Site Link Properties</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/en/active-directory-site/">Active Directory Site</a></li><li><a href="/cypedia/en/connection-object/">Connection Object</a></li><li><a href="/cypedia/en/site-link/">Site Link</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

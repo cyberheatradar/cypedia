@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="The five Active Directory FSMO Roles and their Forest-wide or Domain-wide scopes."><title>FSMO Roles - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/fsmo-roles/">日本語</a><span> / </span><a href="/cypedia/en/fsmo-roles/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>FSMO Roles</h1><div class="article-meta"><strong>Aliases:</strong> FSMO, Operations Master Roles</div><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></p>
+</blockquote>
+<p>Flexible Single Master Operations (FSMO) Roles assign selected <a href="../active-directory/">Active Directory Domain Services</a> operations to designated <a href="../domain-controller/">Domain Controllers</a>.</p>
+<p>Most directory updates can use <a href="../active-directory-replication/">multi-master replication</a>, but some operations are single-mastered to prevent conflicting updates.</p>
+<h2 id="five-roles">Five Roles</h2>
+<p>Five FSMO Roles exist.</p>
+<h3 id="forest-wide-roles">Forest-Wide Roles</h3>
+<p>One of each exists in an <a href="../active-directory-forest/">Active Directory Forest</a>:</p>
+<ul>
+<li>Schema Master;</li>
+<li>Domain Naming Master.</li>
+</ul>
+<h3 id="domain-wide-roles">Domain-Wide Roles</h3>
+<p>One of each exists in every <a href="../active-directory-domain/">Domain</a>:</p>
+<ul>
+<li>RID Master;</li>
+<li>PDC Emulator;</li>
+<li>Infrastructure Master.</li>
+</ul>
+<h2 id="schema-master">Schema Master</h2>
+<p>The Schema Master controls updates to the <a href="../active-directory-schema/">Active Directory Schema</a>.</p>
+<p>Only one Schema Master exists in a Forest.</p>
+<h2 id="domain-naming-master">Domain Naming Master</h2>
+<p>The Domain Naming Master controls operations involving addition or removal of <a href="../directory-partition/">Domain Directory Partitions</a> and Application Directory Partitions from the Forest.</p>
+<h2 id="rid-master">RID Master</h2>
+<p>The RID Master allocates RID pools to Domain Controllers in a Domain.</p>
+<p>A domain-created <a href="../security-principal/">Security Principal</a> receives a <a href="../security-identifier/">SID</a> containing the Domain SID and a Relative ID (RID).</p>
+<h2 id="pdc-emulator">PDC Emulator</h2>
+<p>The PDC Emulator is a Domain-wide role with several important responsibilities, including functions related to password changes, time synchronization hierarchy, and compatibility behavior.</p>
+<h2 id="infrastructure-master">Infrastructure Master</h2>
+<p>The Infrastructure Master participates in maintaining references involving objects in other Domains.</p>
+<h2 id="transfer-and-seizure">Transfer and Seizure</h2>
+<p>FSMO Roles can be transferred between Domain Controllers.</p>
+<p>When a previous role holder is permanently unavailable, role seizure can be required.</p>
+<p>Planned transfer is preferable during normal administration.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Loss of an FSMO role holder does not immediately stop every Active Directory function.</p>
+<p>However, operations depending on the unavailable role can be affected.</p>
+<p>FSMO role holders, particularly highly operationally significant servers such as the PDC Emulator, should be treated as important Domain Controllers.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></li>
+<li><a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/active-directory/fsmo-roles">Microsoft - Active Directory FSMO roles in Windows</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/en/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/en/security-principal/">Security Principal</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

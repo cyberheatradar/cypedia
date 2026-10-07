@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Group PolicyとGPOの構造、Site/Domain/OU scope、SYSVOL、replication、security上の役割を解説する。"><title>Group Policy - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/group-policy/">日本語</a><span> / </span><a href="/cypedia/en/group-policy/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Group Policy</h1><div class="article-meta"><strong>別名:</strong> GPO, Group Policy Object</div><div class="article-meta"><strong>カテゴリ:</strong> Windows / Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a></p>
+</blockquote>
+<p>Group PolicyはWindowsのoperating system、application、user settingを集中管理するための仕組みです。</p>
+<p><a href="../active-directory/">Active Directory</a>環境ではpolicy settingをGroup Policy Object（GPO）として管理できます。</p>
+<h2 id="group-policy-object">Group Policy Object</h2>
+<p>GPOはpolicy setting、security permission、scope of managementなどをまとめたlogical objectです。</p>
+<p>各GPOには固有のGUIDがあります。</p>
+<h2 id="2つのcomponent">2つのComponent</h2>
+<p>GPOには主に2つのcomponentがあります。</p>
+<h3 id="group-policy-container">Group Policy Container</h3>
+<p>Group Policy ContainerはActive Directoryの<a href="../active-directory-domain/">Domain</a> Partitionに格納されます。</p>
+<h3 id="group-policy-template">Group Policy Template</h3>
+<p>Group Policy Templateは<a href="../sysvol/">SYSVOL</a>に格納されます。</p>
+<p>このためGPOの整合性にはdirectory-side dataとSYSVOL-side dataの両方が必要です。</p>
+<h2 id="scope">Scope</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-scope">Microsoft - Group Policy scope</a></p>
+</blockquote>
+<p>GPOは主に次のActive Directory objectへlinkできます。</p>
+<ul>
+<li><a href="../active-directory-site/">Site</a></li>
+<li>Domain</li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+</ul>
+<p>objectのdirectory hierarchy、inheritance、linkなどが適用scopeに影響します。</p>
+<h2 id="computer--user-configuration">Computer / User Configuration</h2>
+<p>Group Policy settingは大きくcomputer configurationとuser configurationに分けられます。</p>
+<p>computer configurationはcomputer全体へ適用されるsettingを管理します。</p>
+<p>user configurationはuser contextへ適用されるsettingを管理します。</p>
+<h2 id="processing">Processing</h2>
+<p>clientはstartupやuser logonなどでGroup Policyをprocessします。</p>
+<p>background refreshでもpolicy updateが確認されます。</p>
+<p>複数GPOが適用対象になる場合、scopeやinheritanceなどのprocessing ruleに従って結果が決まります。</p>
+<h2 id="replication">Replication</h2>
+<p>GPOのActive Directory側componentは<a href="../active-directory-replication/">Active Directory Replication</a>で同期されます。</p>
+<p>SYSVOL側componentはDFSRによってreplicateされます。</p>
+<p>この2つは独立したreplication mechanismです。</p>
+<h2 id="security上の重要性">Security上の重要性</h2>
+<p>Group Policyはfirewall、security option、user rights、script、application configurationなど、多数のsecurity-sensitive settingを広範囲へ配布できます。</p>
+<p>そのためGPOを変更できるprivilegeは慎重に管理する必要があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../sysvol/">SYSVOL</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-scope">Microsoft - Group Policy scope</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpod/b724bd91-e224-4524-b752-5f810a0cc071">Microsoft Open Specifications - MS-GPOD</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/storage/dfs-replication/migrate-sysvol-to-dfsr">Microsoft - Migrate SYSVOL replication from FRS to DFS Replication</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/ja/computer-account/">Computer Account</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/ntds-dit/">NTDS.dit</a></li><li><a href="/cypedia/ja/organizational-unit/">Organizational Unit</a></li><li><a href="/cypedia/ja/sysvol/">SYSVOL</a></li><li><a href="/cypedia/ja/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

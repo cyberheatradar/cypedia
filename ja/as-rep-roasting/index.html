@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="AS-REP RoastingとKerberos Pre-Authentication無効account、AS-REQ/AS-REP、offline password guessing、検知と緩和を解説する。"><title>AS-REP Roasting - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/as-rep-roasting/">日本語</a><span> / </span><a href="/cypedia/en/as-rep-roasting/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>AS-REP Roasting</h1><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1558/004/">MITRE ATT&amp;CK T1558.004 - AS-REP Roasting</a></p>
+</blockquote>
+<p><a href="./">AS-REP Roasting</a>は、<a href="../pre-authentication/">Kerberos Pre-Authentication</a>を要求しないaccountに対して<a href="../authentication-server/">Authentication Server（AS）</a> exchangeのresponseを取得し、そのcryptographic materialをoffline password guessingへ利用するcredential access techniqueです。</p>
+<h2 id="通常のpre-authentication">通常のPre-Authentication</h2>
+<p>通常のpassword-based <a href="../kerberos/">Kerberos</a> initial authenticationでは、<a href="../key-distribution-center/">Key Distribution Center（KDC）</a>がcredentialを発行する前にclientへPre-Authenticationを要求できます。</p>
+<p>このmechanismによって、clientがaccount secretに基づくproofを示す前にpassword-derived encrypted dataが返されることを防ぎます。</p>
+<h2 id="pre-authenticationを要求しないaccount">Pre-Authenticationを要求しないAccount</h2>
+<p>Active Directory accountでKerberos Pre-Authenticationを要求しないconfigurationが設定されていると、ASは有効な<a href="../principal/">Principal</a>に対してPre-Authentication proofなしでAS-REPを返す場合があります。</p>
+<p>そのAS-REPの一部はaccountのpassword-derived keyで保護されます。</p>
+<p>passwordが弱い場合、そのdataがoffline guessingへ利用される可能性があります。</p>
+<h2 id="tgtとの関係">TGTとの関係</h2>
+<p>successful AS responseには<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>が含まれます。</p>
+<p>AS-REP Roastingの目的はTGTを通常利用することではなく、AS-REP内のpassword-derived cryptographic materialをcredential guessingへ利用する点にあります。</p>
+<h2 id="kerberoastingとの違い">Kerberoastingとの違い</h2>
+<p><a href="../kerberoasting/">Kerberoasting</a>はauthenticated principalがSPN向けService Ticketを取得してService Account credentialを狙います。</p>
+<p>AS-REP RoastingはPre-Authenticationを要求しないaccountのinitial AS exchangeを対象とします。</p>
+<h2 id="検知">検知</h2>
+<p>MITRE ATT&amp;CKの現行detection guidanceでは、Domain Controller上のEvent ID 4768でPre-Authentication Type 0となるrequestが主要なsignalです。</p>
+<p>環境内でPre-Authentication無効accountが本当に必要かをbaseline化し、通常と異なるrequest sourceや大量requestを監視することが重要です。</p>
+<h2 id="緩和">緩和</h2>
+<p>基本対策は明確です。</p>
+<ul>
+<li>Kerberos Pre-Authenticationを不要に無効化しない</li>
+<li>exception accountをinventoryする</li>
+<li>account passwordを長くrandomにする</li>
+<li>obsolete encryption dependencyを減らす</li>
+<li>Event ID 4768を監視する</li>
+</ul>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1558/004/">MITRE ATT&amp;CK T1558.004 - AS-REP Roasting</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6113.html">RFC 6113 - A Generalized Framework for Kerberos Pre-Authentication</a></li>
+<li><a href="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-10/security/threat-protection/auditing/event-4768">Microsoft - Event 4768: A Kerberos authentication ticket was requested</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/pre-authentication/">Pre-Authentication</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

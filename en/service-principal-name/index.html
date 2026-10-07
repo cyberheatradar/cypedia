@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Service Principal Name (SPN) Kerberos service identity, syntax, Active Directory registration, uniqueness, and Kerberoasting relevance."><title>Service Principal Name - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/service-principal-name/">日本語</a><span> / </span><a href="/cypedia/en/service-principal-name/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Service Principal Name</h1><div class="article-meta"><strong>Aliases:</strong> SPN</div><div class="article-meta"><strong>Categories:</strong> Active Directory / Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service principal names</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/ad/name-formats-for-unique-spns">Microsoft - Name Formats for Unique SPNs</a></p>
+</blockquote>
+<p>A <a href="./">Service Principal Name (SPN)</a> identifies a service instance for <a href="../kerberos/">Kerberos</a> authentication in <a href="../active-directory/">Active Directory</a>.</p>
+<p>A Kerberos client identifies the target service through an SPN and requests a <a href="../service-ticket/">Service Ticket</a> for that identity from the <a href="../key-distribution-center/">Key Distribution Center (KDC)</a>.</p>
+<p>The service identity represented by an SPN is related to the server <a href="../principal/">Principal</a> used by Kerberos.</p>
+<h2 id="registration-in-active-directory">Registration in Active Directory</h2>
+<p>An SPN is registered in the <code>servicePrincipalName</code> attribute of the computer account or <a href="../service-account/">Service Account</a> under which the service runs.</p>
+<p>If the sign-in account for a service changes, its SPNs may need to be re-registered on the new account.</p>
+<h2 id="uniqueness">Uniqueness</h2>
+<p>An SPN must be unique within the <a href="../active-directory-forest/">Active Directory Forest</a> where it is registered.</p>
+<p>Duplicate SPNs can prevent the KDC from identifying one account for the requested service and can cause Kerberos authentication failures.</p>
+<p><code>setspn -S</code> can be used to register an SPN while checking for duplicate values.</p>
+<h2 id="format">Format</h2>
+<p>Microsoft documents the general SPN form as:</p>
+<p><code>serviceclass/host:port/servicename</code></p>
+<p>The service class and host are required.</p>
+<p>The port and service name are optional components used where additional uniqueness is needed.</p>
+<p>A common host-based form is:</p>
+<p><code>serviceclass/host</code></p>
+<h2 id="dns-relationship">DNS Relationship</h2>
+<p>The host component of an SPN commonly uses an FQDN or other hostname.</p>
+<p><a href="../dns/">DNS</a> resolution and the hostname selected by the client can therefore affect Kerberos service authentication.</p>
+<p>A DNS record and an SPN are not the same object.</p>
+<h2 id="service-tickets">Service Tickets</h2>
+<p>When a client connects to a service, the requested SPN is used in the TGS exchange.</p>
+<p>The <a href="../ticket-granting-server/">Ticket-Granting Server</a> identifies the account associated with the SPN and issues the corresponding Service Ticket.</p>
+<h2 id="kerberoasting">Kerberoasting</h2>
+<p><a href="../kerberoasting/">Kerberoasting</a> uses normal Kerberos functionality that permits Service Tickets to be requested for SPN-registered service identities.</p>
+<p>Where a traditional Service Account uses a weak password, encrypted ticket material can become useful for offline password guessing.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Important SPN-management practices include:</p>
+<ul>
+<li>avoiding duplicate SPNs;</li>
+<li>removing stale SPNs when service accounts change;</li>
+<li>avoiding unnecessary registrations;</li>
+<li>protecting Service Accounts;</li>
+<li>using strong credentials or managed service accounts.</li>
+</ul>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../dns/">DNS</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service principal names</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/name-formats-for-unique-spns">Microsoft - Name Formats for Unique SPNs</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/how-to-configure-spn">Microsoft - How to configure SPN for Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/setspn">Microsoft - setspn</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/computer-account/">Computer Account</a></li><li><a href="/cypedia/en/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/principal/">Principal</a></li><li><a href="/cypedia/en/service-account/">Service Account</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/en/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

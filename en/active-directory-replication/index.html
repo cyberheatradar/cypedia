@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Replication multi-master behavior, KCC topology, Sites, and Directory Partition replication scopes."><title>Active Directory Replication - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/active-directory-replication/">日本語</a><span> / </span><a href="/cypedia/en/active-directory-replication/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Active Directory Replication</h1><div class="article-meta"><strong>Aliases:</strong> AD Replication</div><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></p>
+</blockquote>
+<p>Active Directory Replication synchronizes directory data between <a href="../domain-controller/">Domain Controllers</a> in <a href="../active-directory/">Active Directory Domain Services</a>.</p>
+<p>AD DS is a distributed directory. Multiple writable Domain Controllers in the same <a href="../active-directory-domain/">Domain</a> can accept directory changes and replicate them to other replicas.</p>
+<h2 id="multi-master-model">Multi-Master Model</h2>
+<p>Most Active Directory directory updates use a multi-master model.</p>
+<p>Writable Domain Controllers can accept originating updates rather than requiring all changes to pass through a single server.</p>
+<p>Some operations are exceptions and are handled through <a href="../fsmo-roles/">FSMO Roles</a>.</p>
+<h2 id="directory-partitions">Directory Partitions</h2>
+<p>Replication operates on <a href="../directory-partition/">Directory Partitions</a>.</p>
+<p>Important partitions include:</p>
+<ul>
+<li>Domain Partition;</li>
+<li>Configuration Partition;</li>
+<li><a href="../active-directory-schema/">Schema</a> Partition;</li>
+<li>Application Directory Partition.</li>
+</ul>
+<p>Replication scope depends on which Domain Controllers hold replicas of each partition.</p>
+<h2 id="connection-objects">Connection Objects</h2>
+<p>A replication connection is represented by a connection object in Active Directory.</p>
+<p>The object represents an inbound replication connection from a source Domain Controller to a destination Domain Controller.</p>
+<h2 id="kcc">KCC</h2>
+<p>The Knowledge Consistency Checker (KCC) is a built-in process that runs on Domain Controllers.</p>
+<p>It generates replication topology for the <a href="../active-directory-forest/">Forest</a> and adjusts that topology as Domain Controllers, availability, Sites, costs, and schedules change.</p>
+<h2 id="intra-site-and-inter-site-replication">Intra-Site and Inter-Site Replication</h2>
+<p><a href="../active-directory-site/">Active Directory Sites</a> influence replication topology.</p>
+<p>Active Directory maintains separate concepts for replication inside a Site and replication between Sites.</p>
+<p>Site Links, costs, and schedules can be used to model inter-site connectivity.</p>
+<h2 id="global-catalog">Global Catalog</h2>
+<p>A <a href="../global-catalog/">Global Catalog</a> server maintains a full replica of its own Domain and partial replicas for other Domains in the Forest.</p>
+<p>Replication keeps those replicas synchronized.</p>
+<h2 id="failure-impact">Failure Impact</h2>
+<p>Persistent replication failures can cause inconsistent directory state between Domain Controllers.</p>
+<p>This can affect authentication, authorization, Group Policy, and other directory-dependent services.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Replication handles security-sensitive directory data.</p>
+<p><a href="../dcsync/">DCSync</a> abuses replication-related permissions to request credential information through directory replication mechanisms.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+<li><a href="../fsmo-roles/">FSMO Roles</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../knowledge-consistency-checker/">Knowledge Consistency Checker</a></li>
+<li><a href="../site-link/">Site Link</a></li>
+<li><a href="../connection-object/">Connection Object</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/active-directory/troubleshoot-adreplication-guidance">Microsoft - Troubleshooting Active Directory Replication</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/en/active-directory-schema/">Active Directory Schema</a></li><li><a href="/cypedia/en/active-directory-site/">Active Directory Site</a></li><li><a href="/cypedia/en/connection-object/">Connection Object</a></li><li><a href="/cypedia/en/dcsync/">DCSync</a></li><li><a href="/cypedia/en/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/en/dns/">DNS</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/en/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/en/group-policy/">Group Policy</a></li><li><a href="/cypedia/en/knowledge-consistency-checker/">Knowledge Consistency Checker</a></li><li><a href="/cypedia/en/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/en/ntds-dit/">NTDS.dit</a></li><li><a href="/cypedia/en/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/en/site-link/">Site Link</a></li><li><a href="/cypedia/en/sysvol/">SYSVOL</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

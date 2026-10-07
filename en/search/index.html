@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Search CyPedia"><title>Search - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/">日本語</a><span> / </span><a href="/cypedia/en/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><h1>Search</h1><form id="page-search-form" class="page-search-form" method="get"><input id="page-search-input" name="q" type="search" placeholder="Search CyPedia" autocomplete="off"><button type="submit">Search</button></form><p id="search-status"></p><div id="search-results"></div><script>(function(){const base = "/cypedia/";
+
+    const params =
+      new URLSearchParams(window.location.search);
+
+    const query =
+      params.get('q')?.trim() ?? '';
+
+    const input =
+      document.getElementById(
+        'page-search-input'
+      );
+
+    const status =
+      document.getElementById(
+        'search-status'
+      );
+
+    const results =
+      document.getElementById(
+        'search-results'
+      );
+
+    input.value = query;
+
+    async function runSearch(q) {
+      results.replaceChildren();
+
+      if (!q) {
+        status.textContent =
+          'Enter a search term.';
+        return;
+      }
+
+      status.textContent =
+        'Searching...';
+
+      try {
+        const pagefind =
+          await import(
+            `${base}pagefind/pagefind.js`
+          );
+
+        await pagefind.options({
+          baseUrl: base,
+          bundlePath:
+            `${base}pagefind/`
+        });
+
+        await pagefind.init();
+
+        const search =
+          await pagefind.search(q);
+
+        status.textContent =
+          `${search.results.length} result(s)`;
+
+        for (
+          const result
+          of search.results.slice(0, 50)
+        ) {
+          const data =
+            await result.data();
+
+          const article =
+            document.createElement('article');
+
+          article.className =
+            'search-result';
+
+          const heading =
+            document.createElement('h2');
+
+          const link =
+            document.createElement('a');
+
+          link.href = data.url;
+
+          link.textContent =
+            data.meta?.title ??
+            data.url;
+
+          heading.appendChild(link);
+
+          const excerpt =
+            document.createElement('p');
+
+          excerpt.innerHTML =
+            data.excerpt ?? '';
+
+          article.append(
+            heading,
+            excerpt
+          );
+
+          results.appendChild(article);
+        }
+      } catch (error) {
+        console.error(error);
+
+        status.textContent =
+          'Unable to load the search index.';
+      }
+    }
+
+    runSearch(query);
+  })();</script><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

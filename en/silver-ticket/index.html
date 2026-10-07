@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Silver Ticket Service Ticket forgery using compromised service-account key material, scope, PAC considerations, detection, and Golden Ticket differences."><title>Silver Ticket - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/silver-ticket/">日本語</a><span> / </span><a href="/cypedia/en/silver-ticket/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Silver Ticket</h1><div class="article-meta"><strong>Categories:</strong> Active Directory / Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://attack.mitre.org/techniques/T1558/002/">MITRE ATT&amp;CK T1558.002 - Silver Ticket</a></p>
+</blockquote>
+<p><a href="./">Silver Ticket</a> is a Kerberos ticket-forgery technique in which compromised key material for a target <a href="../service-account/">Service Account</a> or equivalent service identity is used to forge a <a href="../service-ticket/">Service Ticket</a>.</p>
+<h2 id="service-identity">Service Identity</h2>
+<p>A <a href="../service-principal-name/">Service Principal Name (SPN)</a> identifies a Kerberos service instance.</p>
+<p>The encrypted portion of a Service Ticket is protected with key material available to the target service.</p>
+<p>Compromise of that key material can therefore make it possible to forge Service Tickets without the normal <a href="../ticket-granting-server/">Ticket-Granting Server (TGS)</a> issuance flow.</p>
+<h2 id="kdc-interaction">KDC Interaction</h2>
+<p>MITRE ATT&amp;CK notes that forged Silver Tickets can be created and used without contacting the <a href="../key-distribution-center/">Key Distribution Center (KDC)</a>.</p>
+<p>This can make KDC-side issuance logs insufficient for detection.</p>
+<h2 id="scope">Scope</h2>
+<p>A Silver Ticket is constrained by the service key that has been compromised.</p>
+<p>Its scope is therefore normally narrower than a <a href="../golden-ticket/">Golden Ticket</a>, which forges Domain-level TGT credentials.</p>
+<h2 id="pac">PAC</h2>
+<p>Windows Service Tickets can contain a <a href="../privilege-attribute-certificate/">Privilege Attribute Certificate (PAC)</a> carrying authorization information.</p>
+<p>PAC integrity and validation behavior are therefore relevant to forged Service Ticket security.</p>
+<h2 id="relationship-to-kerberoasting">Relationship to Kerberoasting</h2>
+<p><a href="../kerberoasting/">Kerberoasting</a> aims to recover a Service Account credential through offline guessing.</p>
+<p>If that effort results in compromise of service key material, Silver Ticket forgery can become possible.</p>
+<p>The two techniques are nevertheless distinct.</p>
+<h2 id="detection">Detection</h2>
+<p>Useful signals include:</p>
+<ul>
+<li>unusual Kerberos logons on the service host;</li>
+<li>service authentication inconsistent with KDC ticket issuance;</li>
+<li>anomalous PAC or authorization behavior;</li>
+<li>indicators of Service Account credential compromise.</li>
+</ul>
+<p>Detection should correlate target-service telemetry rather than relying exclusively on KDC events.</p>
+<h2 id="mitigation">Mitigation</h2>
+<p>Important controls include:</p>
+<ul>
+<li>protecting Service Account credentials;</li>
+<li>using managed identities such as <a href="../group-managed-service-account/">gMSAs</a>;</li>
+<li>applying least privilege;</li>
+<li>managing SPN ownership correctly;</li>
+<li>monitoring authentication on service hosts;</li>
+<li>rotating credentials after service-account compromise.</li>
+</ul>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../privilege-attribute-certificate/">PAC</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1558/002/">MITRE ATT&amp;CK T1558.002 - Silver Ticket</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/">MS-PAC - Privilege Attribute Certificate Data Structure</a></li>
+<li><a href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/understand-service-accounts">Microsoft - Service Accounts in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/a194aa34-81bd-46a0-a931-2e05b87d1098">MS-PAC - Server Signature</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows securable objectに対するAccess Rightsとstandard/object-specific rights、Access Maskとの関係を解説する。"><title>Access Rights - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/access-rights/">日本語</a><span> / </span><a href="/cypedia/en/access-rights/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Access Rights</h1><div class="article-meta"><strong>別名:</strong> Access Right</div><div class="article-meta"><strong>カテゴリ:</strong> Windows</div><div class="article-body"><blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-rights-and-access-masks">Microsoft - Access Rights and Access Masks</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/standard-access-rights">Microsoft - Standard Access Rights</a></p>
+</blockquote>
+<p><a href="./">Access Rights</a>は、threadが<a href="../securable-object/">Securable Object</a>に対して実行できるoperationを表すWindows access-control概念です。</p>
+<h2 id="object-specific-rights">Object-Specific Rights</h2>
+<p>object typeごとに、そのobject固有のoperationを表すAccess Rightがあります。</p>
+<p>例えばfile、registry key、process、directory-service objectなどでは、それぞれ異なるspecific rightが定義されます。</p>
+<h2 id="standard-rights">Standard Rights</h2>
+<p>Windowsは多くのSecurable Objectで共通するstandard access rightsも定義しています。</p>
+<p>代表例には<code>DELETE</code>、<code>READ_CONTROL</code>、<code>WRITE_DAC</code>、<code>WRITE_OWNER</code>などがあります。</p>
+<p><code>WRITE_DAC</code>は<a href="../security-descriptor/">Security Descriptor</a>内の<a href="../discretionary-access-control-list/">DACL</a>を変更するright、<code>WRITE_OWNER</code>はownerを変更するrightです。</p>
+<h2 id="access-mask">Access Mask</h2>
+<p>Access Rightsは<a href="../access-mask/">Access Mask</a>のbitとして表現されます。</p>
+<p>threadがobject handleをopenするときなどに、必要なAccess RightsをAccess Maskとしてrequestします。</p>
+<p><a href="../access-control-entry/">ACE</a>でもAccess Maskによってallow / deny / audit対象となるrightが指定されます。</p>
+<h2 id="access-rights-and-privileges">Access Rights and Privileges</h2>
+<p>Access Rightsと<a href="../windows-privilege/">Windows Privilege</a>は別概念です。</p>
+<p>Access RightsはSecurable Objectへのoperationを制御します。</p>
+<p>Windows Privilegeはsystem-related operationを実行するaccount-level rightであり、object DACLから与えられるAccess Rightsとは異なります。</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>必要以上のAccess Rightsをrequestまたはgrantすると、意図しないoperationを許可する可能性があります。</p>
+<p>object typeごとのspecific rightまで確認し、<code>GENERIC_ALL</code>やfull-control相当の表示だけで判断しないことが重要です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../access-mask/">Access Mask</a></li>
+<li><a href="../access-control-entry/">Access Control Entry</a></li>
+<li><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></li>
+<li><a href="../securable-object/">Securable Object</a></li>
+<li><a href="../windows-privilege/">Windows Privilege</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-rights-and-access-masks">Microsoft - Access Rights and Access Masks</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/standard-access-rights">Microsoft - Standard Access Rights</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-entries">Microsoft - Access Control Entries</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-check/">Access Check</a></li><li><a href="/cypedia/ja/access-control-entry/">Access Control Entry</a></li><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/access-mask/">Access Mask</a></li><li><a href="/cypedia/ja/dcsync/">DCSync</a></li><li><a href="/cypedia/ja/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/ja/securable-object/">Securable Object</a></li><li><a href="/cypedia/ja/system-access-control-list/">System Access Control List</a></li><li><a href="/cypedia/ja/windows-privilege/">Windows Privilege</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

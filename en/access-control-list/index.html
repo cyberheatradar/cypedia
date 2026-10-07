@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows Access Control Lists (ACLs), ACEs, DACLs, SACLs, SIDs, and their role in Active Directory access control."><title>Access Control List - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/access-control-list/">日本語</a><span> / </span><a href="/cypedia/en/access-control-list/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Access Control List</h1><div class="article-meta"><strong>Aliases:</strong> ACL</div><div class="article-meta"><strong>Categories:</strong> Windows / Access Control / Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<p>An <a href="./">Access Control List (ACL)</a> is a list of Access Control Entries (ACEs) used by the Windows access control model to describe access or auditing rules for a securable object.</p>
+<p>ACLs are stored as components of a <a href="../security-descriptor/">Security Descriptor</a>.</p>
+<h2 id="access-control-entries">Access Control Entries</h2>
+<p>An ACL consists of zero or more ACEs.</p>
+<p>An ACE identifies a trustee using a <a href="../security-identifier/">Security Identifier (SID)</a> and associates that trustee with access rules such as allow, deny, or audit behavior.</p>
+<p>The trustee corresponds to a <a href="../security-principal/">Security Principal</a>.</p>
+<h2 id="dacl">DACL</h2>
+<p>A Discretionary Access Control List (DACL) contains ACEs that allow or deny access to a securable object.</p>
+<p>When a process requests access, Windows evaluates the ACEs in the DACL as part of the access decision.</p>
+<p>A missing DACL and an empty DACL have different meanings.</p>
+<p>Microsoft documents that a NULL DACL grants full access, whereas an empty DACL grants no access because it contains no ACE that allows access.</p>
+<h2 id="sacl">SACL</h2>
+<p>A System Access Control List (SACL) contains ACEs specifying how attempts to access an object are audited.</p>
+<p>Unlike a DACL, the SACL is primarily concerned with security auditing rather than the ordinary allow or deny access decision.</p>
+<h2 id="security-descriptor-relationship">Security Descriptor Relationship</h2>
+<p>An ACL is normally associated with an object through its Security Descriptor.</p>
+<p>The Security Descriptor can contain a DACL and SACL as well as security information such as owner and primary-group identifiers.</p>
+<h2 id="active-directory">Active Directory</h2>
+<p><a href="../active-directory/">Active Directory</a> objects also participate in the Windows access control model.</p>
+<p>ACLs and ACEs are therefore important when evaluating permissions such as directory-object read, write, and control access.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>ACL analysis needs to account for allow and deny ACEs, inheritance, and object-specific rights rather than relying only on a simplified permission display.</p>
+<p>The distinction between a NULL DACL and an empty DACL is particularly important because their security effects are opposite.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li>
+<p><a href="../security-descriptor/">Security Descriptor</a></p>
+</li>
+<li>
+<p><a href="../security-identifier/">Security Identifier</a></p>
+</li>
+<li>
+<p><a href="../security-principal/">Security Principal</a></p>
+</li>
+<li>
+<p><a href="../active-directory/">Active Directory</a></p>
+</li>
+<li>
+<p><a href="../user-account/">User Account</a></p>
+</li>
+<li>
+<p><a href="../computer-account/">Computer Account</a></p>
+</li>
+<li>
+<p><a href="../security-group/">Security Group</a></p>
+</li>
+<li>
+<p><a href="../access-control-entry/">Access Control Entry</a></p>
+</li>
+<li>
+<p><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></p>
+</li>
+<li>
+<p><a href="../system-access-control-list/">System Access Control List</a></p>
+</li>
+<li>
+<p><a href="../access-rights/">Access Rights</a></p>
+</li>
+<li>
+<p><a href="../access-mask/">Access Mask</a></p>
+</li>
+<li>
+<p><a href="../access-check/">Access Check</a></p>
+</li>
+<li>
+<p><a href="../securable-object/">Securable Object</a></p>
+</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-lists">Microsoft - Access Control Lists</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-components">Microsoft - Parts of the Access Control Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/20233ed8-a6c6-4097-aafa-dd545ed24428">Microsoft Open Specifications - ACL</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/ee18efbf-e8d4-4eb0-8b27-79773e96d61f">Microsoft Open Specifications - MS-ADTS Null vs. Empty DACLs</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-control-entry/">Access Control Entry</a></li><li><a href="/cypedia/en/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/en/ldap/">LDAP</a></li><li><a href="/cypedia/en/securable-object/">Securable Object</a></li><li><a href="/cypedia/en/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/en/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/en/security-principal/">Security Principal</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li><li><a href="/cypedia/en/system-access-control-list/">System Access Control List</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Ticket-Granting Ticket（TGT）の発行、構造、TGS exchange、Active DirectoryでのKRBTGTとの関係を解説する。"><title>Ticket-Granting Ticket - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/ticket-granting-ticket/">日本語</a><span> / </span><a href="/cypedia/en/ticket-granting-ticket/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Ticket-Granting Ticket</h1><div class="article-meta"><strong>別名:</strong> TGT</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/ticket-granting-tickets">Microsoft - Ticket-Granting Tickets</a></p>
+</blockquote>
+<p>Ticket-Granting Ticket（<a href="./">TGT</a>）は、<a href="../kerberos/">Kerberos</a> clientが個別service向けの<a href="../service-ticket/">Service Ticket</a>を取得するために使用する<a href="../kerberos-ticket/">Kerberos Ticket</a>です。</p>
+<p>clientは初期authentication後にTGTを取得し、その後はuserのlong-term secretをservice accessごとに再利用せず、TGTを<a href="../ticket-granting-server/">Ticket-Granting Server（TGS）</a>へ提示できます。</p>
+<h2 id="発行">発行</h2>
+<p>TGTは<a href="../key-distribution-center/">Key Distribution Center（KDC）</a>の<a href="../authentication-server/">Authentication Server（AS）</a>によって発行されます。</p>
+<p>clientはAS-REQを送信し、KDCが要求を受理するとAS-REPが返されます。</p>
+<p>AS-REPにはTGTと、clientがTGSとの通信で使用する<a href="../session-key/">Session Key</a>に関する情報が含まれます。</p>
+<h2 id="pre-authentication">Pre-Authentication</h2>
+<p>環境やpolicyによって、AS exchangeでは<a href="../pre-authentication/">Pre-Authentication</a>が要求されます。</p>
+<p>Pre-Authenticationによって、KDCはTGTを発行する前にclientが認証に必要なcredentialを保持していることを確認できます。</p>
+<h2 id="ticket-cache">Ticket Cache</h2>
+<p>clientは取得したTGTをticket cacheに保存します。</p>
+<p>有効期間中は同じTGTを再利用して複数のService Ticketを要求できるため、service accessのたびにuser passwordを利用する必要はありません。</p>
+<h2 id="tgs-exchange">TGS Exchange</h2>
+<p>Service Ticketが必要になると、clientはTGTと<a href="../authenticator/">Authenticator</a>をTGSへ送信します。</p>
+<p>TGSはTGTを検証し、要求が正当であれば対象service用のService Ticketを発行します。</p>
+<h2 id="realmとの関係">Realmとの関係</h2>
+<p>TGTは<a href="../realm/">Realm</a>のticket-granting serviceに対して使用されます。</p>
+<p>別Realmへauthentication pathを構成する場合には<a href="../cross-realm-authentication/">Cross-Realm Authentication</a>で追加のTGTが利用されることがあります。</p>
+<h2 id="active-directory">Active Directory</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a> / <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE</a></p>
+</blockquote>
+<p><a href="../active-directory/">Active Directory</a>では<a href="../domain-controller/">Domain Controller</a>がKDCとして動作します。</p>
+<p>AD DSのTGTは<a href="../krbtgt/">KRBTGT</a> accountに関連するcryptographic keyによって保護されます。</p>
+<p>Windows KerberosではTGTなどに<a href="../privilege-attribute-certificate/">Privilege Attribute Certificate（PAC）</a>によるauthorization informationが含まれる場合があります。</p>
+<h2 id="security上の重要性">Security上の重要性</h2>
+<p>TGTはclient identityを基にService Ticketを取得するためのcredentialです。</p>
+<p>TGTが盗まれた場合、有効期間などの条件内でそのcredentialが不正利用される可能性があります。</p>
+<p>さらにKRBTGTのkey materialが侵害された場合、攻撃者は<a href="../golden-ticket/">Golden Ticket</a>として知られる偽造TGTを作成できる可能性があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../authenticator/">Authenticator</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/ticket-granting-tickets">Microsoft - Ticket-Granting Tickets</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/authenticator/">Authenticator</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/pkinit/">PKINIT</a></li><li><a href="/cypedia/ja/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/ja/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/ja/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/session-key/">Session Key</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

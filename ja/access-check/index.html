@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="WindowsのAccess Check modelとAccessCheck API、Access Token、Security Descriptor、DACL評価の関係を解説する。"><title>Access Check - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/access-check/">日本語</a><span> / </span><a href="/cypedia/en/access-check/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Access Check</h1><div class="article-meta"><strong>別名:</strong> AccessCheck</div><div class="article-meta"><strong>カテゴリ:</strong> Windows</div><div class="article-body"><blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/how-dacls-control-access-to-an-object">Microsoft - How DACLs Control Access to an Object</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-accesscheck">Microsoft - AccessCheck</a></p>
+</blockquote>
+<p><a href="./">Access Check</a>は、requesting security contextが<a href="../securable-object/">Securable Object</a>に対してrequested <a href="../access-rights/">Access Rights</a>を取得できるかを判定するauthorization処理です。</p>
+<h2 id="authorization-inputs">Authorization Inputs</h2>
+<p>Windows access-control modelでは、主に次のsecurity informationが関係します。</p>
+<ul>
+<li>requesterの<a href="../windows-access-token/">Windows Access Token</a></li>
+<li>target objectの<a href="../security-descriptor/">Security Descriptor</a></li>
+<li>Security Descriptor内の<a href="../discretionary-access-control-list/">DACL</a></li>
+<li>DACL内の<a href="../access-control-entry/">ACE</a></li>
+<li>requested <a href="../access-mask/">Access Mask</a></li>
+</ul>
+<p>これらを組み合わせて、requested accessをgrantできるか評価します。</p>
+<h2 id="dacl-evaluation">DACL Evaluation</h2>
+<p>DACLのallow / deny ACEはaccess decisionに利用されます。</p>
+<p>ACE orderも結果へ影響し得るため、単純にallow ACEの存在だけを見るのではなくDACL全体を評価する必要があります。</p>
+<p>NULL DACLとempty DACLも意味が異なります。NULL DACLはrequested accessを許可する一方、empty DACLにはallow ACEがないためaccessを許可しません。</p>
+<h2 id="win32-accesscheck-api">Win32 AccessCheck API</h2>
+<p>Windowsには<code>AccessCheck()</code> APIがあります。</p>
+<p>このAPIは指定されたSecurity Descriptorが、clientを表すAccess Tokenに対してrequested rightsをgrantするかを判定し、granted accessをAccess Maskで返します。</p>
+<p>ただしCyPediaでは、Win32 <code>AccessCheck()</code> APIをWindows内部のすべてのauthorization pathと同一視しません。本記事はauthorization modelと代表的API surfaceの関係を説明するものです。</p>
+<h2 id="auditとの違い">Auditとの違い</h2>
+<p><code>AccessCheck()</code>自体はaudit eventを生成しません。</p>
+<p>auditが必要な場合は、Windowsにはaudit機能を組み合わせた別API familyがあります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../windows-access-token/">Windows Access Token</a></li>
+<li><a href="../securable-object/">Securable Object</a></li>
+<li><a href="../security-descriptor/">Security Descriptor</a></li>
+<li><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></li>
+<li><a href="../access-control-entry/">Access Control Entry</a></li>
+<li><a href="../access-rights/">Access Rights</a></li>
+<li><a href="../access-mask/">Access Mask</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/how-dacls-control-access-to-an-object">Microsoft - How DACLs Control Access to an Object</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-accesscheck">Microsoft - AccessCheck function</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control">Microsoft - Access Control</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/access-mask/">Access Mask</a></li><li><a href="/cypedia/ja/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/ja/securable-object/">Securable Object</a></li><li><a href="/cypedia/ja/windows-access-token/">Windows Access Token</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

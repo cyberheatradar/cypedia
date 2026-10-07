@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directoryの5つのFSMO RoleとForest-wide / Domain-wide scopeを解説する。"><title>FSMO Roles - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/fsmo-roles/">日本語</a><span> / </span><a href="/cypedia/en/fsmo-roles/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>FSMO Roles</h1><div class="article-meta"><strong>別名:</strong> FSMO, Operations Master Roles</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></p>
+</blockquote>
+<p>Flexible Single Master Operations（FSMO）Rolesは、<a href="../active-directory/">Active Directory Domain Services</a>の一部のoperationを特定の<a href="../domain-controller/">Domain Controller</a>だけで処理する仕組みです。</p>
+<p>Active Directoryの多くのupdateは<a href="../active-directory-replication/">multi-master replication</a>で処理できますが、競合を避けるためsingle-masterで実行する必要があるoperationも存在します。</p>
+<h2 id="5つのrole">5つのRole</h2>
+<p>FSMO Roleは5つあります。</p>
+<h3 id="forest-wide-roles">Forest-Wide Roles</h3>
+<p><a href="../active-directory-forest/">Forest</a>全体に1つずつ存在します。</p>
+<ul>
+<li>Schema Master</li>
+<li>Domain Naming Master</li>
+</ul>
+<h3 id="domain-wide-roles">Domain-Wide Roles</h3>
+<p>各<a href="../active-directory-domain/">Domain</a>に1つずつ存在します。</p>
+<ul>
+<li>RID Master</li>
+<li>PDC Emulator</li>
+<li>Infrastructure Master</li>
+</ul>
+<h2 id="schema-master">Schema Master</h2>
+<p>Schema Masterは<a href="../active-directory-schema/">Active Directory Schema</a>へのupdateを管理するForest-wide roleです。</p>
+<p>Forest内には1つだけ存在します。</p>
+<h2 id="domain-naming-master">Domain Naming Master</h2>
+<p>Domain Naming MasterはForestに対するDomain Directory PartitionやApplication Directory Partitionの追加・削除など、namespace structureに関係するoperationを担当します。</p>
+<h2 id="rid-master">RID Master</h2>
+<p>RID MasterはDomain内のDomain ControllerへRID poolを割り当てます。</p>
+<p>Domainで作成される<a href="../security-principal/">Security Principal</a>の<a href="../security-identifier/">SID</a>にはDomain SIDとRelative ID（RID）が含まれます。</p>
+<h2 id="pdc-emulator">PDC Emulator</h2>
+<p>PDC EmulatorはDomain単位のFSMO Roleです。</p>
+<p>password changeの優先的な処理、time synchronization hierarchy、legacy compatibilityなど複数の重要な役割を持ちます。</p>
+<h2 id="infrastructure-master">Infrastructure Master</h2>
+<p>Infrastructure MasterはDomain内のobject referenceに関連する処理を担当します。</p>
+<h2 id="transferとseizure">TransferとSeizure</h2>
+<p>FSMO Roleは必要に応じて別のDomain Controllerへtransferできます。</p>
+<p>元のrole holderが恒久的に利用できない場合などにはseizureが必要になる場合があります。</p>
+<p>通常運用では計画的なtransferが優先されます。</p>
+<h2 id="security上の論点">Security上の論点</h2>
+<p>FSMO Role holderが停止してもすべてのActive Directory機能が直ちに停止するわけではありません。</p>
+<p>一方、それぞれのroleに依存するoperationは影響を受けます。</p>
+<p>特にPDC EmulatorやRID Masterなどのrole holderは重要なDomain Controllerとして適切に保護する必要があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></li>
+<li><a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/active-directory/fsmo-roles">Microsoft - Active Directory FSMO roles in Windows</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/ja/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/ja/security-principal/">Security Principal</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

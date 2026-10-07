@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windowsのprocess/thread security contextを表すAccess Token、SID、group、Privilege、primary/impersonation tokenを解説する。"><title>Windows Access Token - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/windows-access-token/">日本語</a><span> / </span><a href="/cypedia/en/windows-access-token/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Windows Access Token</h1><div class="article-meta"><strong>別名:</strong> Windows Access Tokens</div><div class="article-meta"><strong>カテゴリ:</strong> Windows</div><div class="article-body"><blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-tokens">Microsoft - Access Tokens</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/impersonation-tokens">Microsoft - Impersonation Tokens</a></p>
+</blockquote>
+<p><a href="./">Windows Access Token</a>は、processまたはthreadのsecurity contextを表すWindows objectです。</p>
+<p>OAuthなど他分野にもAccess Tokenという用語が存在するため、CyPediaではWindowsのconceptを明示的にWindows Access Tokenとして扱います。</p>
+<h2 id="token-contents">Token Contents</h2>
+<p>Microsoft documentationでは、Access Tokenに次のようなsecurity informationが含まれると説明されています。</p>
+<ul>
+<li>user accountの<a href="../security-identifier/">SID</a></li>
+<li>group membershipを表すgroup SID</li>
+<li>logon SID</li>
+<li>userまたはgroup由来の<a href="../windows-privilege/">Windows Privilege</a></li>
+<li>owner SID</li>
+<li>primary group SID</li>
+<li>default DACL</li>
+<li>token typeやその他のsecurity context information</li>
+</ul>
+<p>この情報は、threadが<a href="../securable-object/">Securable Object</a>へaccessするときや、privileged system operationを要求するときに使用されます。</p>
+<h2 id="primary-token">Primary Token</h2>
+<p>processはprimary Access Tokenを持ちます。</p>
+<p>primary tokenは、そのprocessに関連付けられたuser accountのsecurity contextを表します。</p>
+<p>threadが通常のsecurity contextでobjectへaccessする場合、processのprimary tokenがauthorization判断に利用されます。</p>
+<h2 id="impersonation-token">Impersonation Token</h2>
+<p>threadはclientをimpersonateできます。</p>
+<p>impersonating threadはprocessのprimary tokenに加え、client security contextを表すimpersonation tokenを持つことができます。</p>
+<p>これによりserver processはclientのsecurity contextとしてresource accessを評価できます。</p>
+<h2 id="access-check">Access Check</h2>
+<p><a href="../access-check/">Access Check</a>では、Access Token内のSIDやgroup informationなどと、target objectの<a href="../security-descriptor/">Security Descriptor</a>を組み合わせてrequested accessを評価します。</p>
+<p>Access Tokenは「permission listそのもの」ではなく、requesting security contextを表す側のinformationです。</p>
+<h2 id="privilege-state">Privilege State</h2>
+<p>Access TokenにはPrivilege informationも含まれます。</p>
+<p>Privilegeは保持しているだけで常に利用可能とは限らず、enabled / disabled stateを持つ場合があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">Security Identifier</a></li>
+<li><a href="../windows-privilege/">Windows Privilege</a></li>
+<li><a href="../access-check/">Access Check</a></li>
+<li><a href="../security-descriptor/">Security Descriptor</a></li>
+<li><a href="../securable-object/">Securable Object</a></li>
+<li><a href="../user-account/">User Account</a></li>
+<li><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-tokens">Microsoft - Access Tokens</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/how-dacls-control-access-to-an-object">Microsoft - How DACLs Control Access to an Object</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/impersonation-tokens">Microsoft - Impersonation Tokens</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-check/">Access Check</a></li><li><a href="/cypedia/ja/securable-object/">Securable Object</a></li><li><a href="/cypedia/ja/system-access-control-list/">System Access Control List</a></li><li><a href="/cypedia/ja/windows-privilege/">Windows Privilege</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

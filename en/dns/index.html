@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="DNS namespaces, zones, resource records, resolvers and authoritative servers, and Active Directory integration."><title>DNS - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/dns/">日本語</a><span> / </span><a href="/cypedia/en/dns/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>DNS</h1><div class="article-meta"><strong>Aliases:</strong> Domain Name System</div><div class="article-meta"><strong>Categories:</strong> Network / Protocol</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc1034.html">RFC 1034 - Domain Names: Concepts and Facilities</a> / <a href="https://www.rfc-editor.org/rfc/rfc1035.html">RFC 1035 - Domain Names: Implementation and Specification</a></p>
+</blockquote>
+<p><a href="./">Domain Name System (DNS)</a> is a distributed system for managing and resolving information in a hierarchical domain-name namespace.</p>
+<p>DNS is used for more than hostname-to-address translation. It also carries information for mail routing, service discovery, delegation, and other functions.</p>
+<h2 id="namespace">Namespace</h2>
+<p>The DNS namespace is a hierarchical tree rooted at the DNS root.</p>
+<p>Names are built from labels arranged within that hierarchy.</p>
+<p>A Fully Qualified Domain Name (FQDN) identifies a location in the DNS namespace.</p>
+<h2 id="zones">Zones</h2>
+<p>The namespace can be divided into zones according to administrative authority.</p>
+<p>A zone is the portion of the namespace for which an authoritative DNS server maintains authoritative data.</p>
+<p>A DNS zone boundary and a domain-name boundary do not necessarily represent the same administrative concept.</p>
+<h2 id="resource-records">Resource Records</h2>
+<p>DNS information is represented as Resource Records (RRs).</p>
+<p>Common types include:</p>
+<ul>
+<li>A;</li>
+<li>AAAA;</li>
+<li>NS;</li>
+<li>SOA;</li>
+<li>CNAME;</li>
+<li>MX;</li>
+<li>PTR;</li>
+<li>SRV.</li>
+</ul>
+<p>Different record types represent different kinds of resource information.</p>
+<h2 id="resolvers-and-authoritative-servers">Resolvers and Authoritative Servers</h2>
+<p>A resolver performs DNS queries on behalf of an application or host.</p>
+<p>An authoritative DNS server provides authoritative answers for zones over which it has authority.</p>
+<p>Recursive resolution can involve queries to multiple DNS servers.</p>
+<h2 id="active-directory">Active Directory</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/dns-and-ad-ds">Microsoft - DNS and AD DS</a></p>
+</blockquote>
+<p><a href="../active-directory/">Active Directory Domain Services</a> depends heavily on DNS infrastructure.</p>
+<p>Clients use DNS information to locate <a href="../domain-controller/">Domain Controllers</a>, and Domain Controllers depend on DNS name resolution for directory-service communication.</p>
+<p>The namespace of an <a href="../active-directory-domain/">Active Directory Domain</a> is also closely related to DNS naming.</p>
+<h2 id="domain-controller-location">Domain Controller Location</h2>
+<p>AD DS publishes DNS locator information that allows clients to discover Domain Controllers and services such as Kerberos and LDAP.</p>
+<p>This supports selection of Domain Controllers appropriate for a client’s Domain and network topology.</p>
+<h2 id="active-directory-integrated-dns">Active Directory-Integrated DNS</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/active-directory-integrated-dns-zones">Microsoft - Active Directory-Integrated DNS Zones</a></p>
+</blockquote>
+<p>A DNS zone can be stored in AD DS.</p>
+<p>When integrated with AD DS, DNS zone data can replicate through <a href="../active-directory-replication/">Active Directory Replication</a> rather than requiring a separate topology based only on ordinary DNS zone transfers.</p>
+<p>AD-integrated DNS also supports secure dynamic updates.</p>
+<h2 id="application-directory-partitions">Application Directory Partitions</h2>
+<p>Microsoft stores AD-integrated DNS data in DNS-specific <a href="../directory-partition/">Application Directory Partitions</a>.</p>
+<p>Common examples are the Forest-wide <code>ForestDnsZones</code> partition and Domain-wide <code>DomainDnsZones</code> partitions.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>DNS integrity and availability directly affect authentication and service discovery in AD DS.</p>
+<p>Important controls include:</p>
+<ul>
+<li>secure dynamic updates;</li>
+<li>appropriate permissions on zone data;</li>
+<li>prevention of unauthorized record changes;</li>
+<li>stale-record management;</li>
+<li>DNS-server availability;</li>
+<li>correct client DNS configuration.</li>
+</ul>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../ldap/">LDAP</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc1034.html">RFC 1034 - Domain Names: Concepts and Facilities</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc1035.html">RFC 1035 - Domain Names: Implementation and Specification</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/dns-and-ad-ds">Microsoft - DNS and AD DS</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/active-directory-integrated-dns-zones">Microsoft - Active Directory-Integrated DNS Zones</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/realm/">Realm</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

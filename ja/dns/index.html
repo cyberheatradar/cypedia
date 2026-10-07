@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="DNSの名前空間、zone、resource record、resolverとauthoritative server、Active Directoryとの統合を解説する。"><title>DNS - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/dns/">日本語</a><span> / </span><a href="/cypedia/en/dns/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>DNS</h1><div class="article-meta"><strong>別名:</strong> Domain Name System</div><div class="article-meta"><strong>カテゴリ:</strong> Network / Protocol</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc1034.html">RFC 1034 - Domain Names: Concepts and Facilities</a> / <a href="https://www.rfc-editor.org/rfc/rfc1035.html">RFC 1035 - Domain Names: Implementation and Specification</a></p>
+</blockquote>
+<p><a href="./">Domain Name System（DNS）</a>は、hierarchicalなdomain name namespaceと、そのnameに関連するresource informationを分散管理・検索する仕組みです。</p>
+<p>DNSはhostnameからaddressへの変換だけでなく、mail routing、service discovery、authority informationなど多様なresource recordを扱います。</p>
+<h2 id="namespace">Namespace</h2>
+<p>DNS namespaceはrootを頂点とするhierarchical treeです。</p>
+<p>nameはlabelを階層的に連結して構成され、Fully Qualified Domain Name（FQDN）はDNS tree内の位置を表します。</p>
+<h2 id="zone">Zone</h2>
+<p>DNS namespaceはadministrative authorityごとにzoneへ分割できます。</p>
+<p>zoneはauthoritative serverが管理するnamespaceの一部です。</p>
+<p>zone boundaryとdomain boundaryは常に同じ意味ではありません。</p>
+<h2 id="resource-record">Resource Record</h2>
+<p>DNS informationはResource Record（RR）として保持されます。</p>
+<p>代表例には次があります。</p>
+<ul>
+<li>A</li>
+<li>AAAA</li>
+<li>NS</li>
+<li>SOA</li>
+<li>CNAME</li>
+<li>MX</li>
+<li>PTR</li>
+<li>SRV</li>
+</ul>
+<p>各record typeは異なる種類のresource informationを表します。</p>
+<h2 id="resolverとauthoritative-server">ResolverとAuthoritative Server</h2>
+<p>resolverはclient applicationに代わってDNS queryを行います。</p>
+<p>authoritative DNS serverは、自身がauthorityを持つzoneについてauthoritative answerを提供します。</p>
+<p>recursive resolutionでは複数DNS serverへの問い合わせが行われる場合があります。</p>
+<h2 id="active-directoryとの関係">Active Directoryとの関係</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/dns-and-ad-ds">Microsoft - DNS and AD DS</a></p>
+</blockquote>
+<p><a href="../active-directory/">Active Directory Domain Services</a>はDNSを重要なinfrastructure dependencyとして利用します。</p>
+<p>clientはDNS informationを使用して<a href="../domain-controller/">Domain Controller</a>をlocateし、Domain Controller間のdirectory service communicationにもDNS name resolutionが必要です。</p>
+<p><a href="../active-directory-domain/">Active Directory Domain</a>のnamespaceもDNS namingと密接に関係します。</p>
+<h2 id="domain-controller-location">Domain Controller Location</h2>
+<p>AD DSはDNS locator recordを使用してDomain ControllerやKerberos、LDAPなどのserviceを発見できるようにします。</p>
+<p>これによりclientは自身のDomainやSiteに適したDomain Controllerを探索できます。</p>
+<h2 id="active-directory-integrated-dns">Active Directory-Integrated DNS</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/active-directory-integrated-dns-zones">Microsoft - Active Directory-Integrated DNS Zones</a></p>
+</blockquote>
+<p>DNS zoneをAD DSへintegrateすると、zone dataをdirectory内へ保存できます。</p>
+<p>その場合、通常のzone transferだけに依存せず、<a href="../active-directory-replication/">Active Directory Replication</a>によってDNS dataをreplicateできます。</p>
+<p>AD-integrated DNSではsecure dynamic updateも利用できます。</p>
+<h2 id="application-directory-partition">Application Directory Partition</h2>
+<p>MicrosoftはAD-integrated DNS zone dataをDNS用<a href="../directory-partition/">Application Directory Partition</a>へ保存します。</p>
+<p>代表的にForest-wideの <code>ForestDnsZones</code> とDomain-wideの <code>DomainDnsZones</code> が利用されます。</p>
+<h2 id="security上の注意">Security上の注意</h2>
+<p>AD DS environmentではDNS integrityとavailabilityがauthenticationやservice discoveryに直接影響します。</p>
+<p>重要な論点は次です。</p>
+<ul>
+<li>secure dynamic update</li>
+<li>zone dataへのpermission</li>
+<li>unauthorized record modification</li>
+<li>stale record管理</li>
+<li>DNS server availability</li>
+<li>client DNS configuration</li>
+</ul>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../ldap/">LDAP</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc1034.html">RFC 1034 - Domain Names: Concepts and Facilities</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc1035.html">RFC 1035 - Domain Names: Implementation and Specification</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/dns-and-ad-ds">Microsoft - DNS and AD DS</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/active-directory-integrated-dns-zones">Microsoft - Active Directory-Integrated DNS Zones</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows Security Principals, SIDs, accounts, groups, authentication, and access control."><title>Security Principal - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/security-principal/">日本語</a><span> / </span><a href="/cypedia/en/security-principal/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Security Principal</h1><div class="article-meta"><strong>Aliases:</strong> security principal</div><div class="article-meta"><strong>Categories:</strong> Windows / Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></p>
+</blockquote>
+<p>A Windows Security Principal is an entity that can be authenticated by the operating system.</p>
+<p>Examples include user accounts, computer accounts, and security groups.</p>
+<p>Each Security Principal is represented by a unique <a href="../security-identifier/">Security Identifier (SID)</a>.</p>
+<h2 id="active-directory">Active Directory</h2>
+<p>Security Principals created in an <a href="../active-directory/">Active Directory</a> <a href="../active-directory-domain/">Domain</a> are Active Directory objects.</p>
+<p>They can be used to control access to Domain resources.</p>
+<h2 id="users-computers-and-groups">Users, Computers, and Groups</h2>
+<p>Examples of Security Principals include:</p>
+<ul>
+<li>user accounts;</li>
+<li>computer accounts;</li>
+<li>security groups;</li>
+<li>accounts associated with service identities.</li>
+</ul>
+<p>A security group is itself a Security Principal and has its own SID.</p>
+<h2 id="authentication-and-authorization">Authentication and Authorization</h2>
+<p>Authentication establishes the identity associated with a Security Principal.</p>
+<p>Authorization then evaluates permissions, group memberships, and other security information to determine access to resources.</p>
+<h2 id="sid">SID</h2>
+<p>Windows uses a SID as the identifier for a Security Principal.</p>
+<p>Access Control Lists use SIDs in permission entries rather than relying only on display names or account names.</p>
+<h2 id="access-control">Access Control</h2>
+<p>Securable objects such as files, registry keys, and Active Directory objects can use ACLs to grant or deny permissions to Security Principals.</p>
+<p>Groups make it possible to manage common permissions for many accounts.</p>
+<h2 id="difference-from-a-kerberos-principal">Difference from a Kerberos Principal</h2>
+<p>A Windows Security Principal is not identical to a <a href="../principal/">Kerberos Principal</a>.</p>
+<p>A Kerberos Principal is an identity concept defined by the <a href="../kerberos/">Kerberos</a> protocol.</p>
+<p>A Windows Security Principal is an entity in the Windows security model that participates in authentication and authorization.</p>
+<p>The concepts can interact in Active Directory authentication but should not be treated as interchangeable terms.</p>
+<h2 id="domain-controllers-and-rid-allocation">Domain Controllers and RID Allocation</h2>
+<p><a href="../domain-controller/">Domain Controllers</a> maintain Domain Security Principal account information in Active Directory.</p>
+<p>When Domain Security Principals are created, SID generation uses RID pools associated with the RID Master <a href="../fsmo-roles/">FSMO Role</a>.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li>
+<p><a href="../active-directory/">Active Directory</a></p>
+</li>
+<li>
+<p><a href="../active-directory-domain/">Domain</a></p>
+</li>
+<li>
+<p><a href="../domain-controller/">Domain Controller</a></p>
+</li>
+<li>
+<p><a href="../security-identifier/">SID</a></p>
+</li>
+<li>
+<p><a href="../fsmo-roles/">FSMO Roles</a></p>
+</li>
+<li>
+<p><a href="../principal/">Kerberos Principal</a></p>
+</li>
+<li>
+<p><a href="../user-account/">User Account</a></p>
+</li>
+<li>
+<p><a href="../computer-account/">Computer Account</a></p>
+</li>
+<li>
+<p><a href="../security-group/">Security Group</a></p>
+</li>
+<li>
+<p><a href="../access-control-list/">Access Control List</a></p>
+</li>
+<li>
+<p><a href="../securable-object/">Securable Object</a></p>
+</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/access-control/access-control">Microsoft - Access Control Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/78eb9013-1c3a-4970-ad1f-2b1dad588a25">Microsoft Open Specifications - MS-DTYP SID</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-control-list/">Access Control List</a></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/computer-account/">Computer Account</a></li><li><a href="/cypedia/en/dcsync/">DCSync</a></li><li><a href="/cypedia/en/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/en/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/en/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/en/ldap/">LDAP</a></li><li><a href="/cypedia/en/ntds-dit/">NTDS.dit</a></li><li><a href="/cypedia/en/ntlm/">NTLM</a></li><li><a href="/cypedia/en/principal/">Principal</a></li><li><a href="/cypedia/en/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/en/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/en/security-group/">Security Group</a></li><li><a href="/cypedia/en/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/en/service-account/">Service Account</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li><li><a href="/cypedia/en/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/en/user-account/">User Account</a></li><li><a href="/cypedia/en/windows-access-token/">Windows Access Token</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

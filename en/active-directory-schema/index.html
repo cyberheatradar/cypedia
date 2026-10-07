@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Schema classes, attributes, syntaxes, Forest-wide scope, and schema extension."><title>Active Directory Schema - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/active-directory-schema/">日本語</a><span> / </span><a href="/cypedia/en/active-directory-schema/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Active Directory Schema</h1><div class="article-meta"><strong>Aliases:</strong> Schema, AD Schema</div><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5859bab0-f545-4db6-80c6-9798b484b3d8">MS-ADTS - Active Directory Schema</a></p>
+</blockquote>
+<p>The Active Directory Schema defines the types and structure of objects that can be stored in <a href="../active-directory/">Active Directory</a>.</p>
+<p>The Schema defines rules governing directory structure and content.</p>
+<h2 id="components">Components</h2>
+<p>Important Schema concepts include:</p>
+<ul>
+<li>classes;</li>
+<li>attributes;</li>
+<li>syntaxes.</li>
+</ul>
+<p>A class defines a type of directory object.</p>
+<p>An attribute defines information that objects can contain.</p>
+<p>A syntax describes the data representation used by an attribute.</p>
+<h2 id="mandatory-and-optional-attributes">Mandatory and Optional Attributes</h2>
+<p>For each class, the Schema can define mandatory and optional attributes.</p>
+<p>This determines what information an instance of that class is required or permitted to contain.</p>
+<h2 id="schema-objects">Schema Objects</h2>
+<p>The Schema is itself represented through Active Directory objects.</p>
+<p>Classes are represented by classSchema objects.</p>
+<p>Attributes are represented by attributeSchema objects.</p>
+<h2 id="forest-scope">Forest Scope</h2>
+<p>The Schema is shared across an <a href="../active-directory-forest/">Active Directory Forest</a>.</p>
+<p>The Schema Partition is replicated to <a href="../domain-controller/">Domain Controllers</a> throughout the Forest.</p>
+<p>Schema changes can therefore affect more than one <a href="../active-directory-domain/">Domain</a>.</p>
+<h2 id="schema-extension">Schema Extension</h2>
+<p>Administrators and applications can extend the Schema with additional classes and attributes.</p>
+<p>Because Schema modifications can have Forest-wide implications, they require careful design, testing, and change control.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5859bab0-f545-4db6-80c6-9798b484b3d8">MS-ADTS - Active Directory Schema</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/adschema/active-directory-schema">Microsoft - Active Directory Schema</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-forest/">Active Directory Forest</a></li><li><a href="/cypedia/en/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/en/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/en/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/en/ldap/">LDAP</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

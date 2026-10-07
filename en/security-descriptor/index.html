@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows Security Descriptors and their owner, SID, DACL, SACL, and control information for securable objects."><title>Security Descriptor - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/security-descriptor/">日本語</a><span> / </span><a href="/cypedia/en/security-descriptor/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Security Descriptor</h1><div class="article-meta"><strong>Categories:</strong> Windows / Access Control / Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<p>A <a href="./">Security Descriptor</a> contains security information associated with a Windows securable object.</p>
+<p>Microsoft documentation states that a Security Descriptor can include <a href="../security-identifier/">Security Identifiers (SIDs)</a> for the owner and primary group, a DACL, a SACL, and control bits.</p>
+<h2 id="owner-and-primary-group">Owner and Primary Group</h2>
+<p>A Security Descriptor can contain the SID of the object’s owner.</p>
+<p>It can also contain the SID of the primary group.</p>
+<p>These identifiers refer to <a href="../security-principal/">Security Principals</a> through their SIDs.</p>
+<h2 id="dacl">DACL</h2>
+<p>A Discretionary Access Control List (DACL) contains rules that allow or deny access to an object for specified trustees.</p>
+<p>A DACL is a type of <a href="../access-control-list/">Access Control List (ACL)</a>.</p>
+<h2 id="sacl">SACL</h2>
+<p>A System Access Control List (SACL) specifies which types of access attempts are audited for the object.</p>
+<p>DACLs and SACLs are both composed of ACEs, but their purposes differ.</p>
+<h2 id="control-information">Control Information</h2>
+<p>Security Descriptors contain control bits that qualify the meaning of the descriptor or its individual components.</p>
+<p>Microsoft recommends using the Windows security APIs to retrieve and modify Security Descriptor information rather than directly manipulating internal structures.</p>
+<h2 id="active-directory">Active Directory</h2>
+<p>Security Descriptors are also used for access control on <a href="../active-directory/">Active Directory</a> objects.</p>
+<p>Understanding directory permissions therefore requires understanding the relationship among Security Descriptors, ACLs, SIDs, and Security Principals.</p>
+<h2 id="security-descriptor-string-format">Security Descriptor String Format</h2>
+<p>Windows also defines a text representation for Security Descriptor information that can represent components such as owner, group, DACL, and SACL.</p>
+<p>This representation is commonly associated with Security Descriptor Definition Language (SDDL).</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Incorrect Security Descriptor configuration can produce excessive access or insufficient auditing.</p>
+<p>DACL allow and deny rules, inheritance, ownership, and SACL auditing configuration should be evaluated as distinct parts of the security model.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li>
+<p><a href="../access-control-list/">Access Control List</a></p>
+</li>
+<li>
+<p><a href="../security-identifier/">Security Identifier</a></p>
+</li>
+<li>
+<p><a href="../security-principal/">Security Principal</a></p>
+</li>
+<li>
+<p><a href="../active-directory/">Active Directory</a></p>
+</li>
+<li>
+<p><a href="../security-group/">Security Group</a></p>
+</li>
+<li>
+<p><a href="../access-control-entry/">Access Control Entry</a></p>
+</li>
+<li>
+<p><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></p>
+</li>
+<li>
+<p><a href="../system-access-control-list/">System Access Control List</a></p>
+</li>
+<li>
+<p><a href="../securable-object/">Securable Object</a></p>
+</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/security-descriptors">Microsoft - Security Descriptors</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-components">Microsoft - Parts of the Access Control Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/security-descriptor-string-format">Microsoft - Security Descriptor String Format</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-check/">Access Check</a></li><li><a href="/cypedia/en/access-control-list/">Access Control List</a></li><li><a href="/cypedia/en/access-rights/">Access Rights</a></li><li><a href="/cypedia/en/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/en/securable-object/">Securable Object</a></li><li><a href="/cypedia/en/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/en/system-access-control-list/">System Access Control List</a></li><li><a href="/cypedia/en/windows-access-token/">Windows Access Token</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

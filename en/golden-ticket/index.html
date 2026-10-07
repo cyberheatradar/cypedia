@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Golden Ticket TGT forgery using compromised KRBTGT key material, PAC authorization data, impact, detection, and KRBTGT recovery."><title>Golden Ticket - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/golden-ticket/">日本語</a><span> / </span><a href="/cypedia/en/golden-ticket/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Golden Ticket</h1><div class="article-meta"><strong>Categories:</strong> Active Directory / Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://attack.mitre.org/techniques/T1558/001/">MITRE ATT&amp;CK T1558.001 - Golden Ticket</a></p>
+</blockquote>
+<p><a href="./">Golden Ticket</a> is a Kerberos ticket-forgery technique in which an attacker with compromised <a href="../krbtgt/">KRBTGT</a> key material creates forged <a href="../ticket-granting-ticket/">Ticket-Granting Tickets (TGTs)</a>.</p>
+<p>Because KRBTGT is central to <a href="../active-directory-domain/">Active Directory Domain</a> KDC trust, Golden Ticket compromise can have broader impact than compromise of one service identity.</p>
+<h2 id="krbtgt">KRBTGT</h2>
+<p>The <a href="../key-distribution-center/">Key Distribution Center (KDC)</a> on <a href="../domain-controller/">Domain Controllers</a> uses KRBTGT-related key material when processing TGTs.</p>
+<p>Compromise of that key material can allow forged TGTs to satisfy cryptographic checks even though they were not issued through the normal KDC flow.</p>
+<h2 id="pac">PAC</h2>
+<p>Windows <a href="../kerberos-ticket/">Kerberos Tickets</a> can carry authorization information in a <a href="../privilege-attribute-certificate/">Privilege Attribute Certificate (PAC)</a>.</p>
+<p>Authorization information in a forged TGT can therefore also be manipulated.</p>
+<p><a href="../security-identifier/">SIDs</a> and group-related data are important inputs to Windows authorization decisions.</p>
+<h2 id="impact">Impact</h2>
+<p>A forged TGT can potentially be presented to the <a href="../ticket-granting-server/">Ticket-Granting Server</a> to obtain <a href="../service-ticket/">Service Tickets</a> for multiple services.</p>
+<p>Golden Tickets are therefore associated with persistence, privilege escalation, and lateral movement.</p>
+<h2 id="obtaining-krbtgt-key-material">Obtaining KRBTGT Key Material</h2>
+<p>Golden Ticket creation presupposes prior compromise of KRBTGT key material.</p>
+<p>Domain-level credential access such as <a href="../dcsync/">DCSync</a> or <a href="../ntds-credential-dumping/">NTDS Credential Dumping</a> can be relevant sources of such exposure.</p>
+<h2 id="detection">Detection</h2>
+<p>MITRE ATT&amp;CK identifies useful correlations including:</p>
+<ul>
+<li>unusual ticket lifetimes;</li>
+<li>encryption types inconsistent with the environment;</li>
+<li>anomalous privileged activity;</li>
+<li>Service Ticket activity inconsistent with preceding TGT requests.</li>
+</ul>
+<p>No single event reliably proves Golden Ticket use, so Kerberos telemetry and account behavior should be correlated.</p>
+<h2 id="recovery">Recovery</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/forest-recovery-guide/ad-forest-recovery-reset-the-krbtgt-password">Microsoft - AD Forest Recovery - Reset the krbtgt password</a></p>
+</blockquote>
+<p>For recovery from KRBTGT compromise, Microsoft’s Active Directory Forest Recovery guidance specifies resetting the KRBTGT password twice.</p>
+<p>With the default configuration, administrators must wait 10 hours between resets. If Kerberos ticket lifetimes have been changed, the waiting period must be longer than the configured maximum lifetime.</p>
+<p>Microsoft documents a KRBTGT password-history value of 2, so two resets remove old passwords from that history.</p>
+<h2 id="difference-from-silver-ticket">Difference from Silver Ticket</h2>
+<p><a href="../silver-ticket/">Silver Ticket</a> uses key material associated with a target service to forge Service Tickets.</p>
+<p>Golden Ticket uses KRBTGT key material to forge TGTs and therefore generally has broader Domain-level impact.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../privilege-attribute-certificate/">PAC</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a></li>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1558/001/">MITRE ATT&amp;CK T1558.001 - Golden Ticket</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/forest-recovery-guide/ad-forest-recovery-reset-the-krbtgt-password">Microsoft - Active Directory Forest Recovery - Reset the krbtgt password</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/">MS-PAC - Privilege Attribute Certificate Data Structure</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/3122bf00-ea87-4c3f-92a0-91c0a99f5eec">MS-PAC - KDC Signature</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/dcsync/">DCSync</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/en/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/en/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

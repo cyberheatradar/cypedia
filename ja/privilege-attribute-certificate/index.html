@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows Kerberos Privilege Attribute Certificate（PAC）のauthorization data、group membership、signature、TGT/Service Ticketとの関係を解説する。"><title>Privilege Attribute Certificate - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/privilege-attribute-certificate/">日本語</a><span> / </span><a href="/cypedia/en/privilege-attribute-certificate/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Privilege Attribute Certificate</h1><div class="article-meta"><strong>別名:</strong> PAC</div><div class="article-meta"><strong>カテゴリ:</strong> Windows / Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/166d8064-c863-41e1-9c23-edaaa5f36962">MS-PAC - Privilege Attribute Certificate Data Structure</a></p>
+</blockquote>
+<p><a href="./">Privilege Attribute Certificate（PAC）</a>は、Microsoft Kerberosでauthorization informationをencodeするdata structureです。</p>
+<p>名称にCertificateとありますが、PKIで使用するX.509 certificateそのものではありません。</p>
+<p>PACにはuserやgroupに関連するauthorization information、additional credential information、profile・policy information、security metadataなどを含めることができます。</p>
+<h2 id="kerberos-ticketとの関係">Kerberos Ticketとの関係</h2>
+<p>PACは<a href="../kerberos-ticket/">Kerberos Ticket</a>のauthorization dataとして運ばれます。</p>
+<p><a href="../active-directory/">Active Directory</a> environmentでは<a href="../ticket-granting-ticket/">TGT</a>や<a href="../service-ticket/">Service Ticket</a>へPACが含まれることがあります。</p>
+<h2 id="authorization-information">Authorization Information</h2>
+<p>PACはWindows resource access判断に利用できるinformationをserviceへ提供します。</p>
+<p>代表的にはgroup membershipなど、<a href="../security-principal/">Security Principal</a>に関係するauthorization informationが含まれます。</p>
+<p><a href="../security-identifier/">SID</a>もWindows authorization情報を表現する重要なidentifierです。</p>
+<h2 id="kdcとの関係">KDCとの関係</h2>
+<p><a href="../key-distribution-center/">Key Distribution Center（KDC）</a>はticket issuance時にPACを生成・処理します。</p>
+<p>Microsoft Kerberos protocol extensionではPACの作成・validation・signature behaviorがMS-KILEとMS-PACで定義されています。</p>
+<h2 id="signature">Signature</h2>
+<p>PACにはintegrityを検証するためのchecksumやsignature informationがあります。</p>
+<p>service側やKDC側のvalidationに利用され、authorization dataの改ざん検出に関係します。</p>
+<p>具体的なsignature fieldやvalidation requirementはprotocol version・scenarioによって異なるため、MS-PACとMS-KILEの現行仕様を参照する必要があります。</p>
+<h2 id="service-ticket">Service Ticket</h2>
+<p>application serviceはService Ticketを処理するとき、含まれているPAC authorization informationをWindows security contextの構築に利用できます。</p>
+<p>serviceとKDCのvalidation behaviorはprotocolとconfigurationに依存します。</p>
+<h2 id="golden-ticket--silver-ticket">Golden Ticket / Silver Ticket</h2>
+<p><a href="../golden-ticket/">Golden Ticket</a>や<a href="../silver-ticket/">Silver Ticket</a>では、偽造ticket内のauthorization dataとしてPACを操作することがあります。</p>
+<p>そのためticket signature、service key、KRBTGT keyなどの保護が重要です。</p>
+<h2 id="security上の意味">Security上の意味</h2>
+<p>PACはauthenticationそのものだけでなくauthorizationへ直結するdataです。</p>
+<p>PACやticketのvalidationに問題があると、誤ったgroup membershipやprivilege informationがtrustされる可能性があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/166d8064-c863-41e1-9c23-edaaa5f36962">MS-PAC - Privilege Attribute Certificate Data Structure</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/c25d48df-67f0-4c5f-9e46-27a7d5710909">MS-KILE - PAC Generation</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/4ad7ed1f-0bfa-4b5f-bda3-fedbc549a6c0">MS-KILE - Processing Authorization Data</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/4174c356-68c7-4c60-91e1-50a02d1383be">MS-PAC - Signatures</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

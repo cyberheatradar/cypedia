@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Pre-Authentication PA-DATA, AS exchange behavior, RFC 6113 framework, PKINIT, and AS-REP Roasting relevance."><title>Pre-Authentication - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/pre-authentication/">日本語</a><span> / </span><a href="/cypedia/en/pre-authentication/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Pre-Authentication</h1><div class="article-meta"><strong>Aliases:</strong> pre-authentication</div><div class="article-meta"><strong>Categories:</strong> Kerberos / Authentication</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120</a> / <a href="https://www.rfc-editor.org/rfc/rfc6113.html">RFC 6113 - A Generalized Framework for Kerberos Pre-Authentication</a></p>
+</blockquote>
+<p><a href="./">Pre-Authentication</a> allows the <a href="../authentication-server/">Authentication Server (AS)</a> to require additional authentication evidence before issuing initial <a href="../kerberos/">Kerberos</a> credentials.</p>
+<p>Pre-Authentication is a framework for multiple mechanisms rather than one fixed authentication algorithm.</p>
+<h2 id="pa-data">PA-DATA</h2>
+<p>Kerberos messages can carry pre-authentication information as PA-DATA.</p>
+<p>If an AS-REQ does not contain required pre-authentication material, a KDC can return information describing acceptable methods so the client can construct a subsequent request.</p>
+<h2 id="purpose">Purpose</h2>
+<p>Pre-Authentication mechanisms can provide functions including:</p>
+<ul>
+<li>additional proof of client identity;</li>
+<li>establishment of initial keys;</li>
+<li>public-key authentication;</li>
+<li>strengthening password-based initial authentication.</li>
+</ul>
+<p>The exact security properties depend on the selected mechanism.</p>
+<h2 id="password-based-pre-authentication">Password-Based Pre-Authentication</h2>
+<p>Password-based Kerberos deployments can use timestamp-based pre-authentication protected by password-derived key material.</p>
+<p>The <a href="../key-distribution-center/">KDC</a> validates the data before issuing a <a href="../ticket-granting-ticket/">TGT</a>.</p>
+<h2 id="pkinit">PKINIT</h2>
+<p><a href="../pkinit/">PKINIT</a> is a Pre-Authentication mechanism based on public-key cryptography.</p>
+<p>RFC 4556 integrates certificates and public/private key material into the initial AS exchange.</p>
+<h2 id="rfc-6113">RFC 6113</h2>
+<p>RFC 6113 defines a generalized framework for Kerberos Pre-Authentication.</p>
+<p>It provides a common model for how multiple pre-authentication mechanisms interact with Kerberos requests and replies.</p>
+<h2 id="active-directory">Active Directory</h2>
+<p>Pre-Authentication is also important in <a href="../active-directory/">Active Directory</a> Kerberos.</p>
+<p>Windows behavior and extensions are documented in MS-KILE, with Windows PKINIT behavior documented in MS-PKCA.</p>
+<h2 id="as-rep-roasting">AS-REP Roasting</h2>
+<p><a href="../as-rep-roasting/">AS-REP Roasting</a> becomes relevant when password-based accounts are configured so that Pre-Authentication is not required.</p>
+<p>An attacker can potentially obtain AS-REP material suitable for offline password guessing.</p>
+<p>Unnecessary disabling of Pre-Authentication should therefore be avoided.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../pkinit/">PKINIT</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6113.html">RFC 6113 - A Generalized Framework for Kerberos Pre-Authentication</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/pkinit/">PKINIT</a></li><li><a href="/cypedia/en/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

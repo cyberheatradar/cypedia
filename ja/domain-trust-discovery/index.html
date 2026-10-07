@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Domain Trust DiscoveryによるAD Domain/Forest trust relationshipの列挙、lateral movement path評価、検知と防御を解説する。"><title>Domain Trust Discovery - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/domain-trust-discovery/">日本語</a><span> / </span><a href="/cypedia/en/domain-trust-discovery/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Domain Trust Discovery</h1><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Discovery</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></p>
+</blockquote>
+<p><a href="./">Domain Trust Discovery</a>は、<a href="../active-directory/">Active Directory</a>環境の<a href="../active-directory-trust/">Trust</a> relationshipを調査し、別<a href="../active-directory-domain/">Domain</a>や<a href="../active-directory-forest/">Forest</a>へ到達可能なauthentication・authorization pathを把握するDiscovery techniqueです。</p>
+<h2 id="trust">Trust</h2>
+<p>AD Trustは、あるDomainでauthenticationされたidentityを別Domain側resource access判断へ利用できるrelationshipを提供します。</p>
+<p>trust direction、transitivity、trust typeによって利用可能なpathが異なります。</p>
+<h2 id="discovery対象">Discovery対象</h2>
+<p>攻撃者は一般に次のようなinformationを把握しようとします。</p>
+<ul>
+<li>trusted / trusting Domain</li>
+<li>Forest間relationship</li>
+<li>trust direction</li>
+<li>transitivity</li>
+<li>target Domain名</li>
+<li>potential lateral movement path</li>
+</ul>
+<p>この情報自体がcredentialではありませんが、次に狙うidentityやresourceを決めるために利用されます。</p>
+<h2 id="ldapとapi">LDAPとAPI</h2>
+<p>MITRE ATT&amp;CKはDomain trust relationshipを<a href="../ldap/">LDAP</a>、Windows API、.NETなどから取得できることを示しています。</p>
+<p>これらは正規administrationやapplicationでも利用されるため、単純なquery existenceだけでmalicious activityと判断することはできません。</p>
+<h2 id="kerberosとの関係">Kerberosとの関係</h2>
+<p>AD Trustはcross-domain <a href="../kerberos/">Kerberos</a> authenticationにも重要です。</p>
+<p><a href="../cross-realm-authentication/">Cross-Realm Authentication</a>やreferral TGTによってtrusted Domainへのauthentication pathが構成されます。</p>
+<h2 id="attack-path">Attack Path</h2>
+<p>Trust discoveryによって得た情報は、credential theft後のlateral movement、Kerberos ticket abuse、SIDHistory関連のabuseなどを評価する材料になり得ます。</p>
+<p>ただしTrustが存在するだけで自動的にprivilege escalationが成立するわけではありません。</p>
+<p>resource permissionとcredential/identity privilegeも必要です。</p>
+<h2 id="検知">検知</h2>
+<p>重要なのはnormal administration activityとの比較です。</p>
+<ul>
+<li>unusual processによるtrust enumeration</li>
+<li>non-admin workstationからの大量trust query</li>
+<li>LDAP query pattern</li>
+<li>trust discovery後のcross-domain authentication</li>
+<li>normally unused trust pathへのaccess</li>
+</ul>
+<h2 id="緩和">緩和</h2>
+<p>Trust Discovery自体を完全に禁止するのではなく、trust topologyを単純化し、不要なTrustを削除し、Trust経由で与えられるresource permissionをleast privilegeにすることが重要です。</p>
+<p>privileged administration workstationとmonitoringによってtrust enumerationのcontextも把握しやすくなります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../ldap/">LDAP</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../cross-realm-authentication/">Cross-Realm Authentication</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../sidhistory/">SIDHistory</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Reviewing Key AD DS Terms</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/bac4dc69-352d-416c-a9f4-730b81ababb3">MS-KILE - Cross-Domain Trust and Referrals</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-trust/">Active Directory Trust</a></li><li><a href="/cypedia/ja/sidhistory/">SIDHistory</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

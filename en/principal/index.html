@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Principal identity, naming, Realms, client/server principals, and Active Directory relationships."><title>Principal - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/principal/">日本語</a><span> / </span><a href="/cypedia/en/principal/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Principal</h1><div class="article-meta"><strong>Aliases:</strong> principal</div><div class="article-meta"><strong>Categories:</strong> Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p>A <a href="./">Principal</a> is an entity identified and authenticated by <a href="../kerberos/">Kerberos</a>.</p>
+<p>Users, hosts, and application services can all be Kerberos Principals.</p>
+<p>Both clients and servers are represented by Principal identities.</p>
+<h2 id="principal-names">Principal Names</h2>
+<p>RFC 4120 represents a Principal Name using name components and a name type.</p>
+<p>The <a href="../realm/">Realm</a> is also important when identifying a Principal.</p>
+<p>A common display form combines a Principal and Realm as <code>name@REALM</code>.</p>
+<h2 id="client-principal">Client Principal</h2>
+<p>A client Principal represents the entity requesting authentication.</p>
+<p>A user is a common example, but hosts and services can also initiate Kerberos exchanges as clients.</p>
+<h2 id="server-principal">Server Principal</h2>
+<p>A server Principal identifies the service a client wants to access.</p>
+<p>In <a href="../active-directory/">Active Directory</a>, a service instance is commonly identified through a <a href="../service-principal-name/">Service Principal Name (SPN)</a>.</p>
+<h2 id="kdc-relationship">KDC Relationship</h2>
+<p>The <a href="../key-distribution-center/">Key Distribution Center (KDC)</a> handles information about Principals in its Realm and the key material required by the protocol.</p>
+<p>A client obtains initial credentials from the <a href="../authentication-server/">Authentication Server</a> before requesting further tickets.</p>
+<h2 id="tickets">Tickets</h2>
+<p>A <a href="../kerberos-ticket/">Kerberos Ticket</a> is associated with client and server Principal information.</p>
+<p>A <a href="../service-ticket/">Service Ticket</a> is issued for a particular server Principal.</p>
+<h2 id="active-directory">Active Directory</h2>
+<p>Windows Server maps user, computer, and service identities in AD DS into Kerberos authentication.</p>
+<p>A Windows <a href="../security-principal/">Security Principal</a> is not identical to a Kerberos Principal.</p>
+<p>A Security Principal is an entity in the Windows authorization model, while a Kerberos Principal is an identity in the Kerberos protocol.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Incorrect Principal naming can lead to authentication failures or incorrect service identity selection.</p>
+<p>Service identities should use correctly registered and appropriately scoped SPNs.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/service-principal-names">Microsoft - Service Principal Names</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/en/authenticator/">Authenticator</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/en/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/en/realm/">Realm</a></li><li><a href="/cypedia/en/security-principal/">Security Principal</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/en/session-key/">Session Key</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

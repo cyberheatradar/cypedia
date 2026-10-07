@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Key Distribution Center（KDC）のAS/TGS、Realm、ticketとsession key発行、Active Directory実装を解説する。"><title>Key Distribution Center - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/key-distribution-center/">日本語</a><span> / </span><a href="/cypedia/en/key-distribution-center/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Key Distribution Center</h1><div class="article-meta"><strong>別名:</strong> KDC</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p>Key Distribution Center（<a href="./">KDC</a>）は<a href="../kerberos/">Kerberos</a>の中心となるtrusted serviceです。</p>
+<p>KDCは<a href="../kerberos-ticket/">ticket</a>とtemporary <a href="../session-key/">Session Key</a>を供給し、<a href="../realm/">Realm</a>に登録された<a href="../principal/">principal</a>のauthenticationを支えます。</p>
+<h2 id="asとtgs">ASとTGS</h2>
+<p>KDCは論理的に次の2つのserviceを提供します。</p>
+<ul>
+<li><a href="../authentication-server/">Authentication Server（AS）</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server（TGS）</a></li>
+</ul>
+<p>ASはinitial authenticationを処理し、<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>を発行します。</p>
+<p>TGSは有効なTGTを提示したclientへ、target service用の<a href="../service-ticket/">Service Ticket</a>を発行します。</p>
+<h2 id="account-database">Account Database</h2>
+<p>KDCはRealmに属するprincipalと、そのauthenticationに必要なlong-term key informationへaccessできる必要があります。</p>
+<p>KDCはRealm内で非常に高いtrustを置かれるcomponentです。</p>
+<h2 id="session-key">Session Key</h2>
+<p>KDCはKerberos exchangeでtemporary Session Keyを生成・配布します。</p>
+<p>clientとTGS、clientとapplication serviceなど、異なる通信段階で異なるSession Keyが利用されます。</p>
+<h2 id="active-directory">Active Directory</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/key-distribution-center">Microsoft - Key Distribution Center</a></p>
+</blockquote>
+<p><a href="../active-directory/">Active Directory</a>ではKDCは<a href="../domain-controller/">Domain Controller</a>上のdomain serviceとして実装されます。</p>
+<p>KDCはActive Directoryをaccount databaseとして利用します。</p>
+<p>Microsoftは、他の<a href="../active-directory-domain/">Domain</a>へのreferralを処理する際に<a href="../global-catalog/">Global Catalog</a>も利用すると説明しています。</p>
+<h2 id="availability">Availability</h2>
+<p>AD DSでは複数のDomain ControllerがKDC requestを処理できます。</p>
+<p>これによりauthentication serviceとticket-granting serviceを単一serverへ依存させずに運用できます。</p>
+<h2 id="security上の重要性">Security上の重要性</h2>
+<p>KDCはprincipalのlong-term key informationやticket issuanceに関与します。</p>
+<p>KDCまたはそのkey materialの侵害はRealm全体のauthentication trustへ重大な影響を与える可能性があります。</p>
+<p>Active Directoryでは<a href="../krbtgt/">KRBTGT</a>のkey materialがTGTのsecurityに特に重要です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/key-distribution-center">Microsoft - Key Distribution Center</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/authenticator/">Authenticator</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/ntlm/">NTLM</a></li><li><a href="/cypedia/ja/pkinit/">PKINIT</a></li><li><a href="/cypedia/ja/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/ja/principal/">Principal</a></li><li><a href="/cypedia/ja/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/ja/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/replay-cache/">Replay Cache</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/session-key/">Session Key</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

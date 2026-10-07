@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows Access Control Entry（ACE）の構造、SID、Access Mask、ACE type、inheritanceを解説する。"><title>Access Control Entry - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/access-control-entry/">日本語</a><span> / </span><a href="/cypedia/en/access-control-entry/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Access Control Entry</h1><div class="article-meta"><strong>別名:</strong> ACE, ACEs</div><div class="article-meta"><strong>カテゴリ:</strong> Windows</div><div class="article-body"><blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-entries">Microsoft - Access Control Entries</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-lists">Microsoft - Access Control Lists</a></p>
+</blockquote>
+<p><a href="./">Access Control Entry（ACE）</a>は、<a href="../access-control-list/">Access Control List（ACL）</a>を構成するentryです。1つのACLは0個以上のACEを持つことができ、各ACEは特定のtrusteeに対するaccess controlまたはaudit ruleを表します。</p>
+<h2 id="core-fields">Core Fields</h2>
+<p>Microsoft documentationでは、ACEには少なくとも次のaccess-control informationが含まれると説明されています。</p>
+<ul>
+<li>trusteeを識別する<a href="../security-identifier/">Security Identifier（SID）</a></li>
+<li>ACEが制御する<a href="../access-rights/">Access Rights</a>を表す<a href="../access-mask/">Access Mask</a></li>
+<li>ACE type</li>
+<li>child objectへのinheritanceを制御するflag</li>
+</ul>
+<p>このためACEを評価するときは、「誰に」「どのrightを」「allow / deny / auditのどの意味で」「どの範囲へ継承するか」を分離して確認する必要があります。</p>
+<h2 id="ace-types">ACE Types</h2>
+<p>多くのWindows <a href="../securable-object/">Securable Object</a>で利用される代表的なtypeには、access-allowed ACE、access-denied ACE、system-audit ACEがあります。</p>
+<p>access-allowed / access-denied ACEは<a href="../discretionary-access-control-list/">DACL</a>でaccess decisionに使用され、system-audit ACEは<a href="../system-access-control-list/">SACL</a>でaudit対象を定義します。</p>
+<p>Microsoftはdirectory service object向けにobject-specific ACEも定義しています。これらはobject typeやproperty setなどをより細かく指定できる仕組みですが、本記事では全subtypeの列挙までは扱いません。</p>
+<h2 id="inheritance">Inheritance</h2>
+<p>ACE flagはchild containerやchild objectがACEをinheritできるかを制御します。</p>
+<p>inheritanceは単にACEをcopyするだけではなく、container / non-containerの違いやinheritance flagの組み合わせによって結果が変わります。そのためACL reviewではexplicit ACEとinherited ACEを区別する必要があります。</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>DACLではACEの順序がaccess decisionに影響します。特にdeny ACEとallow ACEの関係を評価するときは、単純なpermission一覧だけで判断しないことが重要です。</p>
+<p>Active Directory permissionではobject-specific ACEも利用されるため、将来的なAD permission clusterではACE type、object GUID、inheritance scopeをさらに詳細化します。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../access-control-list/">Access Control List</a></li>
+<li><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></li>
+<li><a href="../system-access-control-list/">System Access Control List</a></li>
+<li><a href="../security-identifier/">Security Identifier</a></li>
+<li><a href="../access-mask/">Access Mask</a></li>
+<li><a href="../access-rights/">Access Rights</a></li>
+<li><a href="../securable-object/">Securable Object</a></li>
+<li><a href="../active-directory/">Active Directory</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-entries">Microsoft - Access Control Entries</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-lists">Microsoft - Access Control Lists</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-check/">Access Check</a></li><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/access-mask/">Access Mask</a></li><li><a href="/cypedia/ja/access-rights/">Access Rights</a></li><li><a href="/cypedia/ja/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/ja/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/ja/system-access-control-list/">System Access Control List</a></li><li><a href="/cypedia/ja/windows-privilege/">Windows Privilege</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

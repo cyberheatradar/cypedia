@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="NTDS Credential Dumping from NTDS.dit or backups, Domain credential impact, detection, defense, and the difference from DCSync."><title>NTDS Credential Dumping - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/ntds-credential-dumping/">日本語</a><span> / </span><a href="/cypedia/en/ntds-credential-dumping/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>NTDS Credential Dumping</h1><div class="article-meta"><strong>Categories:</strong> Active Directory / Credential Access</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></p>
+</blockquote>
+<p><a href="./">NTDS Credential Dumping</a> is a credential-access technique that obtains sensitive <a href="../active-directory/">Active Directory</a> credential information from <a href="../ntds-dit/">NTDS.dit</a> or copies and backups of the directory database on a <a href="../domain-controller/">Domain Controller</a>.</p>
+<h2 id="ntdsdit">NTDS.dit</h2>
+<p>NTDS.dit is the AD DS directory database.</p>
+<p>It stores directory objects such as users, computers, and groups together with sensitive authentication-related data.</p>
+<p>MITRE ATT&amp;CK identifies the default path as <code>%SystemRoot%\NTDS\Ntds.dit</code>.</p>
+<h2 id="credential-impact">Credential Impact</h2>
+<p>Compromise of the directory database together with required supporting material can expose password hashes and other credential data for Domain accounts.</p>
+<p>Because the database includes high-value accounts such as <a href="../krbtgt/">KRBTGT</a>, compromise can result in Domain-wide security impact.</p>
+<h2 id="active-database-and-backups">Active Database and Backups</h2>
+<p>The active database on a Domain Controller is not the only possible source.</p>
+<p>MITRE ATT&amp;CK notes that adversaries may search not only active Domain Controllers but also backups containing the same or similar directory information.</p>
+<p>Backups containing the directory database can therefore become credential-exposure sources and should be protected as assets containing sensitive credential material.</p>
+<h2 id="difference-from-dcsync">Difference from DCSync</h2>
+<p><a href="../dcsync/">DCSync</a> uses <a href="../active-directory-replication/">Active Directory Replication</a> protocols to request credential material remotely.</p>
+<p>NTDS Credential Dumping instead involves access to the directory database file or a copy of it.</p>
+<h2 id="golden-ticket-relationship">Golden Ticket Relationship</h2>
+<p>If NTDS compromise exposes KRBTGT key material, follow-on risk can include <a href="../golden-ticket/">Golden Ticket</a> forgery.</p>
+<h2 id="detection">Detection</h2>
+<p>Important observations include:</p>
+<ul>
+<li>access to NTDS.dit on Domain Controllers;</li>
+<li>directory-database copy or backup operations;</li>
+<li>unusual Volume Shadow Copy activity;</li>
+<li>suspicious access to backup infrastructure;</li>
+<li>privileged processes interacting with directory database material.</li>
+</ul>
+<p>Authorized backup and maintenance operations should be baselined to reduce false positives.</p>
+<h2 id="mitigation">Mitigation</h2>
+<p>Important controls include:</p>
+<ul>
+<li>minimizing interactive and administrative access to Domain Controllers;</li>
+<li>treating backups as assets with Domain Controller-level sensitivity;</li>
+<li>protecting privileged credentials;</li>
+<li>monitoring database and backup access;</li>
+<li>assessing the possibility of broad Domain credential exposure after a Domain Controller is fully compromised.</li>
+</ul>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../ntds-dit/">NTDS.dit</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services Overview</a></li>
+<li><a href="https://attack.mitre.org/detectionstrategies/DET0586/">MITRE ATT&amp;CK DET0586 - Detection of NTDS.dit Credential Dumping</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/dcsync/">DCSync</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/ntds-dit/">NTDS.dit</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="LDAP directory models, Bind/Search/Modify operations, DNs, Active Directory use, signing, TLS, and channel binding."><title>LDAP - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/ldap/">日本語</a><span> / </span><a href="/cypedia/en/ldap/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>LDAP</h1><div class="article-meta"><strong>Aliases:</strong> Lightweight Directory Access Protocol</div><div class="article-meta"><strong>Categories:</strong> Network / Protocol / Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4511.html">RFC 4511 - Lightweight Directory Access Protocol (LDAP): The Protocol</a></p>
+</blockquote>
+<p><a href="./">Lightweight Directory Access Protocol (LDAP)</a> is an application protocol used to access directory services.</p>
+<p>RFC 4511 defines LDAP protocol elements, semantics, and encodings.</p>
+<p>LDAP is not specific to one directory product and is based on directory concepts derived from the X.500 model.</p>
+<h2 id="directory-model">Directory Model</h2>
+<p>An LDAP directory is represented as a collection of entries.</p>
+<p>Each entry has a Distinguished Name (DN) and contains attributes and attribute values.</p>
+<p>A directory schema constrains the object classes and attributes that can exist.</p>
+<p>In <a href="../active-directory/">Active Directory</a>, the <a href="../active-directory-schema/">Active Directory Schema</a> defines directory object classes and attributes.</p>
+<h2 id="distinguished-names">Distinguished Names</h2>
+<p>A DN identifies an entry in the directory tree.</p>
+<p>It is composed hierarchically from Relative Distinguished Names (RDNs).</p>
+<p>AD DS objects such as users, computers, and OUs can be addressed through LDAP DNs.</p>
+<h2 id="core-operations">Core Operations</h2>
+<p>RFC 4511 defines operations including:</p>
+<ul>
+<li>Bind;</li>
+<li>Unbind;</li>
+<li>Search;</li>
+<li>Modify;</li>
+<li>Add;</li>
+<li>Delete;</li>
+<li>Modify DN;</li>
+<li>Compare;</li>
+<li>Abandon;</li>
+<li>Extended Operation.</li>
+</ul>
+<p>Search requests specify information such as a base object, scope, filter, and requested attributes.</p>
+<h2 id="bind">Bind</h2>
+<p>The Bind operation establishes authentication information for an LDAP session.</p>
+<p>LDAP supports simple authentication and SASL mechanisms.</p>
+<p>Authentication and authorization are distinct: after authentication, server policy determines which directory objects and attributes the identity may access.</p>
+<h2 id="active-directory">Active Directory</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/active-directory-domain-services">Microsoft - Active Directory Domain Services</a></p>
+</blockquote>
+<p>A <a href="../domain-controller/">Domain Controller</a> exposes LDAP interfaces for AD DS directory data.</p>
+<p>LDAP can be used to search, read, and modify users, computers, groups, OUs, and configuration objects where authorization permits.</p>
+<p>AD DS directory state is separated into <a href="../directory-partition/">Directory Partitions</a>, which also define important replication scopes.</p>
+<p>The <a href="../global-catalog/">Global Catalog</a> supports directory searches using a replica model and attribute set that differ from a full Domain partition replica.</p>
+<h2 id="ldap-signing">LDAP Signing</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/ldap-signing">Microsoft - LDAP signing for Active Directory Domain Services</a></p>
+</blockquote>
+<p>LDAP signing provides cryptographic integrity protection for LDAP communication in AD DS.</p>
+<p>Allowing unsigned LDAP traffic increases exposure to network tampering and man-in-the-middle attacks.</p>
+<p>Microsoft provides policy and event-monitoring mechanisms for deploying and auditing LDAP signing requirements.</p>
+<h2 id="tls-and-channel-binding">TLS and Channel Binding</h2>
+<p>LDAP can use TLS to provide confidentiality and server authentication.</p>
+<p>RFC 4511 defines the StartTLS extended operation.</p>
+<p>AD DS also supports LDAP channel binding, which binds application-layer authentication to the TLS channel.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Important practices include:</p>
+<ul>
+<li>avoiding unnecessary unsigned LDAP;</li>
+<li>not exposing credentials over unprotected channels;</li>
+<li>validating TLS certificates correctly;</li>
+<li>auditing compatibility before enforcing signing and channel binding;</li>
+<li>applying least privilege to directory permissions.</li>
+</ul>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../distinguished-name/">Distinguished Name</a></li>
+<li><a href="../access-control-list/">Access Control List</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4510.html">RFC 4510 - LDAP: Technical Specification Road Map</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4511.html">RFC 4511 - LDAP: The Protocol</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4512.html">RFC 4512 - LDAP: Directory Information Models</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4513.html">RFC 4513 - LDAP: Authentication Methods and Security Mechanisms</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/ldap-signing">Microsoft - LDAP signing for Active Directory Domain Services</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/ldap-channel-binding">Microsoft - LDAP channel binding overview for Active Directory Domain Services</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/distinguished-name/">Distinguished Name</a></li><li><a href="/cypedia/en/dns/">DNS</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

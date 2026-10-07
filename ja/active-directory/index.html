@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Domain Servicesの構造、データモデル、認証、レプリケーション、DNS、Group Policy、セキュリティ上の論点を一次情報に基づいて解説する。"><title>Active Directory - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/active-directory/">日本語</a><span> / </span><a href="/cypedia/en/active-directory/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Active Directory</h1><div class="article-meta"><strong>別名:</strong> AD</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/">MS-ADTS</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a></p>
+</blockquote>
+<p>Active Directoryは、Microsoft Windows環境で利用されるディレクトリサービスおよび関連技術群です。</p>
+<p>MicrosoftのActive Directory Technical Specification（MS-ADTS）はActive Directoryの中核機能を規定しており、Active Directoryが<a href="../ldap/">LDAP</a>を拡張し、LDAPに対するMicrosoft固有のvariationを持つことを説明しています。</p>
+<p>現在一般に「Active Directory」と呼ばれる場合、企業ネットワークのidentity・authentication・authorization・configuration管理基盤として利用されるActive Directory Domain Services（AD DS）を指すことが多いため、本項目では主としてAD DSを扱います。</p>
+<p>AD DSはユーザー、コンピューター、グループ、サービスなどのobjectとattributeを階層構造で保持し、検索、認証、authorization情報の提供、レプリケーション、ポリシー管理などの基盤を提供します。</p>
+<h2 id="歴史的背景">歴史的背景</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/active-directory-domain-services">Microsoft - Active Directory Domain Services</a></p>
+</blockquote>
+<p>Microsoftの公式資料では、Active Directory Domain ServicesはWindows 2000 Server以降のWindows Serverベース分散ネットワークを構成する基盤として説明されています。</p>
+<p>従来のWindows NT domain modelから、階層化されたdirectory、複数のDomain Controller、LDAPベースのdirectory access、Kerberos認証、DNSとの統合などを持つ設計へ発展しました。</p>
+<p>その後もAD DSはWindows Serverのidentity infrastructureとして継続的に実装・拡張されており、Microsoftは現在もMS-ADTSを含むOpen Specificationsを更新しています。</p>
+<h2 id="active-directoryとad-ds">Active DirectoryとAD DS</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/bacff5f1-9127-457b-877c-db97b1e1802f">MS-ADTS Introduction</a></p>
+</blockquote>
+<p>MS-ADTSではActive Directoryの実装形態として、Active Directory Domain Services（AD DS）とActive Directory Lightweight Directory Services（AD LDS）が扱われています。</p>
+<p>AD DSはdomain、forest、Domain Controller、domain-joined client、Kerberos、Group PolicyなどのWindows domain infrastructureを提供します。</p>
+<p>一方、AD LDSはdomain infrastructureを構成せずにdirectory service機能を利用するための別形態です。</p>
+<p>CyPediaでは、単にActive Directoryと記載する場合でも、文脈上必要に応じてAD DSとAD LDSを区別します。</p>
+<h2 id="論理構造">論理構造</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></p>
+</blockquote>
+<p>AD DSの論理構造は階層化されています。</p>
+<p>代表的な構造は次のようになります。</p>
+<ul>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../organizational-unit/">Organizational Unit（OU）</a></li>
+<li>user</li>
+<li>computer</li>
+<li>group</li>
+<li>service-related object</li>
+</ul>
+<h3 id="forest"><a href="../active-directory-forest/">Forest</a></h3>
+<p>Forestは1つ以上のActive Directory Domainから構成される最上位の論理構造です。</p>
+<p>同一Forest内のDomainは共通のdirectory schema、configuration、Global Catalogなどを共有し、Domain間には自動的な双方向transitive trustが形成されます。</p>
+<p>MicrosoftのAD DS用語資料では、Forestはsecurity boundaryとして扱われています。</p>
+<p>そのため、Forest全体へ影響する権限やDomain Controllerの侵害は、単一Domainだけの問題として扱えない場合があります。</p>
+<h3 id="domain"><a href="../active-directory-domain/">Domain</a></h3>
+<p>DomainはActive Directory Forest内のdirectory partitionであり、ユーザー、コンピューター、グループなどのobjectを管理する主要な単位です。</p>
+<p>Domainはauthentication、policy administration、replicationなどのscopeとしても機能します。</p>
+<p>Domain内には複数の<a href="../domain-controller/">Domain Controller</a>を配置でき、directory dataがDomain Controller間でreplicateされます。</p>
+<h3 id="organizational-unit"><a href="../organizational-unit/">Organizational Unit</a></h3>
+<p>Organizational Unit（OU）はDomain内に階層的なcontainer構造を作るためのobjectです。</p>
+<p>OUは主として次の目的で使用されます。</p>
+<ul>
+<li>管理権限のdelegation</li>
+<li>objectの論理的な整理</li>
+<li><a href="../group-policy/">Group Policy</a>適用scopeの構成</li>
+</ul>
+<p>OUは組織図そのものを再現する必要はなく、Microsoftはadministration delegationやGroup Policyなどの管理目的に基づいて設計することを推奨しています。</p>
+<h2 id="物理構造とsite">物理構造とSite</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></p>
+</blockquote>
+<p>AD DSの論理構造とは別に、ネットワークの物理的・地理的構成を表現するため<a href="../active-directory-site/">Active Directory Site</a>が使用されます。</p>
+<p>Siteは高速で信頼性の高いnetwork connectionによって結ばれた1つ以上のTCP/IP subnetを表します。</p>
+<p>Site情報は主に次の用途で利用されます。</p>
+<ul>
+<li>clientが適切なDomain Controllerを選択するための情報</li>
+<li>replication topologyの最適化</li>
+<li>site間network costやscheduleの制御</li>
+</ul>
+<p>1つのDomainは複数Siteへまたがることができ、1つのSiteに複数DomainのDomain Controllerを配置できます。</p>
+<h2 id="domain-controller">Domain Controller</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/securing-domain-controllers-against-attack">Microsoft - Securing domain controllers against attack</a></p>
+</blockquote>
+<p><a href="../domain-controller/">Domain Controller（DC）</a>はAD DSをホストするWindows Serverです。</p>
+<p>Domain Controllerはdirectory databaseを保持し、authentication、directory query、replicationなどActive Directoryの中核処理を提供します。</p>
+<p>AD DS environmentではDomain Controllerが<a href="../kerberos/">Kerberos</a>のKDCとして機能し、Domain accountの認証に関与します。</p>
+<p>Domain ControllerはAD environmentの信頼性とsecurityに直接影響するため、通常のmember serverやworkstationより高い保護優先度が必要です。</p>
+<h2 id="objectとattribute">ObjectとAttribute</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5859bab0-f545-4db6-80c6-9798b484b3d8">MS-ADTS - Active Directory Schema</a></p>
+</blockquote>
+<p>Active Directoryでは、user、computer、groupなどのdirectory entityをobjectとして保持します。</p>
+<p>各objectは複数のattributeを持ちます。</p>
+<p>例えばuser objectであれば、名前、識別情報、group membershipなどの情報がattributeとして保持されます。</p>
+<p>objectにどのattributeを持たせられるか、どのattributeが必須かといった規則は<a href="../active-directory-schema/">Active Directory Schema</a>で定義されます。</p>
+<h2 id="active-directory-schema">Active Directory Schema</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5859bab0-f545-4db6-80c6-9798b484b3d8">MS-ADTS - Active Directory Schema</a></p>
+</blockquote>
+<p><a href="../active-directory-schema/">Active Directory Schema</a>はdirectoryへ保存可能なobjectの種類と構造を定義します。</p>
+<p>Schemaは主に次の要素から構成されます。</p>
+<ul>
+<li>class</li>
+<li>attribute</li>
+<li>syntax</li>
+</ul>
+<p>classは保存可能なobject typeを定義し、attributeはobjectが保持できる情報を定義します。</p>
+<p>Schema変更はForest全体へ影響するため、通常のdirectory object変更より慎重な管理が必要です。</p>
+<h2 id="directory-partition--naming-context">Directory Partition / Naming Context</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/naming-contexts-and-partitions">Microsoft - Naming Contexts and Directory Partitions</a></p>
+</blockquote>
+<p>Active Directory databaseは複数の<a href="../directory-partition/">Directory Partition</a>に分割されます。</p>
+<p>Directory PartitionはNaming Context（NC）とも呼ばれ、それぞれ独立したreplication scopeを持ちます。</p>
+<p>代表的なpartitionには次があります。</p>
+<ul>
+<li>Schema Partition</li>
+<li>Configuration Partition</li>
+<li>Domain Partition</li>
+<li>Application Directory Partition</li>
+</ul>
+<p>Schema PartitionとConfiguration PartitionはForest内のDomain Controllerへ共有されます。</p>
+<p>Domain PartitionはそのDomainに属するuser、computerなどのobjectを保持し、そのDomainのDomain Controller間でreplicateされます。</p>
+<h2 id="ldap">LDAP</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/">MS-ADTS</a> / <a href="https://www.rfc-editor.org/rfc/rfc4511.html">RFC 4511</a></p>
+</blockquote>
+<p><a href="../ldap/">LDAP</a>はdirectory serviceへaccessするためのprotocolです。</p>
+<p>RFC 4511はLDAPのprotocol element、semantics、encodingを規定しています。</p>
+<p>Active DirectoryはLDAPを利用してdirectory objectのsearch、read、modifyなどの操作を提供しますが、Microsoft固有のbehaviorやextensionも持つため、Active Directoryの詳細なprotocol behaviorを解析する場合はRFCだけでなくMS-ADTSなどのOpen Specificationsも必要です。</p>
+<h2 id="ntdsdit">NTDS.dit</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/ad-ds-installation-and-removal-wizard-page-descriptions">Microsoft - AD DS Configuration Wizard</a> / <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/passwords-technical-overview">Microsoft - Passwords technical overview</a> / <a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003</a></p>
+</blockquote>
+<p><a href="../ntds-dit/">NTDS.dit</a>はDomain Controllerが使用するActive Directory database fileです。</p>
+<p>AD DSのobjectやcredentialに関連する重要な情報が保存されるため、Domain Controller上のNTDS.ditは特に高い保護が必要なassetです。</p>
+<p>NTDS.ditまたはそのbackupが攻撃者に取得された場合、domain credential情報を含む大量の機密情報が露出する可能性があります。</p>
+<h2 id="sysvol">SYSVOL</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a></p>
+</blockquote>
+<p><a href="../sysvol/">SYSVOL</a>はDomain Controller上で共有されるsystem volumeです。</p>
+<p>Group Policy Objectはdirectory側のGroup Policy Containerと、SYSVOL側のGroup Policy Templateという2つの主要部分を持ちます。</p>
+<p>そのため、Group Policyの完全性を考える場合はActive Directory databaseだけでなくSYSVOLの保護とreplicationも重要です。</p>
+<h2 id="global-catalog">Global Catalog</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/global-catalog">Microsoft - Global Catalog</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></p>
+</blockquote>
+<p><a href="../global-catalog/">Global Catalog（GC）</a>はForest全体のobjectを検索できるようにする機能です。</p>
+<p>writable Global Catalog serverは、自身のDomainについてfull writable replicaを保持し、Forest内の他Domainについてpartial read-only replicaを保持します。<a href="../read-only-domain-controller/">Read-Only Domain Controller（RODC）</a>もGlobal Catalogとして構成できますが、そのDomain Controller自体はread-onlyのままです。</p>
+<p>これにより、利用者やapplicationはobjectがどのDomainに存在するかを事前に把握していなくてもForest全体からobjectを検索できます。</p>
+<h2 id="replication">Replication</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a> / <a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/active-directory/fsmo-roles">Microsoft - Active Directory FSMO roles</a></p>
+</blockquote>
+<p><a href="../active-directory-replication/">Active Directory Replication</a>は複数のDomain Controller間でdirectory dataを同期する仕組みです。</p>
+<p>Active Directoryは大部分のdirectory updateについてmulti-master modelを採用しており、複数のwritable Domain Controllerで変更を受け付け、その変更を他のDomain Controllerへreplicateします。</p>
+<p>replication topologyはKnowledge Consistency Checker（KCC）によって生成・調整されます。</p>
+<p>Site内replicationとSite間replicationではnetwork topology、cost、scheduleなどの扱いが異なります。</p>
+<h2 id="fsmo-roles">FSMO Roles</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></p>
+</blockquote>
+<p>Active Directoryは基本的にはmulti-masterですが、競合を避けるため一部処理は<a href="../fsmo-roles/">Flexible Single Master Operations（FSMO）</a>として単一のDomain Controllerが担当します。</p>
+<p>5つのFSMO roleがあります。</p>
+<p>Forest単位:</p>
+<ul>
+<li>Schema Master</li>
+<li>Domain Naming Master</li>
+</ul>
+<p>Domain単位:</p>
+<ul>
+<li>RID Master</li>
+<li>PDC Emulator</li>
+<li>Infrastructure Master</li>
+</ul>
+<p>FSMO roleは特定のDomain Controllerへ永久固定されるものではなく、必要に応じて別のDomain Controllerへtransferできます。</p>
+<h2 id="dnsとの関係">DNSとの関係</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/dns-and-ad-ds">Microsoft - DNS and AD DS</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/active-directory-integrated-dns-zones">Microsoft - Active Directory-Integrated DNS Zones</a></p>
+</blockquote>
+<p>AD DSは<a href="../dns/">DNS</a>と密接に統合されています。</p>
+<p>MicrosoftはAD DSがDNS name resolutionを使用して、clientがDomain Controllerを発見し、Domain Controller同士がdirectory service通信を行えるようにすると説明しています。</p>
+<p>Active Directory-integrated DNS zoneではDNS zone dataをAD DS内に保存し、Active Directory replicationを利用して複数Domain Controllerへ同期できます。</p>
+<p>AD環境ではDNS設定の誤りがauthentication、Domain Controller discovery、replicationなど広範囲へ影響する場合があります。</p>
+<h2 id="authentication">Authentication</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a> / <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/ntlm-overview">Microsoft - NTLM overview</a></p>
+</blockquote>
+<p>AD DS environmentでは<a href="../kerberos/">Kerberos V5</a>が主要なauthentication protocolとして使用されます。</p>
+<p>KerberosではDomain Controllerが<a href="../key-distribution-center/">KDC</a>として動作します。</p>
+<p>一方、<a href="../ntlm/">NTLM</a>は互換性のため現在も一部環境で利用可能ですが、Microsoftは<a href="../ntlm/">NTLMv1</a>をWindows Serverから削除し、<a href="../ntlm/">NTLMv2</a>をdeprecatedとして将来のreleaseで削除予定としています。</p>
+<p>MicrosoftはActive Directory environmentではKerberos V5をpreferred authentication methodとして位置づけています。</p>
+<h2 id="security-identifier">Security Identifier</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers">Microsoft - Security Identifiers</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></p>
+</blockquote>
+<p>Windowsではuser、group、computerなどの<a href="../security-principal/">security principal</a>を識別するため<a href="../security-identifier/">Security Identifier（SID）</a>が使用されます。</p>
+<p>Domainで作成される<a href="../security-principal/">security principal</a>のSIDはDomain SIDとRelative ID（RID）などから構成されます。</p>
+<p>RIDの一意性管理にはFSMO roleの1つであるRID Masterが関与します。</p>
+<h2 id="trust">Trust</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></p>
+</blockquote>
+<p><a href="../active-directory-trust/">Active Directory Trust</a>は異なるDomainやForest間でauthentication relationshipを形成する仕組みです。</p>
+<p>同一Forest内のDomain間には自動的な双方向transitive trustがあります。</p>
+<p>また、環境要件に応じてForest TrustやExternal Trustなどを構成できます。</p>
+<p>Trustはresource accessを可能にする重要な仕組みである一方、信頼範囲やadministrative boundaryの設計に直接関係します。</p>
+<h2 id="group-policy">Group Policy</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a> / <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpod/b724bd91-e224-4524-b752-5f810a0cc071">MS-GPOD</a></p>
+</blockquote>
+<p><a href="../group-policy/">Group Policy</a>はDomain-joined computerとuserへ設定を集中適用するためのWindows管理機能です。</p>
+<p>Group Policy Object（GPO）はSite、Domain、OUなどへlinkでき、それらの階層とsecurity filteringなどに基づいて適用対象が決定されます。</p>
+<p>GPOはdirectory service側の情報とSYSVOL上のfile-based dataの両方を利用します。</p>
+<h2 id="セキュリティ上の重要性">セキュリティ上の重要性</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory">Microsoft - Best practices for securing Active Directory</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/securing-domain-controllers-against-attack">Microsoft - Securing domain controllers against attack</a></p>
+</blockquote>
+<p>Active Directoryはidentity、credential、authorization、configurationを集中管理するため、企業networkにおける最重要security infrastructureの1つです。</p>
+<p>特にDomain Controllerが侵害された場合、directory databaseの変更、credential情報へのaccess、policy変更などを通じてDomainまたはForest全体へ重大な影響が生じる可能性があります。</p>
+<p>MicrosoftはDomain Controllerへのprivileged accessが得られた場合、AD databaseだけでなくAD管理下のsystemとaccount全体が脅かされると説明しています。</p>
+<p>そのため、Domain Controller、privileged account、administrative workstationなどは一般端末より厳格に保護する必要があります。</p>
+<h2 id="攻撃悪用との関係">攻撃・悪用との関係</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1003/006/">MITRE ATT&amp;CK T1003.006 - DCSync</a> / <a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a> / <a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></p>
+</blockquote>
+<p>Active Directoryは多くのWindows enterprise環境でidentityの中心に位置するため、攻撃者にとって重要な標的です。</p>
+<p>代表的な攻撃・悪用には次のようなものがあります。</p>
+<h3 id="dcsync"><a href="../dcsync/">DCSync</a></h3>
+<p>DCSyncはDomain Controller replication APIを悪用し、攻撃者がDomain Controllerのreplication処理を模倣してcredential情報などを取得しようとする手法です。</p>
+<p>成立にはdirectory replicationに関係する強い権限が必要です。</p>
+<h3 id="ntds-credential-dumping"><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a></h3>
+<p>攻撃者が<a href="../ntds-dit/">NTDS.dit</a>またはそのcopy・backupへaccessし、domain credential informationなどを取得しようとする攻撃です。</p>
+<p>Domain Controllerまたはbackup infrastructureの侵害と密接に関係します。</p>
+<h3 id="kerberos関連攻撃">Kerberos関連攻撃</h3>
+<p>Active DirectoryではKerberosが主要なauthentication protocolであるため、<a href="../kerberoasting/">Kerberoasting</a>、<a href="../as-rep-roasting/">AS-REP Roasting</a>、<a href="../golden-ticket/">Golden Ticket</a>、<a href="../silver-ticket/">Silver Ticket</a>なども重要です。</p>
+<p>これらの詳細は各独立項目で扱います。</p>
+<h3 id="domain-trust-discovery"><a href="../domain-trust-discovery/">Domain Trust Discovery</a></h3>
+<p>攻撃者はDomain間・Forest間のTrust relationshipを列挙し、lateral movementや追加のattack pathを特定するために利用する場合があります。</p>
+<h2 id="防御緩和">防御・緩和</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory">Microsoft - Best practices for securing Active Directory</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/reducing-the-active-directory-attack-surface">Microsoft - Reducing the Active Directory Attack Surface</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/implementing-secure-administrative-hosts">Microsoft - Implementing Secure Administrative Hosts</a></p>
+</blockquote>
+<p>Active Directory防御では、単一のsecurity productだけではなくidentity infrastructure全体を保護する必要があります。</p>
+<p>重要な原則には次があります。</p>
+<ul>
+<li>Domain Controllerを一般serverより厳格に保護する</li>
+<li>Domain Controller上で不要なsoftwareやserviceを動かさない</li>
+<li>supportedなWindows Server versionを使用する</li>
+<li>Domain Admins、Enterprise Adminsなどの高権限group membershipを最小化する</li>
+<li>least privilegeを徹底する</li>
+<li>privileged accountを一般作業へ使用しない</li>
+<li>secure administrative hostまたはPrivileged Access Workstationを利用する</li>
+<li>privileged administrationへMFAを組み合わせる</li>
+<li>Group Policy、Trust、replication permissionなどの重要設定を監査する</li>
+<li>credential materialとbackupを保護する</li>
+<li>legacy authenticationへの依存を可能な範囲で削減する</li>
+</ul>
+<h2 id="制約限界">制約・限界</h2>
+<p>Active Directoryはidentityとdirectory infrastructureを提供しますが、それ単独ですべてのendpoint securityやapplication authorization問題を解決するものではありません。</p>
+<p>また、Active DirectoryはDNS、time synchronization、network connectivity、Domain Controller availabilityなど複数の周辺infrastructureへ依存します。</p>
+<p>ForestやDomainの設計、Trust、delegation、Group Policy、legacy protocol compatibilityなどの設定が不適切な場合、Active Directory自体が大きなattack surfaceになる可能性があります。</p>
+<h2 id="現在の位置づけ">現在の位置づけ</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-ad-ds-design">Microsoft - Understanding AD DS Design</a></p>
+</blockquote>
+<p>AD DSは現在もWindows Server enterprise environmentで広く利用されるidentity infrastructureです。</p>
+<p>cloud identityの普及後も、on-premises Windows domain、hybrid identity、legacy application、enterprise network authenticationなどでActive Directoryが継続して利用される環境は多く存在します。</p>
+<p>そのためActive Directoryの構造、authentication、replication、Trust、Group Policy、security boundaryを理解することは、Windows administrationだけでなくdefense、incident response、penetration testing、identity securityでも重要です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../fsmo-roles/">FSMO Roles</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../ntds-dit/">NTDS.dit</a></li>
+<li><a href="../sysvol/">SYSVOL</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../ldap/">LDAP</a></li>
+<li><a href="../dns/">DNS</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../ntlm/">NTLM</a></li>
+<li><a href="../service-principal-name/">SPN</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a></li>
+<li><a href="../domain-trust-discovery/">Domain Trust Discovery</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../knowledge-consistency-checker/">Knowledge Consistency Checker</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/">Microsoft Open Specifications - MS-ADTS: Active Directory Technical Specification</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/active-directory-domain-services">Microsoft - Active Directory Domain Services</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5859bab0-f545-4db6-80c6-9798b484b3d8">Microsoft - Active Directory Schema</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/naming-contexts-and-partitions">Microsoft - Naming Contexts and Directory Partitions</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4511.html">RFC 4511 - Lightweight Directory Access Protocol (LDAP): The Protocol</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/dns-and-ad-ds">Microsoft - DNS and AD DS</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpod/b724bd91-e224-4524-b752-5f810a0cc071">Microsoft Open Specifications - MS-GPOD: Group Policy Objects</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/ntlm-overview">Microsoft - NTLM overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory">Microsoft - Best practices for securing Active Directory</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/securing-domain-controllers-against-attack">Microsoft - Securing domain controllers against attack</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1003/006/">MITRE ATT&amp;CK T1003.006 - DCSync</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-">Microsoft - Install Active Directory Domain Services on Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/get-started/removed-deprecated-features-windows-server">Microsoft - Features removed or no longer developed in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers">Microsoft - Security Identifiers</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/passwords-technical-overview">Microsoft - Passwords technical overview</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-control-entry/">Access Control Entry</a></li><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/active-directory-forest/">Active Directory Forest</a></li><li><a href="/cypedia/ja/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/ja/active-directory-schema/">Active Directory Schema</a></li><li><a href="/cypedia/ja/active-directory-site/">Active Directory Site</a></li><li><a href="/cypedia/ja/active-directory-trust/">Active Directory Trust</a></li><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/computer-account/">Computer Account</a></li><li><a href="/cypedia/ja/connection-object/">Connection Object</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/dcsync/">DCSync</a></li><li><a href="/cypedia/ja/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/ja/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/ja/distinguished-name/">Distinguished Name</a></li><li><a href="/cypedia/ja/dns/">DNS</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/ja/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/ja/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/ja/group-policy/">Group Policy</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/knowledge-consistency-checker/">Knowledge Consistency Checker</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/ldap/">LDAP</a></li><li><a href="/cypedia/ja/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/ja/ntds-dit/">NTDS.dit</a></li><li><a href="/cypedia/ja/ntlm/">NTLM</a></li><li><a href="/cypedia/ja/organizational-unit/">Organizational Unit</a></li><li><a href="/cypedia/ja/pkinit/">PKINIT</a></li><li><a href="/cypedia/ja/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/ja/principal/">Principal</a></li><li><a href="/cypedia/ja/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/ja/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/ja/security-group/">Security Group</a></li><li><a href="/cypedia/ja/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/ja/security-principal/">Security Principal</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/sidhistory/">SIDHistory</a></li><li><a href="/cypedia/ja/site-link/">Site Link</a></li><li><a href="/cypedia/ja/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/ja/sysvol/">SYSVOL</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li><li><a href="/cypedia/ja/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

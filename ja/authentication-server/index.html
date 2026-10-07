@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Authentication Server（AS）のinitial authentication、AS-REQ/AS-REP、TGT発行とPre-Authenticationを解説する。"><title>Authentication Server - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/authentication-server/">日本語</a><span> / </span><a href="/cypedia/en/authentication-server/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Authentication Server</h1><div class="article-meta"><strong>別名:</strong> AS</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - Kerberos Authentication Service Exchange</a></p>
+</blockquote>
+<p>Authentication Server（<a href="./">AS</a>）は<a href="../key-distribution-center/">Key Distribution Center（KDC）</a>を構成するserviceの1つです。</p>
+<p>ASは<a href="../kerberos/">Kerberos</a> clientのinitial authenticationを処理し、成功すると<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>とclient/TGS間で利用する<a href="../session-key/">Session Key</a>に関する情報を含むAS-REPを返します。</p>
+<h2 id="as-req">AS-REQ</h2>
+<p>clientはASへAS-REQを送信します。</p>
+<p>requestにはclientの<a href="../principal/">Principal</a>や要求対象のticket-granting serviceなどのinformationが含まれます。</p>
+<h2 id="pre-authentication">Pre-Authentication</h2>
+<p><a href="../pre-authentication/">Pre-Authentication</a>が必要な環境では、clientはAS-REQにauthentication evidenceを含めます。</p>
+<p>KDCはそのinformationを検証してからTGTを発行します。</p>
+<p>Pre-Authenticationを要求しないaccountは<a href="../as-rep-roasting/">AS-REP Roasting</a>に関連するsecurity riskを持つ場合があります。</p>
+<h2 id="as-rep">AS-REP</h2>
+<p>ASがrequestを受理するとAS-REPを返します。</p>
+<p>AS-REPにはTGTとclient/TGS間で使用される<a href="../session-key/">Session Key</a>に関するinformationが含まれます。</p>
+<p>clientは取得したTGTをcacheし、その後の<a href="../ticket-granting-server/">Ticket-Granting Server（TGS）</a> exchangeに利用します。</p>
+<h2 id="pkinit">PKINIT</h2>
+<p>password-derived keyだけでなく、<a href="../pkinit/">PKINIT</a>を使用してpublic-key cryptographyによるinitial authenticationを行うこともできます。</p>
+<p>PKINITはRFC 4556で規定されています。</p>
+<h2 id="active-directory">Active Directory</h2>
+<p><a href="../active-directory/">Active Directory</a>では<a href="../domain-controller/">Domain Controller</a>上のKDCがAS functionalityを提供します。</p>
+<p>AD DS environmentではWindows固有のKerberos behaviorがMS-KILEなどで規定されています。</p>
+<h2 id="security上の意味">Security上の意味</h2>
+<p>AS exchangeはKerberos authentication chainの入口です。</p>
+<p>Pre-Authentication policy、supported encryption type、credential protection、KDC securityはinitial authenticationの安全性に直接影響します。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../pkinit/">PKINIT</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/authentication-service-exchange">Microsoft - Authentication Service Exchange</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556 - Public Key Cryptography for Initial Authentication in Kerberos</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/pkinit/">PKINIT</a></li><li><a href="/cypedia/ja/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/ja/principal/">Principal</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/session-key/">Session Key</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

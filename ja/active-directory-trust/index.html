@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Trustの方向、transitivity、Domain間・Forest間authentication relationshipを解説する。"><title>Active Directory Trust - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/active-directory-trust/">日本語</a><span> / </span><a href="/cypedia/en/active-directory-trust/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Active Directory Trust</h1><div class="article-meta"><strong>別名:</strong> Domain Trust, Forest Trust</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></p>
+</blockquote>
+<p>Active Directory Trustは、異なる<a href="../active-directory-domain/">Domain</a>や<a href="../active-directory-forest/">Forest</a>間でauthentication relationshipを成立させる仕組みです。</p>
+<p>Trustによって、一方のDomainで認証されたidentityを別のDomain側のresource access判断に利用できるようになります。</p>
+<h2 id="same-forest-trust">Same-Forest Trust</h2>
+<p>同一Forest内のDomainはautomatic two-way transitive trustによって接続されます。</p>
+<p>そのため、同一Forestに存在する複数Domainの間にはauthentication pathが形成されます。</p>
+<p>MicrosoftはForestそのものをActive Directoryのsecurity boundaryとして定義しています。同一Forest内のautomatic two-way transitive trustは、そのsecurity boundary内部のauthentication relationshipです。</p>
+<h2 id="forest-trust">Forest Trust</h2>
+<p>異なるForest間にはForest Trustを構成できます。</p>
+<p>Forest Trustは複数Forest間のauthentication relationshipを構成するために使用されます。</p>
+<h2 id="external-trust">External Trust</h2>
+<p>External Trustは、Forest-wide trust relationshipを構成せずに特定Domainとのtrustを構成する場合などに利用されます。</p>
+<h2 id="direction">Direction</h2>
+<p>Trustにはdirectionがあります。</p>
+<p>trusting sideとtrusted sideのどちらのidentityをどちら側のresource accessで受け入れるかによってauthentication directionが決まります。</p>
+<p>two-way trustは両方向のtrust relationshipを構成します。</p>
+<h2 id="transitivity">Transitivity</h2>
+<p>transitive trustではtrust relationshipを通じてauthentication pathが拡張されます。</p>
+<p>同一ForestのDomain間trustはtransitiveです。</p>
+<p>一方、すべてのtrust typeが同じtransitivityを持つわけではありません。</p>
+<h2 id="kerberosとの関係">Kerberosとの関係</h2>
+<p><a href="../kerberos/">Kerberos</a>はActive DirectoryのDomain間authenticationでも重要です。</p>
+<p>DomainやForestのtrust relationshipはcross-domain authentication pathと関係します。</p>
+<h2 id="security上の論点">Security上の論点</h2>
+<p>Trustは同一Forest内またはForest間にauthentication pathを形成します。MicrosoftがForestをsecurity boundaryとして定義しているため、cross-Forest trustではそのboundaryを越えてauthentication relationshipを拡張する設定を慎重に管理する必要があります。設定を誤ると意図しないresource access pathを作る可能性があります。</p>
+<p>攻撃者は<a href="../domain-trust-discovery/">Domain Trust Discovery</a>によってtrust relationshipを列挙し、lateral movementやprivilege expansionの候補を調査することがあります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../domain-trust-discovery/">Domain Trust Discovery</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/e9a2d23c-c31e-4a6f-88a0-6646fdb51a3c">Microsoft Open Specifications - MS-ADTS trustAttributes</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5026a939-44ba-47b2-99cf-386a9e674b04">Microsoft Open Specifications - MS-ADTS trustDirection</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/active-directory-forest/">Active Directory Forest</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/sidhistory/">SIDHistory</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Replay Cache detection of Authenticator reuse, timestamp validation, clock skew, and its distinction from a ticket cache."><title>Replay Cache - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/replay-cache/">日本語</a><span> / </span><a href="/cypedia/en/replay-cache/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Replay Cache</h1><div class="article-meta"><strong>Aliases:</strong> replay cache</div><div class="article-meta"><strong>Categories:</strong> Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p>A <a href="./">Replay Cache</a> is used by a <a href="../kerberos/">Kerberos</a> service to remember previously accepted authentication data and detect replay attacks.</p>
+<p>It is particularly relevant to reuse of a <a href="../authenticator/">Kerberos Authenticator</a>.</p>
+<h2 id="replay-attacks">Replay Attacks</h2>
+<p>A replay attack reuses previously valid authentication traffic.</p>
+<p>Kerberos combines timestamp validation and replay detection to reject reuse of authentication data.</p>
+<h2 id="authenticators">Authenticators</h2>
+<p>An Authenticator contains client identity and time information.</p>
+<p>The service verifies the Authenticator and checks whether the same relevant authentication data has already been accepted.</p>
+<h2 id="clock-skew">Clock Skew</h2>
+<p>Kerberos relies on time-based validation, so clocks on clients, the <a href="../key-distribution-center/">KDC</a>, and services need to remain sufficiently synchronized.</p>
+<p>Excessive clock differences can cause legitimate authentication to fail.</p>
+<h2 id="difference-from-a-ticket-cache">Difference from a Ticket Cache</h2>
+<p>A Replay Cache and a ticket cache serve different purposes.</p>
+<p>A client ticket cache stores <a href="../kerberos-ticket/">Kerberos Tickets</a> for legitimate reuse.</p>
+<p>A Replay Cache is used by a service to detect replay of authentication attempts.</p>
+<h2 id="service-responsibility">Service Responsibility</h2>
+<p>Replay protection is not provided by the ticket alone.</p>
+<p>The receiving service implementation must correctly enforce Authenticator freshness and replay detection.</p>
+<h2 id="security-significance">Security Significance</h2>
+<p>Disabling replay detection or failing to maintain replay state correctly can weaken Kerberos replay protection.</p>
+<p>Cache availability and clock synchronization are also operational dependencies.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../authenticator/">Authenticator</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/authenticator/">Authenticator</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

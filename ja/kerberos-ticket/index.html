@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Ticketの基本構造、暗号化部分、有効期間、TGTとService Ticketの違いを解説する。"><title>Kerberos Ticket - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/kerberos-ticket/">日本語</a><span> / </span><a href="/cypedia/en/kerberos-ticket/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Kerberos Ticket</h1><div class="article-meta"><strong>別名:</strong> Ticket, ticket</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p><a href="./">Kerberos Ticket</a>は<a href="../key-distribution-center/">Key Distribution Center（KDC）</a>が発行し、clientがserviceへauthentication informationを提示するために使用するcredential componentです。</p>
+<p>Kerberosではticketと対応する<a href="../session-key/">Session Key</a>を組み合わせてauthentication exchangeを行います。</p>
+<h2 id="基本構造">基本構造</h2>
+<p>RFC 4120のTicket structureには、主に次のinformationがあります。</p>
+<ul>
+<li>protocol version</li>
+<li><a href="../realm/">Realm</a></li>
+<li>server <a href="../principal/">Principal</a></li>
+<li>encrypted part</li>
+</ul>
+<p>encrypted partにはticket flag、Session Key、client identity、time information、authorization dataなどが含まれます。</p>
+<h2 id="暗号化">暗号化</h2>
+<p>ticketのencrypted partは、対象serviceが利用できるlong-term keyを使って保護されます。</p>
+<p>そのためclientは通常、ticket内部のencrypted informationを直接復号する必要はありません。</p>
+<p>clientはKDCから別途受け取ったSession Keyを使用してauthentication exchangeを進めます。</p>
+<h2 id="ticket-granting-ticket">Ticket-Granting Ticket</h2>
+<p><a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>はticket-granting service向けの特別なticketです。</p>
+<p>clientはTGTを<a href="../ticket-granting-server/">Ticket-Granting Server（TGS）</a>へ提示して、個別service向けのticketを取得します。</p>
+<h2 id="service-ticket">Service Ticket</h2>
+<p><a href="../service-ticket/">Service Ticket</a>は特定のapplication serviceへauthenticationするためのticketです。</p>
+<p>clientはService Ticketと<a href="../authenticator/">Authenticator</a>をtarget serviceへ提示します。</p>
+<h2 id="lifetime">Lifetime</h2>
+<p>ticketにはstart time、end time、renewalに関連するinformationやflagが含まれる場合があります。</p>
+<p>ticketは無期限のcredentialではなく、設定されたlifetimeとpolicyに従います。</p>
+<h2 id="authorization-data">Authorization Data</h2>
+<p>ticketのencrypted partにはauthorization dataを含めることができます。</p>
+<p><a href="../active-directory/">Active Directory</a>のWindows Kerberosでは<a href="../privilege-attribute-certificate/">PAC</a>がauthorization informationを運ぶために利用されます。</p>
+<h2 id="security上の意味">Security上の意味</h2>
+<p>ticketはauthentication credentialの一部であり、不正取得や偽造は重要なsecurity issueです。</p>
+<p>TGTの偽造は<a href="../golden-ticket/">Golden Ticket</a>、Service Ticketの偽造は<a href="../silver-ticket/">Silver Ticket</a>と関連します。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../authenticator/">Authenticator</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../privilege-attribute-certificate/">PAC</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/microsoft-kerberos">Microsoft - Microsoft Kerberos</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/authenticator/">Authenticator</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/ja/ntlm/">NTLM</a></li><li><a href="/cypedia/ja/pkinit/">PKINIT</a></li><li><a href="/cypedia/ja/principal/">Principal</a></li><li><a href="/cypedia/ja/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/ja/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/replay-cache/">Replay Cache</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/session-key/">Session Key</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos V5 authentication, architecture, protocol exchanges, cryptography, Active Directory integration, and security implications based on primary sources."><title>Kerberos - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/kerberos/">日本語</a><span> / </span><a href="/cypedia/en/kerberos/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Kerberos</h1><div class="article-meta"><strong>Aliases:</strong> Kerberos V5</div><div class="article-meta"><strong>Categories:</strong> Authentication / Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-1">RFC 4120 §1</a></p>
+</blockquote>
+<p>Kerberos is a network authentication protocol in which a trusted third party, the <a href="../key-distribution-center/">Key Distribution Center (KDC)</a>, authenticates <a href="../principal/">principals</a> and helps establish session keys used between them.</p>
+<p>The current base specification is Kerberos Version 5 (Kerberos V5), defined by RFC 4120. RFC 4120 obsoleted the earlier RFC 1510 specification.</p>
+<p>Rather than requiring a user to present long-term secret material directly to every service, Kerberos uses tickets issued by the KDC. After obtaining a <a href="../ticket-granting-ticket/">Ticket-Granting Ticket (TGT)</a>, a client can request tickets for multiple services.</p>
+<h2 id="historical-background">Historical Background</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://web.mit.edu/saltzer/www/publications/Kerberosorigin.pdf">J. H. Saltzer - On the Origin of Kerberos</a> / <a href="https://web.mit.edu/Saltzer/www/publications/athenaplan/e.2.1.pdf">Project Athena Technical Plan E.2.1</a> / <a href="https://www.rfc-editor.org/info/rfc4120/">RFC 4120</a></p>
+</blockquote>
+<p>Kerberos was developed as part of MIT Project Athena.</p>
+<p>Jerome H. Saltzer’s history of the project describes research during 1985 followed by the design and implementation of the Kerberos authentication system by Cliff Neuman and Steve Miller. An initial implementation was completed in the fall of 1986, and production use in Project Athena began in January 1987.</p>
+<p>Kerberos Version 5 later replaced Version 4. RFC 1510 was published in 1993, and RFC 4120 replaced RFC 1510 in 2005.</p>
+<p>Kerberos is not a vendor-specific authentication mechanism. It is an IETF-standardized protocol. Microsoft Windows and <a href="../active-directory/">Active Directory</a> implement Kerberos V5 with additional Windows-specific behavior and extensions documented in Microsoft Open Specifications such as MS-KILE.</p>
+<h2 id="current-role">Current Role</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE</a> / <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-authsod/857b7719-bd1b-4cdd-ade0-84506b30b8df">MS-AUTHSOD: Kerberos Protocols</a></p>
+</blockquote>
+<p>Kerberos V5 remains an important authentication protocol in enterprise environments and is a major authentication mechanism in Active Directory.</p>
+<p>In Active Directory environments, a <a href="../domain-controller/">Domain Controller</a> can provide the KDC role. Microsoft’s Kerberos implementation is based on RFC 4120 while also defining Windows-specific behavior related to authorization information, interactive logon, delegation, and directory integration.</p>
+<p>For this reason, standard Kerberos V5 and Microsoft’s Active Directory implementation should be distinguished when analyzing behavior.</p>
+<h2 id="core-architecture">Core Architecture</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120</a></p>
+</blockquote>
+<h3 id="principal"><a href="../principal/">Principal</a></h3>
+<p>A principal is an identity recognized by Kerberos.</p>
+<p>Users, hosts, and network services can be represented as principals. Kerberos requests and tickets use principal names to identify participating entities.</p>
+<h3 id="realm"><a href="../realm/">Realm</a></h3>
+<p>A realm is an administrative authentication namespace in Kerberos.</p>
+<p>A KDC manages principals and associated key information within a realm. Kerberos V5 also defines <a href="../cross-realm-authentication/">cross-realm authentication</a> for authentication involving multiple realms.</p>
+<h3 id="key-distribution-center"><a href="../key-distribution-center/">Key Distribution Center</a></h3>
+<p>The Key Distribution Center is the central trusted component in Kerberos.</p>
+<p>Conceptually, the KDC provides two major functions:</p>
+<ul>
+<li><a href="../authentication-server/">Authentication Server (AS)</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server (TGS)</a></li>
+</ul>
+<p>The AS processes initial authentication and issues a TGT. The TGS uses the TGT to issue a <a href="../service-ticket/">Service Ticket</a> for a requested application service.</p>
+<h3 id="kerberos-ticket"><a href="../kerberos-ticket/">Kerberos Ticket</a></h3>
+<p>A Kerberos ticket is authentication data issued by the KDC.</p>
+<p>Tickets carry information needed for authentication, including client and service identities, a session key, and validity information. Protected portions of a ticket are encrypted using key material associated with the target service.</p>
+<p>Important ticket types include:</p>
+<ul>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+</ul>
+<h3 id="session-key"><a href="../session-key/">Session Key</a></h3>
+<p>Kerberos uses temporary session keys in addition to long-term keys.</p>
+<p>During authentication exchanges, the KDC provides session-key material for communication between the client and TGS or between the client and an application service.</p>
+<h3 id="authenticator"><a href="../authenticator/">Authenticator</a></h3>
+<p>An Authenticator is data used to demonstrate that the party presenting a ticket also possesses the corresponding session key.</p>
+<p>Authenticators include time-related information and are used with tickets. RFC 4120 requires an application server to use a <a href="../replay-cache/">Replay Cache</a> to detect Authenticator reuse unless the application provides another suitable anti-replay mechanism.</p>
+<h2 id="authentication-flow">Authentication Flow</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3">RFC 4120 §3</a></p>
+</blockquote>
+<p>Kerberos V5 authentication normally consists of an AS exchange, TGS exchange, and Client/Server exchange.</p>
+<h3 id="1-as-req--as-rep">1. AS-REQ / AS-REP</h3>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.1">RFC 4120 §3.1</a></p>
+</blockquote>
+<p>A client sends an AS-REQ to the Authentication Server.</p>
+<p>Depending on configuration and policy, <a href="../pre-authentication/">Pre-Authentication</a> may be required. After successful client authentication, the KDC returns an AS-REP containing a TGT and information associated with the client/TGS session key.</p>
+<p>The TGT is then used to request service-specific tickets.</p>
+<h3 id="2-tgs-req--tgs-rep">2. TGS-REQ / TGS-REP</h3>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.3">RFC 4120 §3.3</a></p>
+</blockquote>
+<p>When the client wants to access a specific service, it sends a TGS-REQ using its TGT.</p>
+<p>The TGS validates the TGT, Authenticator, and request. If the request is valid, it returns a Service Ticket in a TGS-REP.</p>
+<p>This allows the client to obtain tickets for multiple services without repeatedly presenting its long-term secret.</p>
+<h3 id="3-ap-req--ap-rep">3. AP-REQ / AP-REP</h3>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.2">RFC 4120 §3.2</a></p>
+</blockquote>
+<p>The client presents the Service Ticket and an Authenticator to the target application server in an AP-REQ.</p>
+<p>The server processes the Service Ticket using its key and validates the Authenticator.</p>
+<p>When mutual authentication is used, the server returns an AP-REP so the client can also authenticate the server.</p>
+<h2 id="ticket-granting-ticket">Ticket-Granting Ticket</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.3">RFC 4120 §3.3</a></p>
+</blockquote>
+<p>A TGT is a central part of Kerberos single-sign-on behavior.</p>
+<p>After initial authentication, the client can retain the TGT in a ticket cache and use it to request multiple Service Tickets.</p>
+<p>This reduces the need to repeatedly provide the user’s long-term secret when accessing different services.</p>
+<h2 id="pre-authentication"><a href="../pre-authentication/">Pre-Authentication</a></h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.1">RFC 4120 §3.1</a> / <a href="https://www.rfc-editor.org/rfc/rfc6113.html">RFC 6113</a></p>
+</blockquote>
+<p>Kerberos V5 supports pre-authentication mechanisms.</p>
+<p>RFC 4120 defines the use of pre-authentication data, while RFC 6113 defines a generalized Kerberos pre-authentication framework.</p>
+<p>Pre-authentication allows the KDC to require additional proof from a client before issuing an AS-REP.</p>
+<p>In Windows / Active Directory environments, accounts that do not require pre-authentication can become targets for <a href="../as-rep-roasting/">AS-REP Roasting</a>.</p>
+<h2 id="time-synchronization-and-replay-protection">Time Synchronization and Replay Protection</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.2.3">RFC 4120 §3.2.3</a></p>
+</blockquote>
+<p>Time is important to Kerberos operation.</p>
+<p>RFC 4120 assumes that participating hosts maintain reasonably synchronized clocks and discusses an allowable clock skew, commonly around five minutes.</p>
+<p>Application servers validate timestamps carried in Authenticators. RFC 4120 requires a replay cache for Authenticators presented within the allowable clock skew unless the application provides another suitable replay-protection mechanism; a repeated Authenticator can then be rejected as a replay.</p>
+<p>Reliable and secure time synchronization is consequently important to Kerberos deployments.</p>
+<h2 id="cryptography">Cryptography</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc3961.html">RFC 3961</a> / <a href="https://www.rfc-editor.org/rfc/rfc3962.html">RFC 3962</a> / <a href="https://www.rfc-editor.org/rfc/rfc8009.html">RFC 8009</a> / <a href="https://www.rfc-editor.org/rfc/rfc8429.html">RFC 8429</a></p>
+</blockquote>
+<p>Kerberos V5 is not tied to a single encryption algorithm.</p>
+<p>RFC 3961 defines the framework for Kerberos encryption types and checksum mechanisms.</p>
+<p>RFC 3962 defines AES encryption types for Kerberos. RFC 8009 later defines Kerberos encryption types using AES with HMAC-SHA2.</p>
+<p>RFC 8429 deprecates the use of 3DES and RC4 in Kerberos.</p>
+<p>Deployments should therefore avoid unnecessary dependence on legacy encryption types and prefer currently supported stronger cryptographic mechanisms.</p>
+<h2 id="pkinit"><a href="../pkinit/">PKINIT</a></h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556</a></p>
+</blockquote>
+<p>Public Key Cryptography for Initial Authentication in Kerberos (PKINIT) integrates public-key cryptography into Kerberos initial authentication.</p>
+<p>RFC 4556 defines PKINIT using Kerberos pre-authentication data to incorporate public-key signatures and key establishment into the initial authentication exchange.</p>
+<p>PKINIT is also relevant to certificate- and smart-card-based Kerberos authentication in Windows environments.</p>
+<h2 id="active-directory-integration">Active Directory Integration</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE</a> / <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-authsod/857b7719-bd1b-4cdd-ade0-84506b30b8df">MS-AUTHSOD: Kerberos Protocols</a></p>
+</blockquote>
+<p>Active Directory uses Kerberos V5 as one of its major authentication protocols.</p>
+<p>Windows KDCs use Active Directory as an account database, and Kerberos tickets can contain Windows-specific authorization information.</p>
+<p>MS-KILE defines Windows-specific Kerberos behavior and extensions relative to RFC 4120. The <a href="../privilege-attribute-certificate/">Privilege Attribute Certificate (PAC)</a> is used in Windows environments to carry authorization information.</p>
+<p>Analyzing Active Directory Kerberos can therefore require not only RFC 4120 but also Microsoft protocol specifications such as MS-KILE, MS-PAC, MS-SFU, and MS-PKCA.</p>
+<p>The <a href="../service-principal-name/">Service Principal Name (SPN)</a> associates service instances with accounts in Active Directory, while a <a href="../service-account/">Service Account</a> may hold the key material used by a Kerberos-enabled service.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-10">RFC 4120 §10</a></p>
+</blockquote>
+<p>Kerberos security depends on multiple components, including the KDC, long-term principal keys, session keys, tickets, clocks, and cryptographic algorithms.</p>
+<p>Important security considerations include:</p>
+<ul>
+<li>protecting the KDC and its key database;</li>
+<li>protecting client and server long-term keys;</li>
+<li>correctly using replay protection;</li>
+<li>maintaining trustworthy time synchronization;</li>
+<li>avoiding obsolete encryption types;</li>
+<li>using pre-authentication appropriately;</li>
+<li>protecting ticket caches and credential material.</li>
+</ul>
+<p>RFC 4120 explicitly discusses dictionary attacks against password-derived keys, clock synchronization, replay protection, and compromise of Kerberos infrastructure.</p>
+<h2 id="relationship-to-attacks-and-abuse">Relationship to Attacks and Abuse</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://attack.mitre.org/techniques/T1558/">MITRE ATT&amp;CK T1558</a></p>
+</blockquote>
+<p>Kerberos is widely used as an authentication infrastructure and is therefore an important target for attackers.</p>
+<p>MITRE ATT&amp;CK groups several techniques under T1558, Steal or Forge Kerberos Tickets, including <a href="../golden-ticket/">Golden Ticket</a>, <a href="../silver-ticket/">Silver Ticket</a>, <a href="../kerberoasting/">Kerberoasting</a>, and <a href="../as-rep-roasting/">AS-REP Roasting</a>.</p>
+<h3 id="kerberoasting">Kerberoasting</h3>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003</a></p>
+</blockquote>
+<p>Kerberoasting abuses the legitimate ability of an authenticated principal with a TGT to request a Service Ticket for a service principal.</p>
+<p>Material from the returned ticket can be subjected to offline password cracking in an attempt to recover credentials associated with the service account.</p>
+<h3 id="as-rep-roasting">AS-REP Roasting</h3>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://attack.mitre.org/techniques/T1558/004/">MITRE ATT&amp;CK T1558.004</a></p>
+</blockquote>
+<p>AS-REP Roasting targets accounts for which Kerberos pre-authentication is not required.</p>
+<p>In such configurations, an attacker may request an AS-REP and use password-derived protected data from the response for offline cracking attempts.</p>
+<h3 id="golden-ticket">Golden Ticket</h3>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://attack.mitre.org/techniques/T1558/001/">MITRE ATT&amp;CK T1558.001</a></p>
+</blockquote>
+<p>In an Active Directory environment, compromise of key material associated with the <a href="../krbtgt/">KRBTGT</a> account can enable an attacker to forge TGTs.</p>
+<p>This attack is commonly called a Golden Ticket attack.</p>
+<h3 id="silver-ticket">Silver Ticket</h3>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://attack.mitre.org/techniques/T1558/002/">MITRE ATT&amp;CK T1558.002</a></p>
+</blockquote>
+<p>If an attacker obtains key material for a service account, the attacker may be able to forge Service Tickets for that service.</p>
+<p>This technique is known as a Silver Ticket attack.</p>
+<h2 id="defense-and-mitigation">Defense and Mitigation</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc8429.html">RFC 8429</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/group-managed-service-accounts-overview">Microsoft: Group Managed Service Accounts</a></p>
+</blockquote>
+<p>Kerberos defense requires protecting both the protocol and the surrounding identity infrastructure.</p>
+<p>Active Directory environments should reduce reliance on legacy Kerberos encryption types such as RC4 where supported alternatives are available.</p>
+<p>Service accounts should use sufficiently strong secrets, and managed service-account mechanisms can reduce dependence on manually maintained static passwords.</p>
+<p>Pre-authentication should not be disabled without a justified requirement. KDCs, Domain Controllers, credential databases, ticket caches, and other authentication material should receive high protection priority.</p>
+<h2 id="limitations">Limitations</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-10">RFC 4120 §10</a></p>
+</blockquote>
+<p>Kerberos is primarily an authentication infrastructure. It does not by itself solve all authorization or endpoint-compromise problems.</p>
+<p>If a client, server, or KDC is compromised and keys or tickets are stolen, the corresponding authentication material may be abused.</p>
+<p>Kerberos replay protections also depend on operational assumptions such as clock synchronization, so the security of supporting infrastructure affects the security of the Kerberos system as a whole.</p>
+<h2 id="related-standards-and-specifications">Related Standards and Specifications</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://www.rfc-editor.org/info/rfc4120/">RFC 4120</a></p>
+</blockquote>
+<p>Important Kerberos-related standards and specifications include RFC 4120, the Kerberos cryptosystem framework, AES encryption specifications, pre-authentication specifications, PKINIT, GSS-API integration, and Microsoft Kerberos extensions.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../key-distribution-center/">KDC</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../authenticator/">Authenticator</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../pkinit/">PKINIT</a></li>
+<li><a href="../replay-cache/">Replay Cache</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../service-principal-name/">SPN</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../privilege-attribute-certificate/">PAC</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc3961.html">RFC 3961 - Encryption and Checksum Specifications for Kerberos 5</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc3962.html">RFC 3962 - Advanced Encryption Standard (AES) Encryption for Kerberos 5</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556 - Public Key Cryptography for Initial Authentication in Kerberos (PKINIT)</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6113.html">RFC 6113 - A Generalized Framework for Kerberos Pre-Authentication</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8009.html">RFC 8009 - AES Encryption with HMAC-SHA2 for Kerberos 5</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8429.html">RFC 8429 - Deprecate Triple-DES (3DES) and RC4 in Kerberos</a></li>
+<li><a href="https://web.mit.edu/saltzer/www/publications/Kerberosorigin.pdf">J. H. Saltzer - On the Origin of Kerberos</a></li>
+<li><a href="https://web.mit.edu/Saltzer/www/publications/athenaplan/e.2.1.pdf">MIT Project Athena Technical Plan E.2.1 - Kerberos Authentication and Authorization System</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">Microsoft Open Specifications - MS-KILE: Kerberos Protocol Extensions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-authsod/857b7719-bd1b-4cdd-ade0-84506b30b8df">Microsoft Open Specifications - MS-AUTHSOD: Kerberos Protocols</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/group-managed-service-accounts-overview">Microsoft - Group Managed Service Accounts overview</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/">MITRE ATT&amp;CK T1558 - Steal or Forge Kerberos Tickets</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/001/">MITRE ATT&amp;CK T1558.001 - Golden Ticket</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/002/">MITRE ATT&amp;CK T1558.002 - Silver Ticket</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/004/">MITRE ATT&amp;CK T1558.004 - AS-REP Roasting</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/en/active-directory-trust/">Active Directory Trust</a></li><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/en/authenticator/">Authenticator</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/en/dns/">DNS</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/en/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/en/ntlm/">NTLM</a></li><li><a href="/cypedia/en/pkinit/">PKINIT</a></li><li><a href="/cypedia/en/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/en/principal/">Principal</a></li><li><a href="/cypedia/en/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/en/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/en/realm/">Realm</a></li><li><a href="/cypedia/en/replay-cache/">Replay Cache</a></li><li><a href="/cypedia/en/security-principal/">Security Principal</a></li><li><a href="/cypedia/en/service-account/">Service Account</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/session-key/">Session Key</a></li><li><a href="/cypedia/en/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/en/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/en/ticket-granting-ticket/">Ticket-Granting Ticket</a></li><li><a href="/cypedia/en/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

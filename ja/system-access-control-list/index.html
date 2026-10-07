@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows SACLのaudit ACE、success/failure auditing、ACCESS_SYSTEM_SECURITYとの関係を解説する。"><title>System Access Control List - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/system-access-control-list/">日本語</a><span> / </span><a href="/cypedia/en/system-access-control-list/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>System Access Control List</h1><div class="article-meta"><strong>別名:</strong> SACL, SACLs</div><div class="article-meta"><strong>カテゴリ:</strong> Windows</div><div class="article-body"><blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-lists">Microsoft - Access Control Lists</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/audit-generation">Microsoft - Audit Generation</a></p>
+</blockquote>
+<p><a href="./">System Access Control List（SACL）</a>は、<a href="../securable-object/">Securable Object</a>へのどのaccess attemptをaudit対象とするかを指定するACLです。</p>
+<h2 id="audit-ace">Audit ACE</h2>
+<p>SACLはsystem-audit <a href="../access-control-entry/">ACE</a>を保持できます。</p>
+<p>各audit ACEはtrustee、対象となる<a href="../access-rights/">Access Rights</a>、およびsuccessful attempt / failed attemptのどちらをauditするかを指定できます。</p>
+<p>条件に一致したaccess attemptについて、Windowsはsecurity event logへaudit recordを生成できます。</p>
+<h2 id="relationship-with-security-descriptor">Relationship with Security Descriptor</h2>
+<p>SACLは<a href="../security-descriptor/">Security Descriptor</a>に含めることができるsecurity informationです。</p>
+<p>通常のallow / deny access decisionを担う<a href="../discretionary-access-control-list/">DACL</a>とは目的が異なり、SACLはsecurity auditingに使用されます。</p>
+<h2 id="access_system_security">ACCESS_SYSTEM_SECURITY</h2>
+<p>SACLを取得または設定する能力は<code>ACCESS_SYSTEM_SECURITY</code> Access Rightによって制御されます。</p>
+<p>Microsoft documentationでは、このrightを取得するにはrequesting threadの<a href="../windows-access-token/">Access Token</a>で<code>SeSecurityPrivilege</code>がenabledである必要があると説明されています。</p>
+<p>これは<a href="../windows-privilege/">Windows Privilege</a>とobject access rightが組み合わさる代表例です。</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>SACLは「permissionを許可する仕組み」ではありません。</p>
+<p>DACLとSACLを混同せず、access authorizationとaudit policyを別の観点として評価する必要があります。</p>
+<p>File system objectについてMicrosoftは、matching SACLが存在していても、<code>Audit File System</code> policyが構成されていなければ該当object accessのsecurity audit eventは生成されないと説明しています。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../access-control-list/">Access Control List</a></li>
+<li><a href="../access-control-entry/">Access Control Entry</a></li>
+<li><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></li>
+<li><a href="../security-descriptor/">Security Descriptor</a></li>
+<li><a href="../access-rights/">Access Rights</a></li>
+<li><a href="../windows-access-token/">Windows Access Token</a></li>
+<li><a href="../windows-privilege/">Windows Privilege</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li>
+<p><a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-file-system">Microsoft - Audit File System</a></p>
+</li>
+<li>
+<p><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-lists">Microsoft - Access Control Lists</a></p>
+</li>
+<li>
+<p><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/audit-generation">Microsoft - Audit Generation</a></p>
+</li>
+<li>
+<p><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/sacl-access-right">Microsoft - SACL Access Right</a></p>
+</li>
+<li>
+<p><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/security-descriptors">Microsoft - Security Descriptors</a></p>
+</li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-control-entry/">Access Control Entry</a></li><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/access-mask/">Access Mask</a></li><li><a href="/cypedia/ja/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/ja/securable-object/">Securable Object</a></li><li><a href="/cypedia/ja/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/ja/windows-privilege/">Windows Privilege</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

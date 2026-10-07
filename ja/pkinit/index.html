@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="PKINITによるKerberos initial authenticationへのpublic-key cryptography統合、certificate、Windows smart card logonを解説する。"><title>PKINIT - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/pkinit/">日本語</a><span> / </span><a href="/cypedia/en/pkinit/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>PKINIT</h1><div class="article-meta"><strong>別名:</strong> Public Key Cryptography for Initial Authentication in Kerberos</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos / Authentication</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556 - Public Key Cryptography for Initial Authentication in Kerberos</a></p>
+</blockquote>
+<p><a href="./">PKINIT</a>は、<a href="../kerberos/">Kerberos</a>のinitial authenticationへpublic-key cryptographyを導入する<a href="../pre-authentication/">Pre-Authentication</a> mechanismです。</p>
+<p>RFC 4556で標準化されています。</p>
+<h2 id="as-exchange">AS Exchange</h2>
+<p>PKINITは<a href="../authentication-server/">Authentication Server（AS）</a> exchangeで使用されます。</p>
+<p>clientはpublic/private key pairとcertificateに基づくinformationをAS-REQへ含めます。</p>
+<p><a href="../key-distribution-center/">KDC</a>はsignatureやcertificateなどを検証し、validなrequestに対してAS-REPを生成します。</p>
+<h2 id="key-establishment">Key Establishment</h2>
+<p>PKINITではpublic-key cryptographyを使用してinitial Kerberos key materialを安全に確立します。</p>
+<p>これによってtraditionalなpassword-derived keyだけに依存しないinitial authenticationが可能になります。</p>
+<h2 id="certificate">Certificate</h2>
+<p>PKINITはX.509 certificateを利用します。</p>
+<p>client certificateだけでなく、KDC側をauthenticationするためのcertificate trustも重要です。</p>
+<p>PKI configurationやcertificate validationはPKINIT securityの一部です。</p>
+<h2 id="windows実装">Windows実装</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/MS-PKCA/d0cf1763-3541-4008-a75f-a577fa5e8c5b">MS-PKCA - Public Key Cryptography for Initial Authentication in Kerberos Protocol</a></p>
+</blockquote>
+<p>WindowsはRFC 4556を基礎としてPKINITを実装し、Microsoft固有behaviorをMS-PKCAで定義しています。</p>
+<p><a href="../active-directory/">Active Directory</a>のsmart card logonは代表的な利用例です。</p>
+<h2 id="tgt">TGT</h2>
+<p>PKINITによるAS exchangeが成功すると、通常のKerberos initial authenticationと同様に<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>が取得されます。</p>
+<p>その後の<a href="../ticket-granting-server/">TGS</a> exchangeは通常のKerberos ticket flowへ続きます。</p>
+<h2 id="security上の論点">Security上の論点</h2>
+<p>PKINITではpassword strengthだけでなく次の要素が重要になります。</p>
+<ul>
+<li>private key protection</li>
+<li>certificate issuance</li>
+<li>certificate mapping</li>
+<li>KDC certificate validation</li>
+<li>CA trust</li>
+<li>revocation handling</li>
+</ul>
+<p>PKI側のmisconfigurationはKerberos authentication securityへ直接影響する可能性があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556 - Public Key Cryptography for Initial Authentication in Kerberos</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/MS-PKCA/d0cf1763-3541-4008-a75f-a577fa5e8c5b">MS-PKCA - Public Key Cryptography for Initial Authentication in Kerberos Protocol</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/smart-cards/smart-card-certificate-requirements-and-enumeration">Microsoft - Smart Card Certificate Requirements and Enumeration</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/pre-authentication/">Pre-Authentication</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

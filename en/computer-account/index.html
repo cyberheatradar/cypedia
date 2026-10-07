@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Computer Accounts, machine identity, domain join, security-principal behavior, SIDs, and service authentication."><title>Computer Account - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/computer-account/">日本語</a><span> / </span><a href="/cypedia/en/computer-account/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Computer Account</h1><div class="article-meta"><strong>Categories:</strong> Active Directory / Identity</div><div class="article-body"><h2 id="overview">Overview</h2>
+<p>A <a href="./">Computer Account</a> is an <a href="../active-directory/">Active Directory</a> object representing a computer joined to an <a href="../active-directory-domain/">Active Directory Domain</a>.</p>
+<p>Like a User Account, it is a <a href="../security-principal/">Security Principal</a> and has its own <a href="../security-identifier/">Security Identifier (SID)</a>.</p>
+<h2 id="machine-identity">Machine Identity</h2>
+<p>A Computer Account represents a machine identity rather than a human user.</p>
+<p>A domain-joined computer uses this identity as part of its trust relationship with the Domain and when authenticating to domain resources and services.</p>
+<h2 id="domain-join">Domain Join</h2>
+<p>Microsoft domain-join documentation describes both creating a new Computer Account during domain join and reusing a pre-provisioned Computer Account.</p>
+<p>Creating or reusing the account requires appropriate Active Directory permissions.</p>
+<h2 id="credentials">Credentials</h2>
+<p>A Computer Account has credentials associated with the machine identity.</p>
+<p>These credentials are managed differently from an interactive user password, with Windows maintaining the machine-account secret used in the domain relationship.</p>
+<h2 id="spns">SPNs</h2>
+<p>A Computer Account can have host-based <a href="../service-principal-name/">Service Principal Names (SPNs)</a> associated with services running under the machine identity.</p>
+<p>Computer Accounts are therefore also relevant to <a href="../service-ticket/">Service Tickets</a> and service authentication.</p>
+<h2 id="group-policy">Group Policy</h2>
+<p><a href="../group-policy/">Group Policy</a> can be linked to Sites, Domains, and <a href="../organizational-unit/">OUs</a>. For a computer, applicable GPOs are determined using factors including the Site in which the computer resides, its Domain membership, and the parent OU hierarchy of the Computer Account.</p>
+<h2 id="security-groups">Security Groups</h2>
+<p>A Computer Account can belong to <a href="../security-group/">Security Groups</a>, allowing authorization to be managed through group membership.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Inactive Computer Accounts, stale machine identities, excessive group membership, domain-join permissions, and rights to create or reuse Computer Accounts should be reviewed.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">Security Identifier</a></li>
+<li><a href="../user-account/">User Account</a></li>
+<li><a href="../security-group/">Security Group</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/windows/security/identity-protection/access-control/active-directory-accounts">Microsoft - Active Directory Accounts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/active-directory-domain-join-permissions">Microsoft - Active Directory Domain Join Permissions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-scope">Microsoft - Group Policy scope</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/domain-member-maximum-machine-account-password-age">Microsoft - Domain member: Maximum machine account password age</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-control-list/">Access Control List</a></li><li><a href="/cypedia/en/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/en/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/en/security-group/">Security Group</a></li><li><a href="/cypedia/en/security-principal/">Security Principal</a></li><li><a href="/cypedia/en/service-account/">Service Account</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/en/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

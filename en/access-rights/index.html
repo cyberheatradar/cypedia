@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows access rights for securable objects, including standard and object-specific rights and their representation in access masks."><title>Access Rights - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/access-rights/">日本語</a><span> / </span><a href="/cypedia/en/access-rights/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Access Rights</h1><div class="article-meta"><strong>Aliases:</strong> Access Right</div><div class="article-meta"><strong>Categories:</strong> Windows</div><div class="article-body"><blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-rights-and-access-masks">Microsoft - Access Rights and Access Masks</a> / <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/standard-access-rights">Microsoft - Standard Access Rights</a></p>
+</blockquote>
+<p><a href="./">Access Rights</a> represent operations that a thread can perform on a <a href="../securable-object/">Securable Object</a>.</p>
+<h2 id="object-specific-rights">Object-Specific Rights</h2>
+<p>Different object types define rights corresponding to operations specific to those objects.</p>
+<p>Files, registry keys, processes, and directory-service objects therefore expose different specific rights.</p>
+<h2 id="standard-rights">Standard Rights</h2>
+<p>Windows also defines standard access rights shared by many securable object types.</p>
+<p>Representative examples include <code>DELETE</code>, <code>READ_CONTROL</code>, <code>WRITE_DAC</code>, and <code>WRITE_OWNER</code>.</p>
+<p><code>WRITE_DAC</code> controls modification of the <a href="../discretionary-access-control-list/">DACL</a> in a <a href="../security-descriptor/">Security Descriptor</a>, while <code>WRITE_OWNER</code> controls changing the object’s owner.</p>
+<h2 id="access-masks">Access Masks</h2>
+<p>Access Rights are represented as bits in an <a href="../access-mask/">Access Mask</a>.</p>
+<p>When opening a handle to an object, a thread can request required rights through an Access Mask.</p>
+<p>An <a href="../access-control-entry/">ACE</a> also uses an Access Mask to specify which rights are allowed, denied, or audited.</p>
+<h2 id="access-rights-and-privileges">Access Rights and Privileges</h2>
+<p>Access Rights and <a href="../windows-privilege/">Windows Privileges</a> are separate concepts.</p>
+<p>Access Rights control operations on securable objects.</p>
+<p>A Windows Privilege is an account-level right for system-related operations and is not simply an object permission granted by a DACL.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Requesting or granting more Access Rights than required can enable unintended operations.</p>
+<p>Security review therefore needs to consider the specific rights defined for the relevant object type instead of relying only on labels such as full control.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../access-mask/">Access Mask</a></li>
+<li><a href="../access-control-entry/">Access Control Entry</a></li>
+<li><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></li>
+<li><a href="../securable-object/">Securable Object</a></li>
+<li><a href="../windows-privilege/">Windows Privilege</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-rights-and-access-masks">Microsoft - Access Rights and Access Masks</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/standard-access-rights">Microsoft - Standard Access Rights</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-entries">Microsoft - Access Control Entries</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-check/">Access Check</a></li><li><a href="/cypedia/en/access-control-entry/">Access Control Entry</a></li><li><a href="/cypedia/en/access-control-list/">Access Control List</a></li><li><a href="/cypedia/en/access-mask/">Access Mask</a></li><li><a href="/cypedia/en/dcsync/">DCSync</a></li><li><a href="/cypedia/en/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/en/securable-object/">Securable Object</a></li><li><a href="/cypedia/en/system-access-control-list/">System Access Control List</a></li><li><a href="/cypedia/en/windows-privilege/">Windows Privilege</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

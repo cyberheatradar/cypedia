@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory User Accountのidentity、Security Principal、SID、group membership、認証・認可上の役割を解説する。"><title>User Account - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/user-account/">日本語</a><span> / </span><a href="/cypedia/en/user-account/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>User Account</h1><div class="article-meta"><strong>カテゴリ:</strong> Active Directory / Identity</div><div class="article-body"><h2 id="概要">概要</h2>
+<p><a href="./">User Account</a>は、<a href="../active-directory/">Active Directory</a>内でuser identityを表すdirectory objectです。</p>
+<p><a href="../security-principal/">Security Principal</a>として認証・認可に利用でき、<a href="../security-identifier/">Security Identifier（SID）</a>によって一意に識別されます。</p>
+<p>MicrosoftはActive Directory accountについて、userやcomputerなどのidentityを表し、networkや<a href="../active-directory-domain/">Active Directory Domain</a> resourceへのaccessに利用されると説明しています。</p>
+<h2 id="認証">認証</h2>
+<p>User Accountにはuserがdomainへsign inし、network serviceやresourceへaccessするためのauthentication informationが関連付けられます。</p>
+<p>Active Directory環境では<a href="../kerberos/">Kerberos</a>や<a href="../ntlm/">NTLM</a>などのauthentication mechanismと関係します。</p>
+<h2 id="authorization">Authorization</h2>
+<p>authentication後のresource accessは、そのUser Account自身や所属する<a href="../security-group/">Security Group</a>へ付与されたrightsやpermissionsによって決まります。</p>
+<p>SIDはaccess-control decisionでaccountを識別するために利用されます。</p>
+<h2 id="group-membership">Group Membership</h2>
+<p>User Accountは複数のSecurity Groupへ所属できます。</p>
+<p>個別userへpermissionsを直接付与するよりも、役割に応じたSecurity Groupへaccountをまとめてauthorizationを管理する方式が一般的です。</p>
+<h2 id="organizational-unit">Organizational Unit</h2>
+<p>User Account objectは<a href="../organizational-unit/">Organizational Unit（OU）</a>などのdirectory containerへ配置できます。</p>
+<p>OU配置はdelegated administrationや<a href="../group-policy/">Group Policy</a>適用scopeにも関係します。</p>
+<h2 id="service-identityとの関係">Service Identityとの関係</h2>
+<p>通常のUser Accountをapplicationやserviceのidentityとして利用することも可能ですが、service用途では<a href="../service-account/">Service Account</a>やmanaged service accountが利用される場合があります。</p>
+<h2 id="セキュリティ上の論点">セキュリティ上の論点</h2>
+<p>User Accountの保護では、credential管理、least privilege、不要accountのdisable、privileged accountの分離、group membershipの定期reviewが重要です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">Security Identifier</a></li>
+<li><a href="../security-group/">Security Group</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../ntlm/">NTLM</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/windows/security/identity-protection/access-control/active-directory-accounts">Microsoft - Active Directory Accounts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage-user-accounts-in-windows-server">Microsoft - Manage User Accounts in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/computer-account/">Computer Account</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/ja/security-group/">Security Group</a></li><li><a href="/cypedia/ja/security-principal/">Security Principal</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/sidhistory/">SIDHistory</a></li><li><a href="/cypedia/ja/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/ja/windows-access-token/">Windows Access Token</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

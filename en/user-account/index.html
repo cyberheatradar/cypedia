@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory User Accounts, identity, security-principal behavior, SIDs, group membership, authentication, and authorization."><title>User Account - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/user-account/">日本語</a><span> / </span><a href="/cypedia/en/user-account/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>User Account</h1><div class="article-meta"><strong>Categories:</strong> Active Directory / Identity</div><div class="article-body"><h2 id="overview">Overview</h2>
+<p>A <a href="./">User Account</a> is a directory object representing a user identity in <a href="../active-directory/">Active Directory</a>.</p>
+<p>It can act as a <a href="../security-principal/">Security Principal</a> for authentication and authorization and is identified by a <a href="../security-identifier/">Security Identifier (SID)</a>.</p>
+<p>Microsoft describes Active Directory accounts as representing identities such as users and computers and as providing access to network and <a href="../active-directory-domain/">Active Directory Domain</a> resources.</p>
+<h2 id="authentication">Authentication</h2>
+<p>A User Account is associated with authentication information that allows a user to sign in to the domain and access network services and resources.</p>
+<p>In Active Directory environments, this identity can participate in authentication mechanisms such as <a href="../kerberos/">Kerberos</a> and <a href="../ntlm/">NTLM</a>.</p>
+<h2 id="authorization">Authorization</h2>
+<p>After authentication, access to resources is determined by rights and permissions assigned directly to the User Account or through its <a href="../security-group/">Security Group</a> memberships.</p>
+<p>The SID identifies the account during Windows access-control decisions.</p>
+<h2 id="group-membership">Group Membership</h2>
+<p>A User Account can belong to multiple Security Groups.</p>
+<p>Permissions are commonly managed through role-appropriate groups rather than assigning every permission separately to individual users.</p>
+<h2 id="organizational-units">Organizational Units</h2>
+<p>User Account objects can be placed in directory containers such as <a href="../organizational-unit/">Organizational Units (OUs)</a>.</p>
+<p>OU placement can affect delegated administration and the scope of <a href="../group-policy/">Group Policy</a>.</p>
+<h2 id="service-identity">Service Identity</h2>
+<p>A regular User Account can also be configured as an application or service identity, although <a href="../service-account/">Service Accounts</a> and managed service accounts may be preferable for service workloads.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Important controls include credential protection, least privilege, disabling unnecessary accounts, separating privileged identities, and regularly reviewing group membership.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">Security Identifier</a></li>
+<li><a href="../security-group/">Security Group</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../ntlm/">NTLM</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/windows/security/identity-protection/access-control/active-directory-accounts">Microsoft - Active Directory Accounts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage-user-accounts-in-windows-server">Microsoft - Manage User Accounts in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-control-list/">Access Control List</a></li><li><a href="/cypedia/en/computer-account/">Computer Account</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/en/security-group/">Security Group</a></li><li><a href="/cypedia/en/security-principal/">Security Principal</a></li><li><a href="/cypedia/en/service-account/">Service Account</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li><li><a href="/cypedia/en/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/en/windows-access-token/">Windows Access Token</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

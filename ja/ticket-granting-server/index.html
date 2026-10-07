@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Ticket-Granting Server（TGS）のTGS-REQ/TGS-REP、TGT検証、Service Ticket発行を解説する。"><title>Ticket-Granting Server - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/ticket-granting-server/">日本語</a><span> / </span><a href="/cypedia/en/ticket-granting-server/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Ticket-Granting Server</h1><div class="article-meta"><strong>別名:</strong> TGS</div><div class="article-meta"><strong>カテゴリ:</strong> Kerberos</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - Client/Server Authentication Exchange</a></p>
+</blockquote>
+<p>Ticket-Granting Server（<a href="./">TGS</a>）は<a href="../key-distribution-center/">Key Distribution Center（KDC）</a>を構成するserviceの1つです。</p>
+<p>TGSは有効な<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>を持つ<a href="../kerberos/">Kerberos</a> clientからrequestを受け、target service用の<a href="../service-ticket/">Service Ticket</a>を発行します。</p>
+<h2 id="tgs-req">TGS-REQ</h2>
+<p>clientはTGSへTGS-REQを送信します。</p>
+<p>requestにはTGT、<a href="../authenticator/">Authenticator</a>、target serviceを識別するinformationなどが含まれます。</p>
+<p><a href="../active-directory/">Active Directory</a>ではtarget serviceの識別に<a href="../service-principal-name/">Service Principal Name（SPN）</a>が重要です。</p>
+<h2 id="tgtの検証">TGTの検証</h2>
+<p>TGSはTGTを処理し、client/TGS間の<a href="../session-key/">Session Key</a>を利用してAuthenticatorなどを検証します。</p>
+<p>requestが有効であればtarget service向けのcredentialを生成します。</p>
+<h2 id="tgs-rep">TGS-REP</h2>
+<p>TGS-REPにはtarget service用のService Ticketとclientが利用するservice session keyに関するinformationが含まれます。</p>
+<p>Service Ticketはtarget service側が利用できるlong-term keyで保護されます。</p>
+<h2 id="active-directory">Active Directory</h2>
+<p>AD DSではserviceのSPNは通常、computer accountや<a href="../service-account/">Service Account</a>などのaccountへ登録されます。</p>
+<p>そのaccountに関連するkey materialがService Ticketの保護に関係します。</p>
+<p>Windows KerberosではService Ticketへ<a href="../privilege-attribute-certificate/">PAC</a>が含まれる場合があります。</p>
+<h2 id="kerberoasting">Kerberoasting</h2>
+<p><a href="../kerberoasting/">Kerberoasting</a>では、正当なTGTを持つ主体がTGSへService Ticketを要求できるKerberosの通常機能が利用されます。</p>
+<p>弱いService Account passwordやlegacy encryptionなどが存在する場合、取得したticket dataがoffline password guessingの対象になることがあります。</p>
+<h2 id="silver-ticket">Silver Ticket</h2>
+<p><a href="../silver-ticket/">Silver Ticket</a>はservice側のkey materialを利用してService Ticketを偽造するattack techniqueです。</p>
+<p>これは<a href="../golden-ticket/">Golden Ticket</a>がTGTを対象とする点とは異なります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../authenticator/">Authenticator</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../service-principal-name/">Service Principal Name</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../privilege-attribute-certificate/">PAC</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../computer-account/">Computer Account</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/key-distribution-center">Microsoft - Key Distribution Center</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/authenticator/">Authenticator</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos/">Kerberos</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/pkinit/">PKINIT</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/session-key/">Session Key</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

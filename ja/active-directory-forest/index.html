@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Forestの構造、共有要素、Trust、security boundaryとしての意味を解説する。"><title>Active Directory Forest - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/active-directory-forest/">日本語</a><span> / </span><a href="/cypedia/en/active-directory-forest/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Active Directory Forest</h1><div class="article-meta"><strong>別名:</strong> Forest, AD Forest</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></p>
+</blockquote>
+<p>Active Directory Forestは、<a href="../active-directory/">Active Directory Domain Services</a>における最上位の論理構造です。</p>
+<p>1つのForestは1つ以上の<a href="../active-directory-domain/">Domain</a>から構成されます。</p>
+<p>同一Forest内のDomainは、共通の<a href="../active-directory-schema/">Active Directory Schema</a>、configuration情報、<a href="../global-catalog/">Global Catalog</a>などを共有します。</p>
+<h2 id="domainとの関係">Domainとの関係</h2>
+<p>Forestは複数のDomainを包含できます。</p>
+<p>Domainはdirectory dataやadministrative scopeを分割する単位ですが、Forestはそれらをまとめる上位構造です。</p>
+<p>同一Forest内のDomain間には、自動的に双方向かつtransitiveな<a href="../active-directory-trust/">Trust</a>が形成されます。</p>
+<h2 id="forest内で共有される情報">Forest内で共有される情報</h2>
+<p>Forest全体で共有される代表的な情報には、次があります。</p>
+<ul>
+<li>Active Directory Schema</li>
+<li>Configuration information</li>
+<li><a href="../active-directory-site/">Site</a>およびreplication topology</li>
+<li>Global Catalog information</li>
+</ul>
+<p>Schema PartitionとConfiguration PartitionはForest-wideな情報を保持します。</p>
+<h2 id="security-boundary">Security Boundary</h2>
+<p>MicrosoftはForestをActive Directoryのsecurity boundaryとして扱っています。</p>
+<p>同一Forestに含まれるDomain同士は、完全に独立したsecurity boundaryではありません。</p>
+<p>Forest-levelのadministrative privilegeや重要な<a href="../domain-controller/">Domain Controller</a>が侵害された場合、影響が単一Domainに限定されない可能性があります。</p>
+<h2 id="設計上の意味">設計上の意味</h2>
+<p>複数Forestを分離する理由には、強いadministrative isolationやsecurity isolationがあります。</p>
+<p>一方、単一ForestではSchemaやGlobal Catalog、automatic trustなどを共有できるため、directory administrationを単純化できます。</p>
+<p>Forest設計は単なるnamespace設計ではなく、security boundaryとadministrative boundaryの設計でもあります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/ja/active-directory-schema/">Active Directory Schema</a></li><li><a href="/cypedia/ja/active-directory-site/">Active Directory Site</a></li><li><a href="/cypedia/ja/active-directory-trust/">Active Directory Trust</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/ja/distinguished-name/">Distinguished Name</a></li><li><a href="/cypedia/ja/dns/">DNS</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/ja/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/ja/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/knowledge-consistency-checker/">Knowledge Consistency Checker</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/organizational-unit/">Organizational Unit</a></li><li><a href="/cypedia/ja/security-group/">Security Group</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/sidhistory/">SIDHistory</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Replicationのmulti-master model、KCC、Site topology、Directory Partition単位の同期を解説する。"><title>Active Directory Replication - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/active-directory-replication/">日本語</a><span> / </span><a href="/cypedia/en/active-directory-replication/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Active Directory Replication</h1><div class="article-meta"><strong>別名:</strong> AD Replication</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></p>
+</blockquote>
+<p>Active Directory Replicationは、<a href="../active-directory/">Active Directory Domain Services</a>のdirectory dataを複数の<a href="../domain-controller/">Domain Controller</a>間で同期する仕組みです。</p>
+<p>AD DSは分散directoryであり、同じ<a href="../active-directory-domain/">Domain</a>に属する複数のwritable Domain Controllerがdirectory changeを受け付け、それらを相互にreplicateします。</p>
+<h2 id="multi-master-model">Multi-Master Model</h2>
+<p>Active Directoryの多くのdirectory updateはmulti-master modelで処理されます。</p>
+<p>1台のDomain Controllerだけがすべての変更を受け付けるのではなく、複数のwritable Domain Controllerがoriginating updateを受け付けられます。</p>
+<p>ただし、すべてのoperationがmulti-masterではありません。一部のoperationは<a href="../fsmo-roles/">FSMO Roles</a>によってsingle-master化されています。</p>
+<h2 id="directory-partition">Directory Partition</h2>
+<p>Replicationは<a href="../directory-partition/">Directory Partition</a>単位で行われます。</p>
+<p>代表的なpartitionには次があります。</p>
+<ul>
+<li>Domain Partition</li>
+<li>Configuration Partition</li>
+<li><a href="../active-directory-schema/">Schema</a> Partition</li>
+<li>Application Directory Partition</li>
+</ul>
+<p>各partitionのreplicaをどのDomain Controllerが保持するかによってreplication scopeが決まります。</p>
+<h2 id="connection-object">Connection Object</h2>
+<p>Replication connectionはActive Directory内のconnection objectで表現されます。</p>
+<p>connection objectはsource Domain Controllerからdestination Domain Controllerへのreplication connectionを表します。</p>
+<h2 id="kcc">KCC</h2>
+<p>Knowledge Consistency Checker（KCC）はすべてのDomain Controller上で動作する組み込みprocessです。</p>
+<p>KCCは<a href="../active-directory-forest/">Forest</a>のreplication topologyを生成し、Domain Controllerの追加・削除、availability、network configurationなどの変化に応じてtopologyを調整します。</p>
+<h2 id="intra-site--inter-site-replication">Intra-Site / Inter-Site Replication</h2>
+<p><a href="../active-directory-site/">Active Directory Site</a>はreplication topologyに大きく関係します。</p>
+<p>同一Site内部のreplicationとSite間replicationは別のtopologyとして扱われます。</p>
+<p>Site間ではSite Link、cost、scheduleなどを使用してnetwork topologyを反映できます。</p>
+<h2 id="global-catalogとの関係">Global Catalogとの関係</h2>
+<p><a href="../global-catalog/">Global Catalog</a> serverは自Domainのfull replicaに加え、Forest内の他Domainについてpartial read-only replicaを保持します。</p>
+<p>これらの情報もActive Directory Replicationによって維持されます。</p>
+<h2 id="障害時の影響">障害時の影響</h2>
+<p>Replication failureが継続するとDomain Controller間でdirectory dataが一致しなくなる可能性があります。</p>
+<p>その結果、authentication、authorization、Group Policy、directory-dependent serviceなどへ影響することがあります。</p>
+<h2 id="security上の論点">Security上の論点</h2>
+<p>Replicationはcredentialやsecurity-sensitiveなdirectory informationをDomain Controller間で扱う重要な機能です。</p>
+<p><a href="../dcsync/">DCSync</a>は、このreplication機能に関連する権限を悪用してcredential informationを取得する攻撃です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+<li><a href="../fsmo-roles/">FSMO Roles</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../knowledge-consistency-checker/">Knowledge Consistency Checker</a></li>
+<li><a href="../site-link/">Site Link</a></li>
+<li><a href="../connection-object/">Connection Object</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/troubleshoot/windows-server/active-directory/troubleshoot-adreplication-guidance">Microsoft - Troubleshooting Active Directory Replication</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/active-directory-schema/">Active Directory Schema</a></li><li><a href="/cypedia/ja/active-directory-site/">Active Directory Site</a></li><li><a href="/cypedia/ja/connection-object/">Connection Object</a></li><li><a href="/cypedia/ja/dcsync/">DCSync</a></li><li><a href="/cypedia/ja/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/ja/dns/">DNS</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/ja/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/ja/group-policy/">Group Policy</a></li><li><a href="/cypedia/ja/knowledge-consistency-checker/">Knowledge Consistency Checker</a></li><li><a href="/cypedia/ja/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/ja/ntds-dit/">NTDS.dit</a></li><li><a href="/cypedia/ja/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/ja/site-link/">Site Link</a></li><li><a href="/cypedia/ja/sysvol/">SYSVOL</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

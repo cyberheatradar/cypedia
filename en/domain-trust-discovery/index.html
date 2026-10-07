@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Domain Trust Discovery of AD Domain and Forest trust relationships, lateral-movement path analysis, detection, and defense."><title>Domain Trust Discovery - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/domain-trust-discovery/">日本語</a><span> / </span><a href="/cypedia/en/domain-trust-discovery/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Domain Trust Discovery</h1><div class="article-meta"><strong>Categories:</strong> Active Directory / Discovery</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></p>
+</blockquote>
+<p><a href="./">Domain Trust Discovery</a> is a Discovery technique used to identify <a href="../active-directory-trust/">Trust</a> relationships between <a href="../active-directory-domain/">Active Directory Domains</a> and <a href="../active-directory-forest/">Forests</a> and understand possible authentication and authorization paths across an <a href="../active-directory/">Active Directory</a> environment.</p>
+<h2 id="trusts">Trusts</h2>
+<p>An AD Trust allows authentication established in one Domain to participate in access decisions for resources in another Domain.</p>
+<p>Available paths depend on trust direction, transitivity, and trust type.</p>
+<h2 id="information-of-interest">Information of Interest</h2>
+<p>An adversary may seek information such as:</p>
+<ul>
+<li>trusted and trusting Domains;</li>
+<li>Forest relationships;</li>
+<li>trust direction;</li>
+<li>transitivity;</li>
+<li>target Domain names;</li>
+<li>potential lateral-movement paths.</li>
+</ul>
+<p>This information is not itself a credential, but it can guide subsequent targeting.</p>
+<h2 id="ldap-and-apis">LDAP and APIs</h2>
+<p>MITRE ATT&amp;CK documents that trust relationships can be discovered through <a href="../ldap/">LDAP</a>, Windows APIs, .NET interfaces, and related administrative mechanisms.</p>
+<p>These mechanisms also have legitimate uses, so the presence of a trust query alone does not establish malicious intent.</p>
+<h2 id="kerberos">Kerberos</h2>
+<p>AD Trust relationships are important to cross-domain <a href="../kerberos/">Kerberos</a> authentication.</p>
+<p><a href="../cross-realm-authentication/">Cross-Realm Authentication</a> and referral TGTs can establish authentication paths toward trusted Domains.</p>
+<h2 id="attack-paths">Attack Paths</h2>
+<p>Trust information can help an attacker evaluate lateral movement, Kerberos ticket abuse, or SIDHistory-related paths after other credentials have already been compromised.</p>
+<p>A Trust does not itself automatically grant privilege: resource permissions and useful credentials or privileges are still required.</p>
+<h2 id="detection">Detection</h2>
+<p>Useful signals include:</p>
+<ul>
+<li>trust enumeration by unusual processes;</li>
+<li>high-volume trust queries from non-administrative endpoints;</li>
+<li>unusual LDAP query patterns;</li>
+<li>cross-domain authentication soon after trust discovery;</li>
+<li>access through trust paths that are rarely used.</li>
+</ul>
+<h2 id="mitigation">Mitigation</h2>
+<p>The goal is not to eliminate all legitimate Trust Discovery.</p>
+<p>More effective controls include simplifying trust topology, removing unnecessary Trusts, applying least privilege to cross-domain resource permissions, and monitoring administrative discovery activity.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-forest/">Active Directory Forest</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../ldap/">LDAP</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../cross-realm-authentication/">Cross-Realm Authentication</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../sidhistory/">SIDHistory</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Reviewing Key AD DS Terms</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/bac4dc69-352d-416c-a9f4-730b81ababb3">MS-KILE - Cross-Domain Trust and Referrals</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-trust/">Active Directory Trust</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

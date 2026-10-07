@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos V5の仕組み、構成要素、認証フロー、暗号方式、Active Directory実装、攻撃・防御上の論点を一次情報に基づいて解説する。"><title>Kerberos - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/kerberos/">日本語</a><span> / </span><a href="/cypedia/en/kerberos/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Kerberos</h1><div class="article-meta"><strong>別名:</strong> Kerberos V5</div><div class="article-meta"><strong>カテゴリ:</strong> Authentication / Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-1">RFC 4120 §1</a></p>
+</blockquote>
+<p>Kerberosは、信頼された第三者である<a href="../key-distribution-center/">Key Distribution Center（KDC）</a>を介して、ネットワーク上の<a href="../principal/">principal</a>同士を認証し、通信に利用するセッション鍵を確立するための認証プロトコルです。</p>
+<p>現在の標準的な基礎仕様はKerberos Version 5（Kerberos V5）であり、RFC 4120で規定されています。RFC 4120は、それ以前のKerberos V5仕様であるRFC 1510を置き換えています。</p>
+<p>Kerberosでは、利用者がサービスへ接続するたびに長期秘密情報を直接提示するのではなく、KDCが発行するticketとセッション鍵を用いて認証を進めます。この構造により、一度取得した<a href="../ticket-granting-ticket/">Ticket-Granting Ticket（TGT）</a>を利用して複数のサービス向けticketを取得できます。</p>
+<h2 id="歴史的背景成立経緯">歴史的背景・成立経緯</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://web.mit.edu/saltzer/www/publications/Kerberosorigin.pdf">J. H. Saltzer - On the Origin of Kerberos</a> / <a href="https://web.mit.edu/Saltzer/www/publications/athenaplan/e.2.1.pdf">Project Athena Technical Plan E.2.1</a> / <a href="https://www.rfc-editor.org/info/rfc4120/">RFC 4120</a></p>
+</blockquote>
+<p>KerberosはMIT Project Athenaで開発されました。Jerome H. Saltzerによる開発史では、1985年の研究を経て、Cliff NeumanとSteve MillerがProject AthenaでKerberos認証システムを設計・実装し、初期実装は1986年秋に完成、1987年1月にProject Athenaで本番利用が始まったとされています。</p>
+<p>初期に実運用されたKerberos Version 4の後継としてVersion 5が設計され、1993年にRFC 1510として公開されました。その後、仕様の明確化や修正を反映したRFC 4120が2005年に公開され、RFC 1510を置き換えました。</p>
+<p>Kerberosは特定ベンダーだけの認証方式ではなく、IETFで標準化されたプロトコルです。一方で、Microsoft Windows / Active DirectoryはKerberos V5を基礎として独自の拡張を加えており、その差分はMS-KILEなどのMicrosoft Open Specificationsで公開されています。</p>
+<h2 id="現在の位置づけ">現在の位置づけ</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE</a> / <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-authsod/857b7719-bd1b-4cdd-ade0-84506b30b8df">MS-AUTHSOD: Kerberos Protocols</a></p>
+</blockquote>
+<p>Kerberos V5は、現在も企業ネットワークやActive Directoryを含む多くの認証基盤で使用されています。</p>
+<p>Windowsの<a href="../active-directory/">Active Directory</a>環境では、<a href="../domain-controller/">Domain Controller</a>がKDCの役割を担います。MicrosoftのKerberos実装はRFC 4120を基礎としつつ、authorization data、interactive logon、delegation、Active Directoryとの統合などに関する拡張を持ちます。</p>
+<p>そのため、Kerberosを理解する際には、IETF標準としてのKerberos V5と、Windows / Active DirectoryにおけるKerberos拡張を分けて考える必要があります。</p>
+<h2 id="基本構成">基本構成</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120</a></p>
+</blockquote>
+<h3 id="principal">Principal</h3>
+<p>principalは、Kerberosによって識別・認証される主体です。</p>
+<p>利用者、ホスト、ネットワークサービスなどがprincipalになり得ます。Kerberosのticketや認証要求では、principal名を用いて主体を識別します。</p>
+<h3 id="realm"><a href="../realm/">Realm</a></h3>
+<p>realmは、Kerberosにおける管理・認証上の名前空間です。</p>
+<p>KDCはrealmに属するprincipalと、その認証に必要な鍵情報を管理します。複数realm間で認証を成立させる<a href="../cross-realm-authentication/">cross-realm authentication</a>もKerberos V5で定義されています。</p>
+<h3 id="key-distribution-center">Key Distribution Center</h3>
+<p>Key Distribution Center（KDC）はKerberosの中心となる信頼主体です。</p>
+<p>概念上、KDCは主に次の2つの機能を提供します。</p>
+<ul>
+<li><a href="../authentication-server/">Authentication Server（AS）</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server（TGS）</a></li>
+</ul>
+<p>ASは初期認証を処理してTGTを発行し、TGSはTGTを基に個別サービス向けの<a href="../service-ticket/">Service Ticket</a>を発行します。</p>
+<h3 id="ticket">Ticket</h3>
+<p>ticketは、KDCによって発行される認証情報です。</p>
+<p>ticketには、client principal、service principal、セッション鍵、ticketの有効期間など、認証に必要な情報が含まれます。ticketの機密部分は対象サービス側が保持する鍵で保護されるため、client自身が任意に内容を書き換えることを前提としていません。</p>
+<p>代表的なticketには次の2種類があります。</p>
+<ul>
+<li>Ticket-Granting Ticket（TGT）</li>
+<li>Service Ticket</li>
+</ul>
+<h3 id="session-key"><a href="../session-key/">Session Key</a></h3>
+<p>Kerberosでは、長期鍵だけではなく、一時的なsession keyを使用します。</p>
+<p>KDCは認証処理の中でclientとTGS、またはclientとapplication serviceの間で利用するsession keyを提供します。</p>
+<h3 id="authenticator"><a href="../authenticator/">Authenticator</a></h3>
+<p>Authenticatorは、ticketを提示する主体が、そのticketに対応するsession keyを保持していることを示すために使用されるデータです。</p>
+<p>Authenticatorには時刻情報などが含まれ、ticketと組み合わせて利用されます。RFC 4120では、application側が別の適切なanti-replay mechanismを提供しない限り、application serverは<a href="../replay-cache/">replay cache</a>を利用してAuthenticatorの再利用を検出する必要があります。</p>
+<h2 id="認証の流れ">認証の流れ</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3">RFC 4120 §3</a></p>
+</blockquote>
+<p>Kerberos V5の基本的な認証は、AS exchange、TGS exchange、Client/Server exchangeという段階で進みます。</p>
+<h3 id="1-as-req--as-rep">1. AS-REQ / AS-REP</h3>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.1">RFC 4120 §3.1</a></p>
+</blockquote>
+<p>clientはKDCのAuthentication ServerへAS-REQを送信します。</p>
+<p>環境やポリシーによってはpre-authenticationが要求されます。KDCがclientを認証すると、AS-REPによってTGTとclient/TGS間で利用するsession keyに関する情報が返されます。</p>
+<p>TGTは、その後のService Ticket取得に使用されます。</p>
+<h3 id="2-tgs-req--tgs-rep">2. TGS-REQ / TGS-REP</h3>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.3">RFC 4120 §3.3</a></p>
+</blockquote>
+<p>clientが特定のサービスを利用したい場合、TGTを利用してTicket-Granting ServerへTGS-REQを送信します。</p>
+<p>TGSはTGTとAuthenticatorなどを検証し、要求が有効であれば対象サービス向けのService TicketをTGS-REPとして返します。</p>
+<p>この処理により、clientは長期秘密情報をサービスごとに再提示することなく、複数サービス向けのticketを取得できます。</p>
+<h3 id="3-ap-req--ap-rep">3. AP-REQ / AP-REP</h3>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.2">RFC 4120 §3.2</a></p>
+</blockquote>
+<p>clientは取得したService TicketとAuthenticatorを対象application serverへAP-REQとして提示します。</p>
+<p>serverはService Ticketを自身の鍵で処理し、Authenticatorを検証します。</p>
+<p>mutual authenticationを行う場合、serverはAP-REPを返し、client側からもserverの正当性を確認できます。</p>
+<h2 id="ticket-granting-ticket">Ticket-Granting Ticket</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.3">RFC 4120 §3.3</a></p>
+</blockquote>
+<p>TGTは、KerberosにおけるSingle Sign-On的な動作を支える重要なticketです。</p>
+<p>初期認証後、clientはTGTを一定期間ticket cacheに保持し、そのTGTを利用して複数のService Ticketを要求できます。</p>
+<p>これにより、個々のサービスへ接続するたびに利用者の長期秘密情報を入力し直す必要を減らせます。</p>
+<h2 id="pre-authentication"><a href="../pre-authentication/">Pre-Authentication</a></h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.1">RFC 4120 §3.1</a> / <a href="https://www.rfc-editor.org/rfc/rfc6113.html">RFC 6113</a></p>
+</blockquote>
+<p>Kerberos V5はpre-authenticationの仕組みを備えています。</p>
+<p>RFC 4120ではpre-authentication dataを扱う仕組みが定義され、RFC 6113ではKerberos pre-authenticationの一般化されたframeworkが定義されています。</p>
+<p>pre-authenticationは、KDCがAS-REPを発行する前にclient側へ追加の認証証明を要求できる仕組みです。</p>
+<p>Windows / Active Directory環境ではpre-authenticationを無効化したaccountが<a href="../as-rep-roasting/">AS-REP Roasting</a>の対象となり得るため、セキュリティ上も重要です。</p>
+<h2 id="時刻同期とreplay-protection">時刻同期とReplay Protection</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-3.2.3">RFC 4120 §3.2.3</a></p>
+</blockquote>
+<p>Kerberosでは時刻が重要な役割を持ちます。</p>
+<p>RFC 4120では、参加するhostのclockがある程度同期していることを前提としており、典型的な許容clock skewとして約5分が示されています。</p>
+<p>application serverはAuthenticatorに含まれる時刻情報を検証します。RFC 4120では、別の適切なanti-replay mechanismがない場合、serverはallowable clock skew内に提示されたAuthenticatorを記録するreplay cacheを利用し、再利用をreplayとして拒否する必要があります。</p>
+<p>そのため、Kerberos環境では正確かつ安全な時刻同期が重要です。</p>
+<h2 id="暗号方式">暗号方式</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc3961.html">RFC 3961</a> / <a href="https://www.rfc-editor.org/rfc/rfc3962.html">RFC 3962</a> / <a href="https://www.rfc-editor.org/rfc/rfc8009.html">RFC 8009</a> / <a href="https://www.rfc-editor.org/rfc/rfc8429.html">RFC 8429</a></p>
+</blockquote>
+<p>Kerberos V5は単一の暗号アルゴリズムだけに固定された設計ではありません。</p>
+<p>RFC 3961はKerberosで利用するencryption typeとchecksum mechanismを定義するためのframeworkを規定しています。</p>
+<p>AESを利用するKerberos encryption typeはRFC 3962で定義され、その後RFC 8009ではAESとHMAC-SHA2を組み合わせた新しいencryption typeが定義されました。</p>
+<p>一方、3DESおよびRC4についてはRFC 8429でKerberosにおける利用がdeprecatedとされています。</p>
+<p>したがって、新しい実装や安全性を重視する運用では、legacy encryption typeを前提とせず、現在推奨される強い暗号方式を利用することが重要です。</p>
+<h2 id="pkinit"><a href="../pkinit/">PKINIT</a></h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556</a></p>
+</blockquote>
+<p>Public Key Cryptography for Initial Authentication in Kerberos（PKINIT）は、Kerberosのinitial authenticationへ公開鍵暗号を統合する拡張です。</p>
+<p>RFC 4556で定義されており、pre-authentication dataを利用して公開鍵による署名や鍵交換をKerberosの初期認証へ組み込みます。</p>
+<p>Windows環境における証明書・smart cardを利用したKerberos認証とも関連する重要な仕様です。</p>
+<h2 id="active-directoryとの関係">Active Directoryとの関係</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE</a> / <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-authsod/857b7719-bd1b-4cdd-ade0-84506b30b8df">MS-AUTHSOD: Kerberos Protocols</a></p>
+</blockquote>
+<p>Active DirectoryではKerberos V5が主要な認証プロトコルの1つとして利用されています。</p>
+<p>WindowsのKDCはActive Directoryをaccount databaseとして利用し、<a href="../kerberos-ticket/">Kerberos ticket</a>にはWindows固有のauthorization情報が含まれる場合があります。</p>
+<p>MicrosoftのMS-KILEは、RFC 4120に対するWindows固有の動作や拡張を定義しています。また、<a href="../privilege-attribute-certificate/">Privilege Attribute Certificate（PAC）</a>はWindows環境でauthorization情報を運ぶために利用されます。</p>
+<p>このため、Active DirectoryのKerberosを解析するときはRFC 4120だけでなく、MS-KILE、MS-PAC、MS-SFU、MS-PKCAなどのWindows Protocols仕様も必要になります。</p>
+<h2 id="セキュリティ上の論点">セキュリティ上の論点</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-10">RFC 4120 §10</a></p>
+</blockquote>
+<p>Kerberosの安全性は、KDC、principalの長期鍵、session key、ticket、時刻同期、暗号方式など複数の要素に依存します。</p>
+<p>特に次の点が重要です。</p>
+<ul>
+<li>KDCとその鍵データを保護すること</li>
+<li>clientやserverの長期鍵を保護すること</li>
+<li>replay cacheを適切に利用すること</li>
+<li>安全な時刻同期を維持すること</li>
+<li>legacyな暗号方式を避けること</li>
+<li>pre-authenticationを適切に利用すること</li>
+<li>ticket cacheやcredential materialを保護すること</li>
+</ul>
+<p>RFC 4120は、password由来鍵に対するdictionary attack、clock synchronization、replay protectionなどについてSecurity Considerationsで明示的に扱っています。</p>
+<h2 id="攻撃悪用との関係">攻撃・悪用との関係</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1558/">MITRE ATT&amp;CK T1558</a></p>
+</blockquote>
+<p>Kerberosは認証基盤として広く利用されているため、攻撃者にとっても重要な対象です。</p>
+<p>MITRE ATT&amp;CKでは「Steal or Forge Kerberos Tickets」がT1558として整理されており、代表的なsub-techniqueとして<a href="../golden-ticket/">Golden Ticket</a>、<a href="../silver-ticket/">Silver Ticket</a>、<a href="../kerberoasting/">Kerberoasting</a>、<a href="../as-rep-roasting/">AS-REP Roasting</a>、Ccache Filesが定義されています。</p>
+<h3 id="kerberoasting">Kerberoasting</h3>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003</a></p>
+</blockquote>
+<p><a href="../kerberoasting/">Kerberoasting</a>では、正規のTGTを持つ主体がservice principalに対するService Ticketを要求できるKerberosの通常機能を悪用します。</p>
+<p>取得したticketの一部を対象としてoffline password crackingを試み、service accountのcredentialを回復することが目的となります。</p>
+<h3 id="as-rep-roasting">AS-REP Roasting</h3>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1558/004/">MITRE ATT&amp;CK T1558.004</a></p>
+</blockquote>
+<p>AS-REP Roastingは、Kerberos pre-authenticationを要求しないaccountを対象とする攻撃です。</p>
+<p>pre-authenticationが無効な場合、攻撃者がAS-REQを送信して得たAS-REP中のpassword由来鍵で保護されたデータを利用し、offline crackingを試みられる場合があります。</p>
+<h3 id="golden-ticket">Golden Ticket</h3>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1558/001/">MITRE ATT&amp;CK T1558.001</a></p>
+</blockquote>
+<p>Active Directory環境では、<a href="../krbtgt/">KRBTGT account</a>のkey materialを取得した攻撃者が偽造TGTを生成する攻撃がGolden Ticketとして知られています。</p>
+<p>これはKDCがTGTを保護するために使用する重要な秘密情報そのものが侵害された場合の攻撃です。</p>
+<h3 id="silver-ticket">Silver Ticket</h3>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://attack.mitre.org/techniques/T1558/002/">MITRE ATT&amp;CK T1558.002</a></p>
+</blockquote>
+<p><a href="../service-account/">service account</a>のkey materialを取得した攻撃者が、そのservice向けのService Ticketを偽造する攻撃はSilver Ticketとして整理されています。</p>
+<p>Golden Ticketと異なり、対象serviceの範囲に限定される一方、ticket生成時にKDCへ問い合わせる必要がない場合があります。</p>
+<h2 id="防御緩和">防御・緩和</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc8429.html">RFC 8429</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/group-managed-service-accounts-overview">Microsoft: Group Managed Service Accounts</a></p>
+</blockquote>
+<p>Kerberosに対する防御では、プロトコルそのものだけでなく、その周囲のidentity infrastructureを含めて保護する必要があります。</p>
+<p>Active Directory環境では、強いKerberos encryption typeを利用し、RC4などのlegacy方式への依存を減らすことが重要です。</p>
+<p>service accountには推測困難な十分に強い秘密情報を使用し、可能な環境ではmanaged service accountなど、人手による固定password管理への依存を減らす方式を検討します。</p>
+<p>また、Kerberos pre-authenticationを不必要に無効化しないこと、KDC / Domain Controllerとcredential databaseを高い優先度で保護すること、ticketやcredential cacheへのアクセスを監視することも重要です。</p>
+<h2 id="制約限界">制約・限界</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html#section-10">RFC 4120 §10</a></p>
+</blockquote>
+<p>Kerberosは認証のための基盤であり、それだけですべてのauthorization問題やendpoint compromiseを解決するものではありません。</p>
+<p>clientやserver、KDC自体が侵害され、鍵やticketが窃取された場合、そのauthentication materialが悪用される可能性があります。</p>
+<p>また、Kerberosのreplay protectionは時刻同期などの前提条件にも依存するため、関連インフラの安全性もKerberos全体の安全性に影響します。</p>
+<h2 id="関連する標準仕様">関連する標準・仕様</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://www.rfc-editor.org/info/rfc4120/">RFC 4120</a></p>
+</blockquote>
+<p>Kerberos V5を理解する上で重要な標準・仕様には、RFC 4120のほか、Kerberos cryptosystem framework、AES encryption、pre-authentication、PKINIT、GSS-API、Windows固有拡張などがあります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../key-distribution-center/">KDC</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../service-principal-name/">SPN</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../pkinit/">PKINIT</a></li>
+<li><a href="../privilege-attribute-certificate/">PAC</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc3961.html">RFC 3961 - Encryption and Checksum Specifications for Kerberos 5</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc3962.html">RFC 3962 - Advanced Encryption Standard (AES) Encryption for Kerberos 5</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556 - Public Key Cryptography for Initial Authentication in Kerberos (PKINIT)</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6113.html">RFC 6113 - A Generalized Framework for Kerberos Pre-Authentication</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8009.html">RFC 8009 - AES Encryption with HMAC-SHA2 for Kerberos 5</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8429.html">RFC 8429 - Deprecate Triple-DES (3DES) and RC4 in Kerberos</a></li>
+<li><a href="https://web.mit.edu/saltzer/www/publications/Kerberosorigin.pdf">J. H. Saltzer - On the Origin of Kerberos</a></li>
+<li><a href="https://web.mit.edu/Saltzer/www/publications/athenaplan/e.2.1.pdf">MIT Project Athena Technical Plan E.2.1 - Kerberos Authentication and Authorization System</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">Microsoft Open Specifications - MS-KILE: Kerberos Protocol Extensions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-authsod/857b7719-bd1b-4cdd-ade0-84506b30b8df">Microsoft Open Specifications - MS-AUTHSOD: Kerberos Protocols</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-managed-service-accounts/group-managed-service-accounts/group-managed-service-accounts-overview">Microsoft - Group Managed Service Accounts overview</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/">MITRE ATT&amp;CK T1558 - Steal or Forge Kerberos Tickets</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/001/">MITRE ATT&amp;CK T1558.001 - Golden Ticket</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/002/">MITRE ATT&amp;CK T1558.002 - Silver Ticket</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/003/">MITRE ATT&amp;CK T1558.003 - Kerberoasting</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1558/004/">MITRE ATT&amp;CK T1558.004 - AS-REP Roasting</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/active-directory-trust/">Active Directory Trust</a></li><li><a href="/cypedia/ja/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/ja/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/ja/authenticator/">Authenticator</a></li><li><a href="/cypedia/ja/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/ja/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/ja/dns/">DNS</a></li><li><a href="/cypedia/ja/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/ja/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/ja/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/ja/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/ja/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/ja/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/ja/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/ja/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/ja/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/ja/ntlm/">NTLM</a></li><li><a href="/cypedia/ja/pkinit/">PKINIT</a></li><li><a href="/cypedia/ja/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/ja/principal/">Principal</a></li><li><a href="/cypedia/ja/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/ja/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/ja/realm/">Realm</a></li><li><a href="/cypedia/ja/replay-cache/">Replay Cache</a></li><li><a href="/cypedia/ja/security-principal/">Security Principal</a></li><li><a href="/cypedia/ja/service-account/">Service Account</a></li><li><a href="/cypedia/ja/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/ja/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/ja/session-key/">Session Key</a></li><li><a href="/cypedia/ja/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/ja/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/ja/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/ja/ticket-granting-ticket/">Ticket-Granting Ticket</a></li><li><a href="/cypedia/ja/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

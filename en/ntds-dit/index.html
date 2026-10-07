@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="NTDS.dit as the Active Directory database file, the data it represents, and its security significance."><title>NTDS.dit - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/ntds-dit/">日本語</a><span> / </span><a href="/cypedia/en/ntds-dit/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>NTDS.dit</h1><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/ad-ds-installation-and-removal-wizard-page-descriptions">Microsoft - AD DS Configuration Wizard Page Descriptions</a></p>
+</blockquote>
+<p>NTDS.dit is the database file used by <a href="../active-directory/">Active Directory Domain Services</a> on a <a href="../domain-controller/">Domain Controller</a>.</p>
+<p>AD DS installation allows configuration of locations for the database file, transaction logs, and <a href="../sysvol/">SYSVOL</a>.</p>
+<h2 id="stored-information">Stored Information</h2>
+<p>The Active Directory database contains object information for users, computers, groups, <a href="../security-principal/">Security Principals</a>, and directory configuration.</p>
+<p>NTDS.dit is the central file containing this directory data.</p>
+<h2 id="domain-controllers">Domain Controllers</h2>
+<p>A Domain Controller maintains replicas of its <a href="../directory-partition/">Directory Partitions</a> in the directory database.</p>
+<p>Changes are synchronized with other Domain Controllers through <a href="../active-directory-replication/">Active Directory Replication</a>.</p>
+<h2 id="difference-from-sysvol">Difference from SYSVOL</h2>
+<p>NTDS.dit and SYSVOL serve different purposes.</p>
+<p>Directory objects and the directory-side portion of a GPO are stored in Active Directory.</p>
+<p>File-based data such as the Group Policy Template for <a href="../group-policy/">Group Policy</a> is stored in SYSVOL.</p>
+<h2 id="security-importance">Security Importance</h2>
+<p>Microsoft documents that passwords at rest are stored in several attributes of the Active Directory database (the NTDS.DIT file).</p>
+<p>Unauthorized access to NTDS.dit, backups, or equivalent copies can therefore result in significant credential exposure.</p>
+<h2 id="ntds-credential-dumping">NTDS Credential Dumping</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></p>
+</blockquote>
+<p><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a> refers to attempts to obtain Active Directory database data and extract credential material.</p>
+<p>Attackers may attempt to obtain copies through mechanisms such as backups or snapshots rather than accessing the live database file directly.</p>
+<h2 id="difference-from-dcsync">Difference from DCSync</h2>
+<p><a href="../dcsync/">DCSync</a> does not require directly copying NTDS.dit.</p>
+<p>Instead, DCSync abuses directory replication behavior and replication privileges to request credential information.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../sysvol/">SYSVOL</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/ad-ds-installation-and-removal-wizard-page-descriptions">Microsoft - AD DS Configuration Wizard Page Descriptions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/active-directory-domain-services">Microsoft - Active Directory Domain Services overview</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/passwords-technical-overview">Microsoft - Passwords technical overview</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1003/006/">MITRE ATT&amp;CK T1003.006 - DCSync</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/dcsync/">DCSync</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/en/sysvol/">SYSVOL</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

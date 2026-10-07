@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="NTLM challenge-response authentication, local and Domain verification, Kerberos positioning, NTLMv1 removal, and NTLMv2 deprecation."><title>NTLM - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/ntlm/">日本語</a><span> / </span><a href="/cypedia/en/ntlm/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>NTLM</h1><div class="article-meta"><strong>Categories:</strong> Authentication / Windows</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/ntlm-overview">Microsoft - NTLM overview</a></p>
+</blockquote>
+<p><a href="./">NTLM</a> is a family of challenge-response authentication protocols used by Windows.</p>
+<p>Microsoft’s NTLM overview describes LAN Manager version 1 and 2 and NTLM version 1 and 2 as part of the NTLM authentication family.</p>
+<p>In current <a href="../active-directory/">Active Directory</a> environments, <a href="../kerberos/">Kerberos</a> is the preferred authentication method.</p>
+<h2 id="challenge-response">Challenge-Response</h2>
+<p>Instead of transmitting a password directly, NTLM uses a secret derived from the account credential together with a server challenge to construct a response.</p>
+<p>The server or Domain authentication service validates that response to determine whether the client possesses the account secret.</p>
+<h2 id="local-accounts">Local Accounts</h2>
+<p>For a local account, a resource server can validate authentication against its local account database.</p>
+<p>NTLM therefore remains relevant to Windows authentication outside an Active Directory Domain.</p>
+<h2 id="domain-accounts">Domain Accounts</h2>
+<p>For a Domain account, a resource server can contact the authentication service for the account’s Domain.</p>
+<p>A <a href="../domain-controller/">Domain Controller</a> participates in this Domain authentication process.</p>
+<h2 id="difference-from-kerberos">Difference from Kerberos</h2>
+<p>Kerberos is based on tickets issued by a <a href="../key-distribution-center/">Key Distribution Center</a>.</p>
+<p>NTLM is challenge-response based and does not use Kerberos Tickets.</p>
+<p>Kerberos is preferred in AD DS, while NTLM can still appear where application, naming, or protocol conditions prevent Kerberos from being used.</p>
+<h2 id="negotiate">Negotiate</h2>
+<p>Windows applications can use the Negotiate security package to select an available authentication mechanism.</p>
+<p>Where Kerberos can be used, Negotiate can select Kerberos; under other conditions it can fall back to NTLM.</p>
+<h2 id="ntlmv1-removal">NTLMv1 Removal</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows/whats-new/whats-new-windows-11-version-24h2">Microsoft - What’s new in Windows 11 version 24H2</a></p>
+</blockquote>
+<p>NTLMv1 is removed starting with Windows 11 version 24H2 and Windows Server 2025.</p>
+<p>New Windows deployments should therefore not depend on NTLMv1 compatibility.</p>
+<h2 id="future-of-ntlmv2">Future of NTLMv2</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/get-started/removed-deprecated-features-windows-server">Microsoft - Features removed or no longer developed in Windows Server</a></p>
+</blockquote>
+<p>Microsoft lists NTLMv2 as deprecated and no longer under active feature development and states that it will be removed from Windows Server in a future release.</p>
+<p>Legacy application dependencies on NTLM should therefore be inventoried and migrated toward Kerberos or more modern authentication mechanisms.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Important NTLM security issues include:</p>
+<ul>
+<li>protection of credential hashes;</li>
+<li>NTLM relay;</li>
+<li>credential forwarding;</li>
+<li>legacy protocol dependencies;</li>
+<li>removal of weak or obsolete versions;</li>
+<li>auditing NTLM usage.</li>
+</ul>
+<p>Microsoft provides policy and logging capabilities that help organizations discover and selectively restrict NTLM traffic.</p>
+<h2 id="current-position">Current Position</h2>
+<p>NTLM has not disappeared from current Windows environments and remains necessary in some scenarios.</p>
+<p>However, Microsoft’s platform direction is toward reduced NTLM dependence.</p>
+<p>New systems should avoid introducing unnecessary NTLM dependencies and prefer Kerberos or modern authentication where appropriate.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/ntlm-overview">Microsoft - NTLM overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-nlmp/">MS-NLMP - NT LAN Manager Authentication Protocol</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/whats-new/whats-new-windows-11-version-24h2">Microsoft - What’s new in Windows 11 version 24H2</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/get-started/removed-deprecated-features-windows-server">Microsoft - Features removed or no longer developed in Windows Server</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Domain Services architecture, data model, authentication, replication, DNS, Group Policy, and security considerations based primarily on Microsoft specifications and documentation."><title>Active Directory - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/active-directory/">日本語</a><span> / </span><a href="/cypedia/en/active-directory/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Active Directory</h1><div class="article-meta"><strong>Aliases:</strong> AD</div><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/">MS-ADTS</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a></p>
+</blockquote>
+<p>Active Directory is a Microsoft directory-service technology and a collection of related technologies used in Windows environments.</p>
+<p>The Microsoft Active Directory Technical Specification (MS-ADTS) documents core Active Directory functionality and describes Microsoft-specific extensions and variations to <a href="../ldap/">LDAP</a>.</p>
+<p>In common enterprise usage, the term Active Directory frequently refers to Active Directory Domain Services (AD DS). This article therefore focuses primarily on AD DS.</p>
+<p>AD DS stores objects such as users, computers, groups, and services in a hierarchical directory and provides infrastructure for directory search, authentication, authorization-related information, replication, and centralized configuration management.</p>
+<h2 id="historical-background">Historical Background</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/active-directory-domain-services">Microsoft - Active Directory Domain Services</a></p>
+</blockquote>
+<p>Microsoft documents Active Directory Domain Services as a foundation for distributed networks based on Windows Server and Domain Controllers.</p>
+<p>Active Directory introduced a hierarchical directory model, LDAP-based directory access, Kerberos authentication, DNS integration, and distributed directory replication into Windows domain environments.</p>
+<p>AD DS continues to be implemented and maintained as part of Windows Server, and Microsoft continues to publish protocol details through Open Specifications such as MS-ADTS.</p>
+<h2 id="active-directory-and-ad-ds">Active Directory and AD DS</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/bacff5f1-9127-457b-877c-db97b1e1802f">MS-ADTS Introduction</a></p>
+</blockquote>
+<p>MS-ADTS covers both Active Directory Domain Services (AD DS) and Active Directory Lightweight Directory Services (AD LDS).</p>
+<p>AD DS provides Windows domain infrastructure including domains, forests, Domain Controllers, domain-joined clients, Kerberos authentication, and Group Policy.</p>
+<p>AD LDS provides directory-service capabilities without creating the same Windows domain infrastructure.</p>
+<p>CyPedia distinguishes AD DS from AD LDS whenever that distinction is technically relevant.</p>
+<h2 id="logical-structure">Logical Structure</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></p>
+</blockquote>
+<p>The logical structure of AD DS is hierarchical.</p>
+<p>Major elements include:</p>
+<ul>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../organizational-unit/">Organizational Unit (OU)</a></li>
+<li>users</li>
+<li>computers</li>
+<li>groups</li>
+<li>service-related objects</li>
+</ul>
+<h3 id="forest"><a href="../active-directory-forest/">Forest</a></h3>
+<p>A Forest is the top-level logical structure in AD DS and contains one or more Active Directory Domains.</p>
+<p>Domains in the same Forest share a common directory schema, configuration information, and Global Catalog infrastructure.</p>
+<p>Microsoft documentation states that domains in the same Forest are automatically linked by two-way, transitive trust relationships.</p>
+<p>A Forest defines an Active Directory security boundary. Consequently, administrative compromise that crosses Forest-level trust or control boundaries can have implications beyond a single Domain.</p>
+<h3 id="domain"><a href="../active-directory-domain/">Domain</a></h3>
+<p>A Domain is a partition within an Active Directory Forest.</p>
+<p>It is a major scope for directory objects, authentication, policy administration, and replication.</p>
+<p>A Domain can contain multiple <a href="../domain-controller/">Domain Controllers</a>, which maintain replicated copies of directory data for that Domain.</p>
+<h3 id="organizational-unit"><a href="../organizational-unit/">Organizational Unit</a></h3>
+<p>An Organizational Unit (OU) is a container object used to create hierarchy within a Domain.</p>
+<p>Typical uses include:</p>
+<ul>
+<li>delegation of administration;</li>
+<li>logical organization of directory objects;</li>
+<li>defining scope for <a href="../group-policy/">Group Policy</a>.</li>
+</ul>
+<p>OU design is generally driven by administrative delegation and policy requirements rather than by a requirement to reproduce the organization’s reporting structure exactly.</p>
+<h2 id="physical-structure-and-sites">Physical Structure and Sites</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></p>
+</blockquote>
+<p><a href="../active-directory-site/">Active Directory Sites</a> represent aspects of the physical network independently of the logical Domain and Forest hierarchy.</p>
+<p>A Site represents one or more TCP/IP subnets connected by fast and reliable network connectivity.</p>
+<p>Site information is used for purposes such as:</p>
+<ul>
+<li>helping clients locate appropriate Domain Controllers;</li>
+<li>optimizing replication topology;</li>
+<li>controlling inter-site replication cost and schedules.</li>
+</ul>
+<p>A single Domain can span multiple Sites, and a Site can contain Domain Controllers from multiple Domains.</p>
+<h2 id="domain-controller">Domain Controller</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/securing-domain-controllers-against-attack">Microsoft - Securing domain controllers against attack</a></p>
+</blockquote>
+<p>A <a href="../domain-controller/">Domain Controller (DC)</a> is a Windows Server that hosts AD DS.</p>
+<p>Domain Controllers store directory data and provide core Active Directory functions such as authentication, directory queries, and replication.</p>
+<p>In an AD DS environment, Domain Controllers can also provide the KDC role for <a href="../kerberos/">Kerberos</a> authentication.</p>
+<p>Because Domain Controllers hold and process security-critical directory and credential information, Microsoft recommends protecting them more strictly than ordinary member servers and workstations.</p>
+<h2 id="objects-and-attributes">Objects and Attributes</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5859bab0-f545-4db6-80c6-9798b484b3d8">MS-ADTS - Active Directory Schema</a></p>
+</blockquote>
+<p>Active Directory stores directory entities such as users, computers, and groups as objects.</p>
+<p>Each object contains attributes.</p>
+<p>For example, a user object can contain naming information, identifiers, group memberships, and other directory data.</p>
+<p>Rules governing which object classes exist and which attributes those classes can contain are defined by the <a href="../active-directory-schema/">Active Directory Schema</a>.</p>
+<h2 id="active-directory-schema">Active Directory Schema</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5859bab0-f545-4db6-80c6-9798b484b3d8">MS-ADTS - Active Directory Schema</a></p>
+</blockquote>
+<p>The <a href="../active-directory-schema/">Active Directory Schema</a> defines the types and structure of objects that can be stored in the directory.</p>
+<p>Important schema concepts include:</p>
+<ul>
+<li>classes;</li>
+<li>attributes;</li>
+<li>attribute syntax.</li>
+</ul>
+<p>Classes define types of directory objects, while attributes define information that those objects can contain.</p>
+<p>Because schema changes can affect the entire Forest, they require more caution than ordinary directory-object changes.</p>
+<h2 id="directory-partitions-and-naming-contexts">Directory Partitions and Naming Contexts</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/naming-contexts-and-partitions">Microsoft - Naming Contexts and Directory Partitions</a></p>
+</blockquote>
+<p>The Active Directory database is divided into <a href="../directory-partition/">Directory Partitions</a>, also called Naming Contexts (NCs).</p>
+<p>Each partition has its own replication scope.</p>
+<p>Common partitions include:</p>
+<ul>
+<li>Schema Partition;</li>
+<li>Configuration Partition;</li>
+<li>Domain Partition;</li>
+<li>Application Directory Partition.</li>
+</ul>
+<p>The Schema and Configuration partitions are shared throughout the Forest.</p>
+<p>A Domain Partition contains objects associated with that Domain and is replicated among Domain Controllers for the Domain.</p>
+<h2 id="ldap">LDAP</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/">MS-ADTS</a> / <a href="https://www.rfc-editor.org/rfc/rfc4511.html">RFC 4511</a></p>
+</blockquote>
+<p><a href="../ldap/">LDAP</a> is a protocol used to access directory services.</p>
+<p>RFC 4511 defines LDAP protocol elements, semantics, and encoding.</p>
+<p>Active Directory uses LDAP for operations such as searching, reading, and modifying directory objects, but also includes Microsoft-specific behavior and extensions.</p>
+<p>Detailed Active Directory protocol analysis therefore requires both the LDAP RFCs and Microsoft Open Specifications such as MS-ADTS.</p>
+<h2 id="ntdsdit">NTDS.dit</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/ad-ds-installation-and-removal-wizard-page-descriptions">Microsoft - AD DS Configuration Wizard</a> / <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/passwords-technical-overview">Microsoft - Passwords technical overview</a> / <a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003</a></p>
+</blockquote>
+<p><a href="../ntds-dit/">NTDS.dit</a> is the Active Directory database file used by Domain Controllers.</p>
+<p>It contains important directory data, including information related to Domain credentials and security principals.</p>
+<p>Because of the sensitivity of this data, NTDS.dit and backups containing equivalent directory information are high-value assets.</p>
+<p>MITRE ATT&amp;CK documents attempts to obtain or copy the Active Directory Domain database as OS Credential Dumping: NTDS.</p>
+<h2 id="sysvol">SYSVOL</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a></p>
+</blockquote>
+<p><a href="../sysvol/">SYSVOL</a> is a system volume shared by Domain Controllers.</p>
+<p>A Group Policy Object includes directory-side information and file-based Group Policy Template data stored in SYSVOL.</p>
+<p>For this reason, protecting Group Policy integrity requires protecting both directory data and SYSVOL content and replication.</p>
+<h2 id="global-catalog">Global Catalog</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/global-catalog">Microsoft - Global Catalog</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></p>
+</blockquote>
+<p>The <a href="../global-catalog/">Global Catalog (GC)</a> provides Forest-wide directory search capabilities.</p>
+<p>A writable Global Catalog server stores a full writable replica of its own Domain partition and partial read-only replicas of other Domains in the Forest. A <a href="../read-only-domain-controller/">Read-Only Domain Controller (RODC)</a> can also be configured as a Global Catalog server while remaining read-only.</p>
+<p>These partial replicas contain all objects from those Domains but only a subset of their attributes.</p>
+<p>This allows applications and users to search for objects across the Forest without first knowing which Domain contains the requested object.</p>
+<h2 id="replication">Replication</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></p>
+</blockquote>
+<p><a href="../active-directory-replication/">Active Directory Replication</a> synchronizes directory data among Domain Controllers.</p>
+<p>Most directory updates follow a multi-master model, allowing multiple writable Domain Controllers to accept changes that are later replicated to other Domain Controllers.</p>
+<p>The Knowledge Consistency Checker (KCC) generates and maintains replication topology.</p>
+<p>Intra-site and inter-site replication differ in how network topology, cost, schedules, and available connectivity are considered.</p>
+<h2 id="fsmo-roles">FSMO Roles</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></p>
+</blockquote>
+<p>Although most Active Directory operations use a multi-master model, some operations are assigned to a single Domain Controller through <a href="../fsmo-roles/">Flexible Single Master Operations (FSMO) Roles</a>.</p>
+<p>Five FSMO Roles exist.</p>
+<p>Forest-wide roles:</p>
+<ul>
+<li>Schema Master;</li>
+<li>Domain Naming Master.</li>
+</ul>
+<p>Domain-wide roles:</p>
+<ul>
+<li>RID Master;</li>
+<li>PDC Emulator;</li>
+<li>Infrastructure Master.</li>
+</ul>
+<p>FSMO Roles can be transferred to other Domain Controllers when required.</p>
+<h2 id="dns-integration">DNS Integration</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/dns-and-ad-ds">Microsoft - DNS and AD DS</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/active-directory-integrated-dns-zones">Microsoft - Active Directory-Integrated DNS Zones</a></p>
+</blockquote>
+<p>AD DS is closely integrated with <a href="../dns/">DNS</a>.</p>
+<p>DNS is used so that clients can locate Domain Controllers and so that Domain Controllers can locate other directory-service endpoints.</p>
+<p>Active Directory-integrated DNS zones can store DNS zone data in AD DS and distribute it using Active Directory replication.</p>
+<p>Incorrect DNS configuration can therefore affect authentication, Domain Controller discovery, replication, and other AD DS functions.</p>
+<h2 id="authentication">Authentication</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a> / <a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/ntlm-overview">Microsoft - NTLM overview</a></p>
+</blockquote>
+<p><a href="../kerberos/">Kerberos V5</a> is the preferred authentication protocol in Active Directory environments.</p>
+<p>Domain Controllers provide the <a href="../key-distribution-center/">KDC</a> role used for Kerberos authentication.</p>
+<p><a href="../ntlm/">NTLM</a> remains available for compatibility in some scenarios, but Microsoft has removed <a href="../ntlm/">NTLMv1</a> from Windows Server and describes <a href="../ntlm/">NTLMv2</a> as deprecated and planned for removal in a future Windows Server release.</p>
+<p>The coexistence of Kerberos and NTLM is operationally important because authentication behavior can differ depending on naming, network conditions, application support, and configuration.</p>
+<h2 id="security-principal-and-sid"><a href="../security-principal/">Security Principal</a> and <a href="../security-identifier/">SID</a></h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers">Microsoft - Security Identifiers</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></p>
+</blockquote>
+<p>Windows represents users, groups, computers, and other entities that can be authenticated or authorized as <a href="../security-principal/">Security Principals</a>.</p>
+<p>A <a href="../security-principal/">Security Principal</a> is identified by a <a href="../security-identifier/">Security Identifier (SID)</a>.</p>
+<p>For Domain-created <a href="../security-principal/">Security Principals</a>, SID generation includes a Domain SID and a Relative ID (RID).</p>
+<p>The RID Master FSMO Role participates in management of RID allocation used to maintain SID uniqueness within a Domain.</p>
+<h2 id="trust-relationships">Trust Relationships</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></p>
+</blockquote>
+<p><a href="../active-directory-trust/">Active Directory Trusts</a> create authentication relationships between Domains or Forests.</p>
+<p>Domains inside the same Forest are automatically connected through two-way, transitive trusts.</p>
+<p>Other trust types, such as Forest Trusts and External Trusts, can be configured according to environment requirements.</p>
+<p>Trust configuration affects resource access, authentication paths, and administrative boundaries and is therefore important to both architecture and security.</p>
+<h2 id="group-policy">Group Policy</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a> / <a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpod/b724bd91-e224-4524-b752-5f810a0cc071">MS-GPOD</a></p>
+</blockquote>
+<p><a href="../group-policy/">Group Policy</a> provides centralized configuration management for Domain-joined computers and users.</p>
+<p>Group Policy Objects (GPOs) can be linked to Sites, Domains, and OUs.</p>
+<p>Application of Group Policy can also be affected by hierarchy, inheritance, security filtering, and other policy-processing rules.</p>
+<p>A GPO uses both directory-service information and file-based data stored in SYSVOL.</p>
+<h2 id="security-importance">Security Importance</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory">Microsoft - Best practices for securing Active Directory</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/securing-domain-controllers-against-attack">Microsoft - Securing domain controllers against attack</a></p>
+</blockquote>
+<p>Active Directory is one of the most security-critical infrastructure components in many enterprise Windows environments because it centralizes identity, credentials, authorization-related information, and configuration.</p>
+<p>Compromise of a Domain Controller can allow unauthorized access to directory data, credential material, authentication infrastructure, and policy configuration.</p>
+<p>High-privilege Active Directory compromise can therefore have consequences across a Domain or Forest rather than remaining limited to a single host.</p>
+<p>Domain Controllers, privileged accounts, and privileged administrative workstations require stronger protection than ordinary endpoints.</p>
+<h2 id="relationship-to-attacks-and-abuse">Relationship to Attacks and Abuse</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://attack.mitre.org/techniques/T1003/006/">MITRE ATT&amp;CK T1003.006 - DCSync</a> / <a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a> / <a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></p>
+</blockquote>
+<p>Active Directory is a central identity infrastructure in many enterprise environments and is therefore a high-value target.</p>
+<h3 id="dcsync"><a href="../dcsync/">DCSync</a></h3>
+<p>DCSync abuses Domain Controller replication functionality by simulating directory replication requests in order to obtain credential and other sensitive directory data.</p>
+<p>MITRE ATT&amp;CK classifies DCSync as OS Credential Dumping: DCSync.</p>
+<p>Successful use requires replication-related privileges or another sufficiently privileged security context.</p>
+<h3 id="ntds-credential-dumping"><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a></h3>
+<p>Attackers may attempt to access or create a copy of <a href="../ntds-dit/">NTDS.dit</a> or equivalent backup data in order to obtain Domain credential information.</p>
+<p>MITRE ATT&amp;CK classifies this activity as OS Credential Dumping: NTDS.</p>
+<h3 id="kerberos-related-attacks">Kerberos-Related Attacks</h3>
+<p>Because Active Directory uses Kerberos extensively, attacks such as <a href="../kerberoasting/">Kerberoasting</a>, <a href="../as-rep-roasting/">AS-REP Roasting</a>, <a href="../golden-ticket/">Golden Ticket</a>, and <a href="../silver-ticket/">Silver Ticket</a> are also important in Active Directory security.</p>
+<p>These attacks are documented separately in CyPedia.</p>
+<h3 id="domain-trust-discovery"><a href="../domain-trust-discovery/">Domain Trust Discovery</a></h3>
+<p>Attackers can enumerate Domain and Forest trust relationships to understand authentication relationships and identify additional paths for lateral movement or privilege expansion.</p>
+<p>MITRE ATT&amp;CK documents this behavior as Domain Trust Discovery.</p>
+<h2 id="defense-and-mitigation">Defense and Mitigation</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory">Microsoft - Best practices for securing Active Directory</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/reducing-the-active-directory-attack-surface">Microsoft - Reducing the Active Directory Attack Surface</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/implementing-secure-administrative-hosts">Microsoft - Implementing Secure Administrative Hosts</a></p>
+</blockquote>
+<p>Protecting Active Directory requires protecting the identity infrastructure as a whole rather than relying on a single security control.</p>
+<p>Important principles include:</p>
+<ul>
+<li>protecting Domain Controllers more strictly than ordinary servers;</li>
+<li>minimizing unnecessary software and services on Domain Controllers;</li>
+<li>using supported Windows Server versions;</li>
+<li>minimizing membership in highly privileged groups;</li>
+<li>applying least privilege;</li>
+<li>separating privileged administration from ordinary user activity;</li>
+<li>using secure administrative hosts or Privileged Access Workstations;</li>
+<li>using strong authentication for privileged administration;</li>
+<li>auditing Group Policy, Trust configuration, and replication permissions;</li>
+<li>protecting credential material and backups;</li>
+<li>reducing dependence on legacy authentication where practical.</li>
+</ul>
+<h2 id="constraints-and-limitations">Constraints and Limitations</h2>
+<p>Active Directory provides identity and directory infrastructure, but it does not by itself solve all endpoint-security or application-authorization problems.</p>
+<p>AD DS also depends on surrounding infrastructure such as DNS, time synchronization, network connectivity, and Domain Controller availability.</p>
+<p>Poorly designed Forests, Domains, Trusts, delegation models, Group Policy, or legacy-protocol compatibility can significantly increase attack surface.</p>
+<h2 id="current-position">Current Position</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/active-directory-domain-services">Microsoft - Active Directory Domain Services overview</a></p>
+</blockquote>
+<p>AD DS remains an actively supported Windows Server identity infrastructure.</p>
+<p>It continues to be relevant in on-premises Windows domains, hybrid identity environments, enterprise authentication, and legacy applications that depend on traditional Windows domain protocols.</p>
+<p>Microsoft’s current Windows Server documentation continues to cover AD DS concepts including replication, schema, trusts, Global Catalog, DNS integration, and Domain Controller roles.</p>
+<p>Understanding Active Directory architecture, authentication, replication, Trust relationships, Group Policy, and security boundaries remains important for administration, defense, incident response, penetration testing, and identity security.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../organizational-unit/">Organizational Unit</a></li>
+<li><a href="../active-directory-site/">Active Directory Site</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../global-catalog/">Global Catalog</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../fsmo-roles/">FSMO Roles</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../ntds-dit/">NTDS.dit</a></li>
+<li><a href="../sysvol/">SYSVOL</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+<li><a href="../security-principal/">Security Principal</a></li>
+<li><a href="../security-identifier/">SID</a></li>
+<li><a href="../ldap/">LDAP</a></li>
+<li><a href="../dns/">DNS</a></li>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../ntlm/">NTLM</a></li>
+<li><a href="../service-principal-name/">SPN</a></li>
+<li><a href="../service-account/">Service Account</a></li>
+<li><a href="../dcsync/">DCSync</a></li>
+<li><a href="../ntds-credential-dumping/">NTDS Credential Dumping</a></li>
+<li><a href="../domain-trust-discovery/">Domain Trust Discovery</a></li>
+<li><a href="../kerberoasting/">Kerberoasting</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+<li><a href="../golden-ticket/">Golden Ticket</a></li>
+<li><a href="../silver-ticket/">Silver Ticket</a></li>
+<li><a href="../knowledge-consistency-checker/">Knowledge Consistency Checker</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/">Microsoft Open Specifications - MS-ADTS: Active Directory Technical Specification</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview">Microsoft - Active Directory Domain Services overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/active-directory-domain-services">Microsoft - Active Directory Domain Services</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/5859bab0-f545-4db6-80c6-9798b484b3d8">Microsoft - Active Directory Schema</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/naming-contexts-and-partitions">Microsoft - Naming Contexts and Directory Partitions</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4511.html">RFC 4511 - Lightweight Directory Access Protocol (LDAP): The Protocol</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-fsmo-roles">Microsoft - Flexible Single Master Operations roles</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/dns-and-ad-ds">Microsoft - DNS and AD DS</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview">Microsoft - Group Policy overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpod/b724bd91-e224-4524-b752-5f810a0cc071">Microsoft Open Specifications - MS-GPOD: Group Policy Objects</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/ntlm-overview">Microsoft - NTLM overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals">Microsoft - Security Principals</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory">Microsoft - Best practices for securing Active Directory</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/securing-domain-controllers-against-attack">Microsoft - Securing domain controllers against attack</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1003/006/">MITRE ATT&amp;CK T1003.006 - DCSync</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1003/003/">MITRE ATT&amp;CK T1003.003 - NTDS</a></li>
+<li><a href="https://attack.mitre.org/techniques/T1482/">MITRE ATT&amp;CK T1482 - Domain Trust Discovery</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-">Microsoft - Install Active Directory Domain Services on Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/get-started/removed-deprecated-features-windows-server">Microsoft - Features removed or no longer developed in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers">Microsoft - Security Identifiers</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/passwords-technical-overview">Microsoft - Passwords technical overview</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/access-control-entry/">Access Control Entry</a></li><li><a href="/cypedia/en/access-control-list/">Access Control List</a></li><li><a href="/cypedia/en/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/en/active-directory-forest/">Active Directory Forest</a></li><li><a href="/cypedia/en/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/en/active-directory-schema/">Active Directory Schema</a></li><li><a href="/cypedia/en/active-directory-site/">Active Directory Site</a></li><li><a href="/cypedia/en/active-directory-trust/">Active Directory Trust</a></li><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/en/computer-account/">Computer Account</a></li><li><a href="/cypedia/en/connection-object/">Connection Object</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/dcsync/">DCSync</a></li><li><a href="/cypedia/en/delegated-managed-service-account/">Delegated Managed Service Account</a></li><li><a href="/cypedia/en/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/en/distinguished-name/">Distinguished Name</a></li><li><a href="/cypedia/en/dns/">DNS</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/domain-trust-discovery/">Domain Trust Discovery</a></li><li><a href="/cypedia/en/fsmo-roles/">FSMO Roles</a></li><li><a href="/cypedia/en/global-catalog/">Global Catalog</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/group-managed-service-account/">Group Managed Service Account</a></li><li><a href="/cypedia/en/group-policy/">Group Policy</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/en/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/en/knowledge-consistency-checker/">Knowledge Consistency Checker</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/ldap/">LDAP</a></li><li><a href="/cypedia/en/ntds-credential-dumping/">NTDS Credential Dumping</a></li><li><a href="/cypedia/en/ntds-dit/">NTDS.dit</a></li><li><a href="/cypedia/en/ntlm/">NTLM</a></li><li><a href="/cypedia/en/organizational-unit/">Organizational Unit</a></li><li><a href="/cypedia/en/pkinit/">PKINIT</a></li><li><a href="/cypedia/en/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/en/principal/">Principal</a></li><li><a href="/cypedia/en/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/en/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/en/realm/">Realm</a></li><li><a href="/cypedia/en/security-descriptor/">Security Descriptor</a></li><li><a href="/cypedia/en/security-group/">Security Group</a></li><li><a href="/cypedia/en/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/en/security-principal/">Security Principal</a></li><li><a href="/cypedia/en/service-account/">Service Account</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/sidhistory/">SIDHistory</a></li><li><a href="/cypedia/en/site-link/">Site Link</a></li><li><a href="/cypedia/en/standalone-managed-service-account/">Standalone Managed Service Account</a></li><li><a href="/cypedia/en/sysvol/">SYSVOL</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/en/ticket-granting-ticket/">Ticket-Granting Ticket</a></li><li><a href="/cypedia/en/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Key Distribution Center AS/TGS services, ticket and session-key issuance, Realm trust, and Active Directory implementation."><title>Key Distribution Center - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/key-distribution-center/">日本語</a><span> / </span><a href="/cypedia/en/key-distribution-center/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Key Distribution Center</h1><div class="article-meta"><strong>Aliases:</strong> KDC</div><div class="article-meta"><strong>Categories:</strong> Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p>The Key Distribution Center (<a href="./">KDC</a>) is the central trusted service in <a href="../kerberos/">Kerberos</a>.</p>
+<p>A KDC supplies <a href="../kerberos-ticket/">tickets</a> and temporary <a href="../session-key/">Session Keys</a> and supports authentication of <a href="../principal/">principals</a> registered in a <a href="../realm/">Realm</a>.</p>
+<h2 id="as-and-tgs">AS and TGS</h2>
+<p>A KDC logically provides two services:</p>
+<ul>
+<li><a href="../authentication-server/">Authentication Server (AS)</a>;</li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server (TGS)</a>.</li>
+</ul>
+<p>The AS performs initial authentication and issues a <a href="../ticket-granting-ticket/">Ticket-Granting Ticket (TGT)</a>.</p>
+<p>The TGS accepts a valid TGT and can issue a <a href="../service-ticket/">Service Ticket</a> for a target service.</p>
+<h2 id="account-database">Account Database</h2>
+<p>The KDC requires access to information about principals in its Realm and to the long-term keys required by the protocol.</p>
+<p>The KDC is therefore a highly trusted component of a Kerberos Realm.</p>
+<h2 id="session-keys">Session Keys</h2>
+<p>The KDC creates and distributes temporary Session Keys for Kerberos exchanges.</p>
+<p>Different Session Keys are used between the client and TGS and between the client and application services.</p>
+<h2 id="active-directory">Active Directory</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/key-distribution-center">Microsoft - Key Distribution Center</a></p>
+</blockquote>
+<p>In <a href="../active-directory/">Active Directory</a>, the KDC is implemented as a domain service on a <a href="../domain-controller/">Domain Controller</a>.</p>
+<p>It uses Active Directory as its account database.</p>
+<p>Microsoft also documents use of the <a href="../global-catalog/">Global Catalog</a> for referrals to KDCs in other <a href="../active-directory-domain/">Domains</a>.</p>
+<h2 id="availability">Availability</h2>
+<p>Multiple Domain Controllers can handle KDC requests in an AD DS Domain.</p>
+<p>This provides availability for authentication and ticket-granting operations.</p>
+<h2 id="security-significance">Security Significance</h2>
+<p>A KDC participates in management of principal key information and ticket issuance.</p>
+<p>Compromise of the KDC or critical KDC key material can undermine authentication trust throughout the Realm.</p>
+<p>In Active Directory, <a href="../krbtgt/">KRBTGT</a> key material is especially important to TGT security.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../authentication-server/">Authentication Server</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../service-ticket/">Service Ticket</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../realm/">Realm</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../krbtgt/">KRBTGT</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/key-distribution-center">Microsoft - Key Distribution Center</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview">Microsoft - Kerberos authentication overview in Windows Server</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/authentication-server/">Authentication Server</a></li><li><a href="/cypedia/en/authenticator/">Authenticator</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/golden-ticket/">Golden Ticket</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/en/krbtgt/">KRBTGT</a></li><li><a href="/cypedia/en/ntlm/">NTLM</a></li><li><a href="/cypedia/en/pkinit/">PKINIT</a></li><li><a href="/cypedia/en/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/en/principal/">Principal</a></li><li><a href="/cypedia/en/privilege-attribute-certificate/">Privilege Attribute Certificate</a></li><li><a href="/cypedia/en/read-only-domain-controller/">Read-Only Domain Controller</a></li><li><a href="/cypedia/en/realm/">Realm</a></li><li><a href="/cypedia/en/replay-cache/">Replay Cache</a></li><li><a href="/cypedia/en/service-principal-name/">Service Principal Name</a></li><li><a href="/cypedia/en/service-ticket/">Service Ticket</a></li><li><a href="/cypedia/en/session-key/">Session Key</a></li><li><a href="/cypedia/en/silver-ticket/">Silver Ticket</a></li><li><a href="/cypedia/en/ticket-granting-server/">Ticket-Granting Server</a></li><li><a href="/cypedia/en/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

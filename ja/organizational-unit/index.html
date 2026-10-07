@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Organizational Unitの階層構造、delegation、Group Policyとの関係を解説する。"><title>Organizational Unit - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/organizational-unit/">日本語</a><span> / </span><a href="/cypedia/en/organizational-unit/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Organizational Unit</h1><div class="article-meta"><strong>別名:</strong> OU</div><div class="article-meta"><strong>カテゴリ:</strong> Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<blockquote>
+<p><strong>主な出典:</strong> <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></p>
+</blockquote>
+<p>Organizational Unit（OU）は<a href="../active-directory-domain/">Active Directory Domain</a>内でdirectory objectを階層的に整理するためのcontainerです。</p>
+<p>OUにはuser、computer、group、さらに別のOUなどを配置できます。</p>
+<h2 id="主な用途">主な用途</h2>
+<p>OUの主要な用途には次があります。</p>
+<ul>
+<li>administrationのdelegation</li>
+<li><a href="../group-policy/">Group Policy</a>の適用scope</li>
+<li>directory objectの論理的な整理</li>
+</ul>
+<h2 id="delegation">Delegation</h2>
+<p>OU単位でadministrative permissionをdelegationできます。</p>
+<p>これによりDomain全体の高いprivilegeを付与せず、特定のobjectやoperationだけを管理担当者へ委任できます。</p>
+<h2 id="group-policyとの関係">Group Policyとの関係</h2>
+<p>Group Policy Objectは<a href="../active-directory-site/">Site</a>、<a href="../active-directory-domain/">Domain</a>、OUへlinkできます。</p>
+<p>OU hierarchyはGroup Policyの適用scopeやinheritanceに影響します。</p>
+<p>そのためOU設計はdirectory organizationだけでなくcentralized configuration managementにも関係します。</p>
+<h2 id="組織構造との違い">組織構造との違い</h2>
+<p>OUは会社のorganization chartをそのまま再現する必要はありません。</p>
+<p>administrative delegationやGroup Policyなど、技術的な管理要件に合わせて設計することが重要です。</p>
+<h2 id="security上の論点">Security上の論点</h2>
+<p>OUは<a href="../active-directory-forest/">Forest</a>のようなsecurity boundaryではありません。</p>
+<p>しかし、過剰なdelegated permissionや不適切なGroup Policy administrationは、広範囲なconfiguration変更やprivilege escalationにつながる可能性があります。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../group-policy/">Group Policy</a></li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/understanding-the-active-directory-logical-model">Microsoft - Understanding the Active Directory Logical Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/appendix-a--reviewing-key-ad-ds-terms">Microsoft - Appendix A: Reviewing Key AD DS Terms</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-scope">Microsoft - Group Policy scope</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><a href="/cypedia/ja/active-directory-domain/">Active Directory Domain</a></li><li><a href="/cypedia/ja/active-directory-site/">Active Directory Site</a></li><li><a href="/cypedia/ja/computer-account/">Computer Account</a></li><li><a href="/cypedia/ja/distinguished-name/">Distinguished Name</a></li><li><a href="/cypedia/ja/group-policy/">Group Policy</a></li><li><a href="/cypedia/ja/ldap/">LDAP</a></li><li><a href="/cypedia/ja/security-group/">Security Group</a></li><li><a href="/cypedia/ja/user-account/">User Account</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

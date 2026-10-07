@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Realms as authentication administrative domains, Principal namespaces, KDC scopes, and cross-realm relationships."><title>Realm - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/realm/">日本語</a><span> / </span><a href="/cypedia/en/realm/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Realm</h1><div class="article-meta"><strong>Aliases:</strong> realm</div><div class="article-meta"><strong>Categories:</strong> Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></p>
+</blockquote>
+<p>A <a href="./">Realm</a> is an authentication administrative domain in <a href="../kerberos/">Kerberos</a>.</p>
+<p>A Realm is associated with <a href="../principal/">Principals</a> and the <a href="../key-distribution-center/">Key Distribution Center (KDC)</a> responsible for their authentication.</p>
+<h2 id="realm-names">Realm Names</h2>
+<p>A Realm name forms part of the namespace used to identify Kerberos Principals.</p>
+<p>DNS-style names are commonly used for Realms, but a Kerberos Realm and a DNS namespace are not conceptually the same object.</p>
+<h2 id="principals">Principals</h2>
+<p>A Principal is identified in conjunction with its Realm.</p>
+<p>For example, a displayed identity can take the form <code>user@EXAMPLE.COM</code>.</p>
+<p>The same local Principal name can exist in separate Realms and represent different identities.</p>
+<h2 id="kdc">KDC</h2>
+<p>A Realm has KDC infrastructure responsible for its Principal database and Kerberos authentication.</p>
+<p>The KDC provides <a href="../authentication-server/">Authentication Server</a> and <a href="../ticket-granting-server/">Ticket-Granting Server</a> functionality.</p>
+<h2 id="cross-realm-authentication">Cross-Realm Authentication</h2>
+<p><a href="../cross-realm-authentication/">Cross-Realm Authentication</a> allows authentication relationships between Realms.</p>
+<p>Inter-realm keys and authentication paths can be used to obtain tickets required to reach services in another Realm.</p>
+<h2 id="active-directory">Active Directory</h2>
+<p>In <a href="../active-directory/">Active Directory</a>, Microsoft describes a Kerberos Realm as the authentication administrative domain corresponding to a Windows <a href="../active-directory-domain/">Domain</a>.</p>
+<p>RFC 4120 recommends, by convention, converting an Internet domain name to uppercase when establishing a domain-style Realm name from it.</p>
+<p>Kerberos Realms, however, are not specific to Active Directory.</p>
+<h2 id="trusts">Trusts</h2>
+<p><a href="../active-directory-trust/">Active Directory Trusts</a> are important when Windows KDCs construct referrals to other Domains.</p>
+<p>Trusted-domain information allows a KDC to issue referral TGTs for authentication paths across Domain boundaries.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>Cross-Realm authentication crosses authentication boundaries.</p>
+<p>Inter-realm keys, trust configuration, and Realm mapping therefore require careful protection and configuration.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../cross-realm-authentication/">Cross-Realm Authentication</a></li>
+<li><a href="../active-directory-domain/">Active Directory Domain</a></li>
+<li><a href="../active-directory-trust/">Active Directory Trust</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../dns/">DNS</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/key-distribution">Microsoft - Key Distribution</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/bac4dc69-352d-416c-a9f4-730b81ababb3">MS-KILE - Cross-Domain Trust and Referrals</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/authenticator/">Authenticator</a></li><li><a href="/cypedia/en/cross-realm-authentication/">Cross-Realm Authentication</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/kerberos-ticket/">Kerberos Ticket</a></li><li><a href="/cypedia/en/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/en/principal/">Principal</a></li><li><a href="/cypedia/en/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

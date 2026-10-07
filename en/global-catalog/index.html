@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Active Directory Global Catalog replicas, Forest-wide search, and replication behavior."><title>Global Catalog - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/global-catalog/">日本語</a><span> / </span><a href="/cypedia/en/global-catalog/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Global Catalog</h1><div class="article-meta"><strong>Aliases:</strong> GC</div><div class="article-meta"><strong>Categories:</strong> Active Directory</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary sources:</strong> <a href="https://learn.microsoft.com/en-us/windows/win32/ad/global-catalog">Microsoft - Global Catalog</a> / <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></p>
+</blockquote>
+<p>The Global Catalog (GC) provides Forest-wide directory search capability in an <a href="../active-directory-forest/">Active Directory Forest</a>.</p>
+<p>A Global Catalog server is a <a href="../domain-controller/">Domain Controller</a> that stores directory information about objects across the Forest.</p>
+<h2 id="directory-data">Directory Data</h2>
+<p>A writable Global Catalog server stores a full writable replica of its own <a href="../active-directory-domain/">Domain</a> and partial read-only replicas of the other Domains in the Forest.</p>
+<p>Those partial replicas contain every object but only the subset of attributes included for Global Catalog replication.</p>
+<p>A <a href="../read-only-domain-controller/">Read-Only Domain Controller (RODC)</a> can also be configured as a Global Catalog server, while remaining subject to RODC read-only replication restrictions.</p>
+<h2 id="forest-wide-search">Forest-Wide Search</h2>
+<p>The Global Catalog allows users and applications to search for objects without first knowing which Domain contains the complete object.</p>
+<p>This capability is particularly important in multi-domain Forests.</p>
+<h2 id="partial-attribute-set">Partial Attribute Set</h2>
+<p>The attributes replicated from other Domains into the Global Catalog are controlled through the Partial Attribute Set.</p>
+<p>Attributes useful for Forest-wide searches are included in this set.</p>
+<h2 id="replication">Replication</h2>
+<p>Global Catalog information is maintained through <a href="../active-directory-replication/">Active Directory Replication</a>.</p>
+<p>A Global Catalog server participates in its normal Domain replication while also receiving partial replicas from other Domains in the Forest.</p>
+<h2 id="security-considerations">Security Considerations</h2>
+<p>A Global Catalog server stores directory metadata concerning objects across the Forest.</p>
+<p>It therefore requires the high level of protection expected for other Domain Controllers.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../active-directory/">Active Directory</a></li>
+<li><a href="../active-directory-forest/">Forest</a></li>
+<li><a href="../active-directory-domain/">Domain</a></li>
+<li><a href="../domain-controller/">Domain Controller</a></li>
+<li><a href="../directory-partition/">Directory Partition</a></li>
+<li><a href="../active-directory-replication/">Active Directory Replication</a></li>
+<li><a href="../active-directory-schema/">Active Directory Schema</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/ad/global-catalog">Microsoft - Global Catalog</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/replication/active-directory-replication-concepts">Microsoft - Active Directory Replication Concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/planning-global-catalog-server-placement">Microsoft - Planning Global Catalog Server Placement</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><a href="/cypedia/en/active-directory-forest/">Active Directory Forest</a></li><li><a href="/cypedia/en/active-directory-replication/">Active Directory Replication</a></li><li><a href="/cypedia/en/directory-partition/">Directory Partition</a></li><li><a href="/cypedia/en/domain-controller/">Domain Controller</a></li><li><a href="/cypedia/en/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/en/ldap/">LDAP</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Windows securable objectのowner、SID、DACL、SACLなどのsecurity informationを保持するSecurity Descriptorを解説する。"><title>Security Descriptor - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/ja/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/ja/search/" method="get" role="search"><input type="search" name="q" placeholder="CyPediaを検索" aria-label="CyPediaを検索"><button type="submit">検索</button></form><div class="language-switch"><a href="/cypedia/ja/security-descriptor/">日本語</a><span> / </span><a href="/cypedia/en/security-descriptor/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">メニュー</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">メイン</h2><ul><li><a href="/cypedia/ja/">トップページ</a></li><li><a href="/cypedia/ja/recent/">最近更新</a></li><li><a href="/cypedia/ja/random/">ランダムページ</a></li><li><a href="/cypedia/ja/indexes/">索引</a></li><li><a href="/cypedia/ja/categories/">カテゴリ</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">分野</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/ja/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">資料</h2><ul><li><span>用語集</span></li><li><span>ツール</span></li><li><span>プロトコル</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Security Descriptor</h1><div class="article-meta"><strong>カテゴリ:</strong> Windows / Access Control / Active Directory</div><div class="article-body"><h2 id="概要">概要</h2>
+<p><a href="./">Security Descriptor</a>は、Windowsのsecurable objectに関連付けられるsecurity informationを保持するdata structureです。</p>
+<p>Microsoft documentationでは、Security Descriptorはobjectのownerやprimary groupの<a href="../security-identifier/">Security Identifier（SID）</a>、DACL、SACL、control bitなどを含むことができます。</p>
+<h2 id="ownerとprimary-group">OwnerとPrimary Group</h2>
+<p>Security Descriptorにはobject ownerのSIDを保持できます。</p>
+<p>primary groupのSIDも構成要素として含めることができます。</p>
+<p>これらは<a href="../security-principal/">Security Principal</a>をSIDによって識別します。</p>
+<h2 id="dacl">DACL</h2>
+<p>Discretionary Access Control List（DACL）は、特定のtrusteeに対してobjectへのaccessをallowまたはdenyするruleを保持します。</p>
+<p>DACLは<a href="../access-control-list/">Access Control List（ACL）</a>の一種です。</p>
+<h2 id="sacl">SACL</h2>
+<p>System Access Control List（SACL）は、objectへのどのaccess attemptをaudit対象とするかを指定します。</p>
+<p>DACLとSACLはいずれもACEの集合として構成されますが、目的は異なります。</p>
+<h2 id="control-information">Control Information</h2>
+<p>Security Descriptorには、そのdescriptorや個々のcomponentの意味を修飾するcontrol bitも存在します。</p>
+<p>Windows APIではSecurity Descriptorの内部を直接書き換えるのではなく、提供されたsecurity APIを利用して取得・設定することが推奨されています。</p>
+<h2 id="active-directoryとの関係">Active Directoryとの関係</h2>
+<p><a href="../active-directory/">Active Directory</a> objectでもSecurity Descriptorがaccess controlに使用されます。</p>
+<p>directory objectのpermissionを理解する際はSecurity Descriptor、ACL、SID、<a href="../security-principal/">Security Principal</a>の関係をまとめて理解する必要があります。</p>
+<h2 id="security-descriptor-string-format">Security Descriptor String Format</h2>
+<p>WindowsにはSecurity Descriptorをtextで表現するformatがあり、owner、group、DACL、SACLなどをcomponentとして表現できます。</p>
+<p>これはSecurity Descriptor Definition Language（SDDL）としてsecurity configurationや管理interfaceで利用されます。</p>
+<h2 id="セキュリティ上の論点">セキュリティ上の論点</h2>
+<p>Security Descriptorの誤設定はobjectへの過剰accessや監査不足につながります。</p>
+<p>特にDACLのallow/deny rule、inheritance、owner、SACLのaudit configurationを分離して評価することが重要です。</p>
+<h2 id="関連項目">関連項目</h2>
+<ul>
+<li>
+<p><a href="../access-control-list/">Access Control List</a></p>
+</li>
+<li>
+<p><a href="../security-identifier/">Security Identifier</a></p>
+</li>
+<li>
+<p><a href="../security-principal/">Security Principal</a></p>
+</li>
+<li>
+<p><a href="../active-directory/">Active Directory</a></p>
+</li>
+<li>
+<p><a href="../security-group/">Security Group</a></p>
+</li>
+<li>
+<p><a href="../access-control-entry/">Access Control Entry</a></p>
+</li>
+<li>
+<p><a href="../discretionary-access-control-list/">Discretionary Access Control List</a></p>
+</li>
+<li>
+<p><a href="../system-access-control-list/">System Access Control List</a></p>
+</li>
+<li>
+<p><a href="../securable-object/">Securable Object</a></p>
+</li>
+</ul>
+<h2 id="参考文献">参考文献</h2>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/security-descriptors">Microsoft - Security Descriptors</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-components">Microsoft - Parts of the Access Control Model</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/security-descriptor-string-format">Microsoft - Security Descriptor String Format</a></li>
+</ul>
+</div><section class="backlinks"><h2>この項目を参照しているページ</h2><ul><li><a href="/cypedia/ja/access-check/">Access Check</a></li><li><a href="/cypedia/ja/access-control-list/">Access Control List</a></li><li><a href="/cypedia/ja/access-rights/">Access Rights</a></li><li><a href="/cypedia/ja/discretionary-access-control-list/">Discretionary Access Control List</a></li><li><a href="/cypedia/ja/securable-object/">Securable Object</a></li><li><a href="/cypedia/ja/security-identifier/">Security Identifier</a></li><li><a href="/cypedia/ja/system-access-control-list/">System Access Control List</a></li><li><a href="/cypedia/ja/windows-access-token/">Windows Access Token</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>

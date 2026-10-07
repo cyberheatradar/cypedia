@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Kerberos Authentication Server initial authentication, AS-REQ/AS-REP, TGT issuance, and Pre-Authentication."><title>Authentication Server - CyPedia</title><link rel="stylesheet" href="/cypedia/_astro/WikiLayout.Be1si7km.css"></head><body><header class="site-header" data-pagefind-ignore="all"><div class="site-header-inner"><a class="brand" href="/cypedia/en/">CyPedia<span class="brand-subtitle">The Cyber Security Wiki</span></a><form class="search-shell" action="/cypedia/en/search/" method="get" role="search"><input type="search" name="q" placeholder="Search CyPedia" aria-label="Search CyPedia"><button type="submit">Search</button></form><div class="language-switch"><a href="/cypedia/ja/authentication-server/">日本語</a><span> / </span><a href="/cypedia/en/authentication-server/">English</a></div></div></header><div class="wiki-shell"><aside class="sidebar" data-pagefind-ignore="all"><input id="sidebar-menu-toggle" class="sidebar-menu-checkbox" type="checkbox"><label class="sidebar-toggle" for="sidebar-menu-toggle">Menu</label><nav class="sidebar-nav"><section class="sidebar-section"><h2 class="sidebar-title">Main</h2><ul><li><a href="/cypedia/en/">Main Page</a></li><li><a href="/cypedia/en/recent/">Recent Changes</a></li><li><a href="/cypedia/en/random/">Random Page</a></li><li><a href="/cypedia/en/indexes/">Index</a></li><li><a href="/cypedia/en/categories/">Categories</a></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Fields</h2><ul><li><span>Web / API</span></li><li><span>Network / Protocol</span></li><li><span>Windows</span></li><li><a href="/cypedia/en/active-directory/">Active Directory</a></li><li><span>Linux / Unix</span></li><li><span>Cloud</span></li><li><span>Mobile</span></li><li><span>AI / LLM / Agent</span></li><li><span>Reverse Engineering</span></li><li><span>Hardware / IoT / RF</span></li><li><span>DFIR / CTI / Defense</span></li></ul></section><section class="sidebar-section"><h2 class="sidebar-title">Reference</h2><ul><li><span>Terminology</span></li><li><span>Tools</span></li><li><span>Protocols</span></li></ul></section></nav></aside><main class="content"><article data-pagefind-body><h1>Authentication Server</h1><div class="article-meta"><strong>Aliases:</strong> AS</div><div class="article-meta"><strong>Categories:</strong> Kerberos</div><div class="article-body"><h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>Primary source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - Kerberos Authentication Service Exchange</a></p>
+</blockquote>
+<p>The Authentication Server (<a href="./">AS</a>) is one of the services provided by a <a href="../key-distribution-center/">Key Distribution Center (KDC)</a>.</p>
+<p>It performs initial <a href="../kerberos/">Kerberos</a> authentication and, when the request succeeds, returns an AS-REP containing a <a href="../ticket-granting-ticket/">Ticket-Granting Ticket (TGT)</a> and information associated with the client/TGS <a href="../session-key/">Session Key</a>.</p>
+<h2 id="as-req">AS-REQ</h2>
+<p>A client sends an AS-REQ to the AS.</p>
+<p>The request identifies information including the client <a href="../principal/">Principal</a> and the ticket-granting service being requested.</p>
+<h2 id="pre-authentication">Pre-Authentication</h2>
+<p>Where <a href="../pre-authentication/">Pre-Authentication</a> is required, the client supplies authentication evidence as part of the initial exchange.</p>
+<p>The KDC validates this information before issuing the TGT.</p>
+<p>Accounts that do not require Pre-Authentication can be relevant to <a href="../as-rep-roasting/">AS-REP Roasting</a>.</p>
+<h2 id="as-rep">AS-REP</h2>
+<p>When the AS accepts the request, it returns an AS-REP.</p>
+<p>The response contains a TGT and information concerning the <a href="../session-key/">Session Key</a> used between the client and the <a href="../ticket-granting-server/">Ticket-Granting Server (TGS)</a>.</p>
+<p>The client caches the TGT for later ticket requests.</p>
+<h2 id="pkinit">PKINIT</h2>
+<p>Initial authentication can also use <a href="../pkinit/">PKINIT</a> to integrate public-key cryptography rather than relying only on password-derived keys.</p>
+<p>PKINIT is standardized in RFC 4556.</p>
+<h2 id="active-directory">Active Directory</h2>
+<p>In <a href="../active-directory/">Active Directory</a>, KDC functionality on a <a href="../domain-controller/">Domain Controller</a> provides the AS service.</p>
+<p>Windows-specific Kerberos behavior and extensions are documented in MS-KILE.</p>
+<h2 id="security-significance">Security Significance</h2>
+<p>The AS exchange is the entry point to the Kerberos authentication chain.</p>
+<p>Pre-Authentication policy, encryption configuration, credential protection, and KDC security directly affect the security of initial authentication.</p>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="../kerberos/">Kerberos</a></li>
+<li><a href="../key-distribution-center/">Key Distribution Center</a></li>
+<li><a href="../ticket-granting-ticket/">Ticket-Granting Ticket</a></li>
+<li><a href="../ticket-granting-server/">Ticket-Granting Server</a></li>
+<li><a href="../session-key/">Session Key</a></li>
+<li><a href="../pre-authentication/">Pre-Authentication</a></li>
+<li><a href="../pkinit/">PKINIT</a></li>
+<li><a href="../principal/">Principal</a></li>
+<li><a href="../as-rep-roasting/">AS-REP Roasting</a></li>
+<li><a href="../kerberos-ticket/">Kerberos Ticket</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4120.html">RFC 4120 - The Kerberos Network Authentication Service (V5)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/windows/win32/secauthn/authentication-service-exchange">Microsoft - Authentication Service Exchange</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc4556.html">RFC 4556 - Public Key Cryptography for Initial Authentication in Kerberos</a></li>
+<li><a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/">MS-KILE - Kerberos Protocol Extensions</a></li>
+</ul>
+</div><section class="backlinks"><h2>Pages that link here</h2><ul><li><a href="/cypedia/en/as-rep-roasting/">AS-REP Roasting</a></li><li><a href="/cypedia/en/kerberoasting/">Kerberoasting</a></li><li><a href="/cypedia/en/kerberos/">Kerberos</a></li><li><a href="/cypedia/en/key-distribution-center/">Key Distribution Center</a></li><li><a href="/cypedia/en/pkinit/">PKINIT</a></li><li><a href="/cypedia/en/pre-authentication/">Pre-Authentication</a></li><li><a href="/cypedia/en/principal/">Principal</a></li><li><a href="/cypedia/en/realm/">Realm</a></li><li><a href="/cypedia/en/session-key/">Session Key</a></li><li><a href="/cypedia/en/ticket-granting-ticket/">Ticket-Granting Ticket</a></li></ul></section></article><footer class="footer" data-pagefind-ignore="all">CyPedia — The Cyber Security Wiki</footer></main></div></body></html>
