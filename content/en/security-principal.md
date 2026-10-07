@@ -86,6 +86,8 @@ When Domain Security Principals are created, SID generation uses RID pools assoc
 - [[ad.security-group|Security Group]]
 - [[windows.access-control-list|Access Control List]]
 
+- [[windows.securable-object|Securable Object]]
+
 ## References
 
 - [Microsoft - Security Principals](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals)

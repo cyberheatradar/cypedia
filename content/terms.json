@@ -1307,6 +1307,212 @@
         ],
         "summary": "The Active Directory sIDHistory attribute used to retain previous SIDs across domain migrations."
       }
+    },
+    {
+      "canonical_id": "windows.access-control-entry",
+      "slug": "access-control-entry",
+      "status": "article",
+      "categories": [
+        "Windows"
+      ],
+      "ja": {
+        "title": "Access Control Entry",
+        "aliases": [
+          "ACE",
+          "ACEs"
+        ],
+        "summary": "Windows Access Control Entry（ACE）の構造、SID、Access Mask、ACE type、inheritanceを解説する。"
+      },
+      "en": {
+        "title": "Access Control Entry",
+        "aliases": [
+          "ACE",
+          "ACEs"
+        ],
+        "summary": "Windows Access Control Entry (ACE), including trustees, access masks, ACE types, and inheritance."
+      }
+    },
+    {
+      "canonical_id": "windows.discretionary-access-control-list",
+      "slug": "discretionary-access-control-list",
+      "status": "article",
+      "categories": [
+        "Windows"
+      ],
+      "ja": {
+        "title": "Discretionary Access Control List",
+        "aliases": [
+          "DACL",
+          "DACLs"
+        ],
+        "summary": "Windows DACLのallow/deny ACE、評価順序、NULL DACLとempty DACLの違いを解説する。"
+      },
+      "en": {
+        "title": "Discretionary Access Control List",
+        "aliases": [
+          "DACL",
+          "DACLs"
+        ],
+        "summary": "Windows DACLs, allow and deny ACEs, evaluation order, and the distinction between NULL and empty DACLs."
+      }
+    },
+    {
+      "canonical_id": "windows.system-access-control-list",
+      "slug": "system-access-control-list",
+      "status": "article",
+      "categories": [
+        "Windows"
+      ],
+      "ja": {
+        "title": "System Access Control List",
+        "aliases": [
+          "SACL",
+          "SACLs"
+        ],
+        "summary": "Windows SACLのaudit ACE、success/failure auditing、ACCESS_SYSTEM_SECURITYとの関係を解説する。"
+      },
+      "en": {
+        "title": "System Access Control List",
+        "aliases": [
+          "SACL",
+          "SACLs"
+        ],
+        "summary": "Windows SACLs, audit ACEs, success and failure auditing, and ACCESS_SYSTEM_SECURITY."
+      }
+    },
+    {
+      "canonical_id": "windows.access-token",
+      "slug": "windows-access-token",
+      "status": "article",
+      "categories": [
+        "Windows"
+      ],
+      "ja": {
+        "title": "Windows Access Token",
+        "aliases": [
+          "Windows Access Tokens"
+        ],
+        "summary": "Windowsのprocess/thread security contextを表すAccess Token、SID、group、Privilege、primary/impersonation tokenを解説する。"
+      },
+      "en": {
+        "title": "Windows Access Token",
+        "aliases": [
+          "Windows Access Tokens"
+        ],
+        "summary": "Windows access tokens as process and thread security contexts, including SIDs, groups, privileges, and token types."
+      }
+    },
+    {
+      "canonical_id": "windows.access-rights",
+      "slug": "access-rights",
+      "status": "article",
+      "categories": [
+        "Windows"
+      ],
+      "ja": {
+        "title": "Access Rights",
+        "aliases": [
+          "Access Right"
+        ],
+        "summary": "Windows securable objectに対するAccess Rightsとstandard/object-specific rights、Access Maskとの関係を解説する。"
+      },
+      "en": {
+        "title": "Access Rights",
+        "aliases": [
+          "Access Right"
+        ],
+        "summary": "Windows access rights for securable objects, including standard and object-specific rights and their representation in access masks."
+      }
+    },
+    {
+      "canonical_id": "windows.access-mask",
+      "slug": "access-mask",
+      "status": "article",
+      "categories": [
+        "Windows"
+      ],
+      "ja": {
+        "title": "Access Mask",
+        "aliases": [
+          "ACCESS_MASK",
+          "Access Masks"
+        ],
+        "summary": "Windows ACCESS_MASKの32-bit構造とspecific、standard、generic access rightsとの関係を解説する。"
+      },
+      "en": {
+        "title": "Access Mask",
+        "aliases": [
+          "ACCESS_MASK",
+          "Access Masks"
+        ],
+        "summary": "The Windows ACCESS_MASK 32-bit representation for specific, standard, and generic access rights."
+      }
+    },
+    {
+      "canonical_id": "windows.access-check",
+      "slug": "access-check",
+      "status": "article",
+      "categories": [
+        "Windows"
+      ],
+      "ja": {
+        "title": "Access Check",
+        "aliases": [
+          "AccessCheck"
+        ],
+        "summary": "WindowsのAccess Check modelとAccessCheck API、Access Token、Security Descriptor、DACL評価の関係を解説する。"
+      },
+      "en": {
+        "title": "Access Check",
+        "aliases": [
+          "AccessCheck"
+        ],
+        "summary": "Windows access checking and the AccessCheck API, relating access tokens, security descriptors, DACLs, and requested rights."
+      }
+    },
+    {
+      "canonical_id": "windows.securable-object",
+      "slug": "securable-object",
+      "status": "article",
+      "categories": [
+        "Windows"
+      ],
+      "ja": {
+        "title": "Securable Object",
+        "aliases": [
+          "Securable Objects"
+        ],
+        "summary": "Security Descriptorを持つことができるWindows Securable Objectと代表例を解説する。"
+      },
+      "en": {
+        "title": "Securable Object",
+        "aliases": [
+          "Securable Objects"
+        ],
+        "summary": "Windows securable objects that can have security descriptors, with representative object types."
+      }
+    },
+    {
+      "canonical_id": "windows.privilege",
+      "slug": "windows-privilege",
+      "status": "article",
+      "categories": [
+        "Windows"
+      ],
+      "ja": {
+        "title": "Windows Privilege",
+        "aliases": [
+          "Windows Privileges"
+        ],
+        "summary": "Windows Privilegeのsystem operation、Access Rightsとの差、Access Token内の状態、LUIDを解説する。"
+      },
+      "en": {
+        "title": "Windows Privilege",
+        "aliases": [
+          "Windows Privileges"
+        ],
+        "summary": "Windows privileges for system operations, their distinction from access rights, token state, and LUID identifiers."
+      }
     }
   ]
 }

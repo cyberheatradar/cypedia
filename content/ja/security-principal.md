@@ -87,6 +87,8 @@ Domainで新しいSecurity Principalが作成される際のSID生成には[[ad.
 - [[ad.security-group|Security Group]]
 - [[windows.access-control-list|Access Control List]]
 
+- [[windows.securable-object|Securable Object]]
+
 ## 参考文献
 
 - [Microsoft - Security Principals](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-principals)

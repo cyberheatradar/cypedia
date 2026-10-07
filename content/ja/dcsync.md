@@ -85,6 +85,8 @@ DCSyncはdirectory database fileを直接copyするのではなく、正規repli
 - [[attack.ntds-credential-dumping|NTDS Credential Dumping]]
 - [[attack.golden-ticket|Golden Ticket]]
 
+- [[windows.access-rights|Access Rights]]
+
 ## 参考文献
 
 - [MITRE ATT&CK T1003.006 - DCSync](https://attack.mitre.org/techniques/T1003/006/)

@@ -71,6 +71,20 @@ The distinction between a NULL DACL and an empty DACL is particularly important 
 - [[ad.computer-account|Computer Account]]
 - [[ad.security-group|Security Group]]
 
+- [[windows.access-control-entry|Access Control Entry]]
+
+- [[windows.discretionary-access-control-list|Discretionary Access Control List]]
+
+- [[windows.system-access-control-list|System Access Control List]]
+
+- [[windows.access-rights|Access Rights]]
+
+- [[windows.access-mask|Access Mask]]
+
+- [[windows.access-check|Access Check]]
+
+- [[windows.securable-object|Securable Object]]
+
 ## References
 
 - [Microsoft - Access Control Lists](https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-lists)

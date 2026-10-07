@@ -87,6 +87,8 @@ Important controls include:
 - [[attack.ntds-credential-dumping|NTDS Credential Dumping]]
 - [[attack.golden-ticket|Golden Ticket]]
 
+- [[windows.access-rights|Access Rights]]
+
 ## References
 
 - [MITRE ATT&CK T1003.006 - DCSync](https://attack.mitre.org/techniques/T1003/006/)

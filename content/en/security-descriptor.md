@@ -70,6 +70,14 @@ DACL allow and deny rules, inheritance, ownership, and SACL auditing configurati
 - [[ad.active-directory|Active Directory]]
 - [[ad.security-group|Security Group]]
 
+- [[windows.access-control-entry|Access Control Entry]]
+
+- [[windows.discretionary-access-control-list|Discretionary Access Control List]]
+
+- [[windows.system-access-control-list|System Access Control List]]
+
+- [[windows.securable-object|Securable Object]]
+
 ## References
 
 - [Microsoft - Security Descriptors](https://learn.microsoft.com/en-us/windows/win32/secauthz/security-descriptors)
