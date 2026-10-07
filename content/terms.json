@@ -5,15 +5,21 @@
       "canonical_id": "ad.active-directory",
       "slug": "active-directory",
       "status": "article",
-      "categories": ["Active Directory"],
+      "categories": [
+        "Active Directory"
+      ],
       "ja": {
         "title": "Active Directory",
-        "aliases": ["AD"],
+        "aliases": [
+          "AD"
+        ],
         "summary": "Active Directoryの辞書項目。"
       },
       "en": {
         "title": "Active Directory",
-        "aliases": ["AD"],
+        "aliases": [
+          "AD"
+        ],
         "summary": "CyPedia entry for Active Directory."
       }
     },
@@ -21,15 +27,22 @@
       "canonical_id": "auth.kerberos",
       "slug": "kerberos",
       "status": "article",
-      "categories": ["Authentication", "Active Directory"],
+      "categories": [
+        "Authentication",
+        "Active Directory"
+      ],
       "ja": {
         "title": "Kerberos",
-        "aliases": ["Kerberos V5"],
+        "aliases": [
+          "Kerberos V5"
+        ],
         "summary": "Kerberos V5の辞書項目。"
       },
       "en": {
         "title": "Kerberos",
-        "aliases": ["Kerberos V5"],
+        "aliases": [
+          "Kerberos V5"
+        ],
         "summary": "CyPedia entry for Kerberos."
       }
     },
@@ -37,15 +50,21 @@
       "canonical_id": "kerberos.ticket-granting-ticket",
       "slug": "ticket-granting-ticket",
       "status": "article",
-      "categories": ["Kerberos"],
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Ticket-Granting Ticket",
-        "aliases": ["TGT"],
+        "aliases": [
+          "TGT"
+        ],
         "summary": "Ticket-Granting Ticket（TGT）の辞書項目。"
       },
       "en": {
         "title": "Ticket-Granting Ticket",
-        "aliases": ["TGT"],
+        "aliases": [
+          "TGT"
+        ],
         "summary": "CyPedia entry for the Ticket-Granting Ticket."
       }
     },
@@ -53,120 +72,166 @@
       "canonical_id": "attack.kerberoasting",
       "slug": "kerberoasting",
       "status": "article",
-      "categories": ["Active Directory", "Kerberos"],
+      "categories": [
+        "Active Directory",
+        "Kerberos"
+      ],
       "ja": {
         "title": "Kerberoasting",
-        "aliases": ["Kerberoast"],
+        "aliases": [
+          "Kerberoast"
+        ],
         "summary": "Kerberoastingの辞書項目。"
       },
       "en": {
         "title": "Kerberoasting",
-        "aliases": ["Kerberoast"],
+        "aliases": [
+          "Kerberoast"
+        ],
         "summary": "CyPedia entry for Kerberoasting."
       }
     },
-
     {
       "canonical_id": "kerberos.kdc",
       "slug": "key-distribution-center",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Key Distribution Center",
-        "aliases": ["KDC"],
+        "aliases": [
+          "KDC"
+        ],
         "summary": "Key Distribution Center（KDC）の辞書項目。"
       },
       "en": {
         "title": "Key Distribution Center",
-        "aliases": ["KDC"],
+        "aliases": [
+          "KDC"
+        ],
         "summary": "CyPedia entry for the Key Distribution Center."
       }
     },
     {
       "canonical_id": "kerberos.principal",
       "slug": "principal",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Principal",
-        "aliases": ["principal"],
+        "aliases": [
+          "principal"
+        ],
         "summary": "Kerberos Principalの辞書項目。"
       },
       "en": {
         "title": "Principal",
-        "aliases": ["principal"],
+        "aliases": [
+          "principal"
+        ],
         "summary": "CyPedia entry for Kerberos principals."
       }
     },
     {
       "canonical_id": "kerberos.realm",
       "slug": "realm",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Realm",
-        "aliases": ["realm"],
+        "aliases": [
+          "realm"
+        ],
         "summary": "Kerberos Realmの辞書項目。"
       },
       "en": {
         "title": "Realm",
-        "aliases": ["realm"],
+        "aliases": [
+          "realm"
+        ],
         "summary": "CyPedia entry for Kerberos realms."
       }
     },
     {
       "canonical_id": "kerberos.authentication-server",
       "slug": "authentication-server",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Authentication Server",
-        "aliases": ["AS"],
+        "aliases": [
+          "AS"
+        ],
         "summary": "Kerberos Authentication Serverの辞書項目。"
       },
       "en": {
         "title": "Authentication Server",
-        "aliases": ["AS"],
+        "aliases": [
+          "AS"
+        ],
         "summary": "CyPedia entry for the Kerberos Authentication Server."
       }
     },
     {
       "canonical_id": "kerberos.ticket-granting-server",
       "slug": "ticket-granting-server",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Ticket-Granting Server",
-        "aliases": ["TGS"],
+        "aliases": [
+          "TGS"
+        ],
         "summary": "Kerberos Ticket-Granting Serverの辞書項目。"
       },
       "en": {
         "title": "Ticket-Granting Server",
-        "aliases": ["TGS"],
+        "aliases": [
+          "TGS"
+        ],
         "summary": "CyPedia entry for the Kerberos Ticket-Granting Server."
       }
     },
     {
       "canonical_id": "kerberos.ticket",
       "slug": "kerberos-ticket",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Kerberos Ticket",
-        "aliases": ["Ticket", "ticket"],
+        "aliases": [
+          "Ticket",
+          "ticket"
+        ],
         "summary": "Kerberos Ticketの辞書項目。"
       },
       "en": {
         "title": "Kerberos Ticket",
-        "aliases": ["Ticket", "ticket"],
+        "aliases": [
+          "Ticket",
+          "ticket"
+        ],
         "summary": "CyPedia entry for Kerberos tickets."
       }
     },
     {
       "canonical_id": "kerberos.service-ticket",
       "slug": "service-ticket",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Service Ticket",
         "aliases": [],
@@ -181,24 +246,32 @@
     {
       "canonical_id": "kerberos.session-key",
       "slug": "session-key",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Session Key",
-        "aliases": ["session key"],
+        "aliases": [
+          "session key"
+        ],
         "summary": "Kerberos Session Keyの辞書項目。"
       },
       "en": {
         "title": "Session Key",
-        "aliases": ["session key"],
+        "aliases": [
+          "session key"
+        ],
         "summary": "CyPedia entry for Kerberos session keys."
       }
     },
     {
       "canonical_id": "kerberos.authenticator",
       "slug": "authenticator",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Authenticator",
         "aliases": [],
@@ -213,189 +286,268 @@
     {
       "canonical_id": "kerberos.pre-authentication",
       "slug": "pre-authentication",
-      "status": "planned",
-      "categories": ["Kerberos", "Authentication"],
+      "status": "article",
+      "categories": [
+        "Kerberos",
+        "Authentication"
+      ],
       "ja": {
         "title": "Pre-Authentication",
-        "aliases": ["pre-authentication"],
+        "aliases": [
+          "pre-authentication"
+        ],
         "summary": "Kerberos Pre-Authenticationの辞書項目。"
       },
       "en": {
         "title": "Pre-Authentication",
-        "aliases": ["pre-authentication"],
+        "aliases": [
+          "pre-authentication"
+        ],
         "summary": "CyPedia entry for Kerberos pre-authentication."
       }
     },
     {
       "canonical_id": "kerberos.pkinit",
       "slug": "pkinit",
-      "status": "planned",
-      "categories": ["Kerberos", "Authentication"],
+      "status": "article",
+      "categories": [
+        "Kerberos",
+        "Authentication"
+      ],
       "ja": {
         "title": "PKINIT",
-        "aliases": ["Public Key Cryptography for Initial Authentication in Kerberos"],
+        "aliases": [
+          "Public Key Cryptography for Initial Authentication in Kerberos"
+        ],
         "summary": "PKINITの辞書項目。"
       },
       "en": {
         "title": "PKINIT",
-        "aliases": ["Public Key Cryptography for Initial Authentication in Kerberos"],
+        "aliases": [
+          "Public Key Cryptography for Initial Authentication in Kerberos"
+        ],
         "summary": "CyPedia entry for PKINIT."
       }
     },
     {
       "canonical_id": "kerberos.replay-cache",
       "slug": "replay-cache",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Replay Cache",
-        "aliases": ["replay cache"],
+        "aliases": [
+          "replay cache"
+        ],
         "summary": "Kerberos Replay Cacheの辞書項目。"
       },
       "en": {
         "title": "Replay Cache",
-        "aliases": ["replay cache"],
+        "aliases": [
+          "replay cache"
+        ],
         "summary": "CyPedia entry for Kerberos replay caches."
       }
     },
     {
       "canonical_id": "kerberos.cross-realm-authentication",
       "slug": "cross-realm-authentication",
-      "status": "planned",
-      "categories": ["Kerberos"],
+      "status": "article",
+      "categories": [
+        "Kerberos"
+      ],
       "ja": {
         "title": "Cross-Realm Authentication",
-        "aliases": ["cross-realm authentication"],
+        "aliases": [
+          "cross-realm authentication"
+        ],
         "summary": "Kerberos Cross-Realm Authenticationの辞書項目。"
       },
       "en": {
         "title": "Cross-Realm Authentication",
-        "aliases": ["cross-realm authentication"],
+        "aliases": [
+          "cross-realm authentication"
+        ],
         "summary": "CyPedia entry for Kerberos cross-realm authentication."
       }
     },
-
     {
       "canonical_id": "ad.domain-controller",
       "slug": "domain-controller",
-      "status": "planned",
-      "categories": ["Active Directory"],
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
       "ja": {
         "title": "Domain Controller",
-        "aliases": ["DC"],
+        "aliases": [
+          "DC"
+        ],
         "summary": "Domain Controllerの辞書項目。"
       },
       "en": {
         "title": "Domain Controller",
-        "aliases": ["DC"],
+        "aliases": [
+          "DC"
+        ],
         "summary": "CyPedia entry for Domain Controllers."
       }
     },
     {
       "canonical_id": "ad.service-principal-name",
       "slug": "service-principal-name",
-      "status": "planned",
-      "categories": ["Active Directory", "Kerberos"],
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Kerberos"
+      ],
       "ja": {
         "title": "Service Principal Name",
-        "aliases": ["SPN"],
+        "aliases": [
+          "SPN"
+        ],
         "summary": "Service Principal Name（SPN）の辞書項目。"
       },
       "en": {
         "title": "Service Principal Name",
-        "aliases": ["SPN"],
+        "aliases": [
+          "SPN"
+        ],
         "summary": "CyPedia entry for Service Principal Names."
       }
     },
     {
       "canonical_id": "ad.service-account",
       "slug": "service-account",
-      "status": "planned",
-      "categories": ["Active Directory"],
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
       "ja": {
         "title": "Service Account",
-        "aliases": ["サービスアカウント", "service account"],
+        "aliases": [
+          "サービスアカウント",
+          "service account"
+        ],
         "summary": "Service Accountの辞書項目。"
       },
       "en": {
         "title": "Service Account",
-        "aliases": ["service account"],
+        "aliases": [
+          "service account"
+        ],
         "summary": "CyPedia entry for service accounts."
       }
     },
     {
       "canonical_id": "ad.krbtgt",
       "slug": "krbtgt",
-      "status": "planned",
-      "categories": ["Active Directory", "Kerberos"],
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Kerberos"
+      ],
       "ja": {
         "title": "KRBTGT",
-        "aliases": ["KRBTGT Account", "KRBTGT account"],
+        "aliases": [
+          "KRBTGT Account",
+          "KRBTGT account"
+        ],
         "summary": "Active DirectoryのKRBTGTアカウントの辞書項目。"
       },
       "en": {
         "title": "KRBTGT",
-        "aliases": ["KRBTGT Account", "KRBTGT account"],
+        "aliases": [
+          "KRBTGT Account",
+          "KRBTGT account"
+        ],
         "summary": "CyPedia entry for the Active Directory KRBTGT account."
       }
     },
     {
       "canonical_id": "windows.privilege-attribute-certificate",
       "slug": "privilege-attribute-certificate",
-      "status": "planned",
-      "categories": ["Windows", "Kerberos"],
+      "status": "article",
+      "categories": [
+        "Windows",
+        "Kerberos"
+      ],
       "ja": {
         "title": "Privilege Attribute Certificate",
-        "aliases": ["PAC"],
+        "aliases": [
+          "PAC"
+        ],
         "summary": "Privilege Attribute Certificate（PAC）の辞書項目。"
       },
       "en": {
         "title": "Privilege Attribute Certificate",
-        "aliases": ["PAC"],
+        "aliases": [
+          "PAC"
+        ],
         "summary": "CyPedia entry for the Privilege Attribute Certificate."
       }
     },
     {
       "canonical_id": "protocol.ldap",
       "slug": "ldap",
-      "status": "planned",
-      "categories": ["Network / Protocol", "Active Directory"],
+      "status": "article",
+      "categories": [
+        "Network / Protocol",
+        "Active Directory"
+      ],
       "ja": {
         "title": "LDAP",
-        "aliases": ["Lightweight Directory Access Protocol"],
+        "aliases": [
+          "Lightweight Directory Access Protocol"
+        ],
         "summary": "LDAPの辞書項目。"
       },
       "en": {
         "title": "LDAP",
-        "aliases": ["Lightweight Directory Access Protocol"],
+        "aliases": [
+          "Lightweight Directory Access Protocol"
+        ],
         "summary": "CyPedia entry for LDAP."
       }
     },
-
     {
       "canonical_id": "attack.as-rep-roasting",
       "slug": "as-rep-roasting",
-      "status": "planned",
-      "categories": ["Active Directory", "Kerberos"],
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Kerberos"
+      ],
       "ja": {
         "title": "AS-REP Roasting",
-        "aliases": ["ASREP Roasting"],
+        "aliases": [
+          "ASREP Roasting"
+        ],
         "summary": "AS-REP Roastingの辞書項目。"
       },
       "en": {
         "title": "AS-REP Roasting",
-        "aliases": ["ASREP Roasting"],
+        "aliases": [
+          "ASREP Roasting"
+        ],
         "summary": "CyPedia entry for AS-REP Roasting."
       }
     },
     {
       "canonical_id": "attack.golden-ticket",
       "slug": "golden-ticket",
-      "status": "planned",
-      "categories": ["Active Directory", "Kerberos"],
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Kerberos"
+      ],
       "ja": {
         "title": "Golden Ticket",
-        "aliases": ["ゴールデンチケット"],
+        "aliases": [
+          "ゴールデンチケット"
+        ],
         "summary": "Golden Ticketの辞書項目。"
       },
       "en": {
@@ -407,17 +559,753 @@
     {
       "canonical_id": "attack.silver-ticket",
       "slug": "silver-ticket",
-      "status": "planned",
-      "categories": ["Active Directory", "Kerberos"],
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Kerberos"
+      ],
       "ja": {
         "title": "Silver Ticket",
-        "aliases": ["シルバーチケット"],
+        "aliases": [
+          "シルバーチケット"
+        ],
         "summary": "Silver Ticketの辞書項目。"
       },
       "en": {
         "title": "Silver Ticket",
         "aliases": [],
         "summary": "CyPedia entry for Silver Ticket."
+      }
+    },
+    {
+      "canonical_id": "ad.domain",
+      "slug": "active-directory-domain",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Active Directory Domain",
+        "aliases": [
+          "AD Domain"
+        ],
+        "summary": "Active Directory Domainの辞書項目。"
+      },
+      "en": {
+        "title": "Active Directory Domain",
+        "aliases": [
+          "AD Domain"
+        ],
+        "summary": "CyPedia entry for Active Directory domains."
+      }
+    },
+    {
+      "canonical_id": "ad.forest",
+      "slug": "active-directory-forest",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Active Directory Forest",
+        "aliases": [
+          "AD Forest"
+        ],
+        "summary": "Active Directory Forestの辞書項目。"
+      },
+      "en": {
+        "title": "Active Directory Forest",
+        "aliases": [
+          "AD Forest"
+        ],
+        "summary": "CyPedia entry for Active Directory forests."
+      }
+    },
+    {
+      "canonical_id": "ad.organizational-unit",
+      "slug": "organizational-unit",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Organizational Unit",
+        "aliases": [
+          "OU"
+        ],
+        "summary": "Active Directory Organizational Unitの辞書項目。"
+      },
+      "en": {
+        "title": "Organizational Unit",
+        "aliases": [
+          "OU"
+        ],
+        "summary": "CyPedia entry for Active Directory organizational units."
+      }
+    },
+    {
+      "canonical_id": "ad.site",
+      "slug": "active-directory-site",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Active Directory Site",
+        "aliases": [
+          "AD Site"
+        ],
+        "summary": "Active Directory Siteの辞書項目。"
+      },
+      "en": {
+        "title": "Active Directory Site",
+        "aliases": [
+          "AD Site"
+        ],
+        "summary": "CyPedia entry for Active Directory sites."
+      }
+    },
+    {
+      "canonical_id": "ad.global-catalog",
+      "slug": "global-catalog",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Global Catalog",
+        "aliases": [
+          "GC"
+        ],
+        "summary": "Active Directory Global Catalogの辞書項目。"
+      },
+      "en": {
+        "title": "Global Catalog",
+        "aliases": [
+          "GC"
+        ],
+        "summary": "CyPedia entry for the Active Directory Global Catalog."
+      }
+    },
+    {
+      "canonical_id": "ad.schema",
+      "slug": "active-directory-schema",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Active Directory Schema",
+        "aliases": [
+          "AD Schema"
+        ],
+        "summary": "Active Directory Schemaの辞書項目。"
+      },
+      "en": {
+        "title": "Active Directory Schema",
+        "aliases": [
+          "AD Schema"
+        ],
+        "summary": "CyPedia entry for the Active Directory schema."
+      }
+    },
+    {
+      "canonical_id": "ad.directory-partition",
+      "slug": "directory-partition",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Directory Partition",
+        "aliases": [
+          "Naming Context"
+        ],
+        "summary": "Active Directory Directory Partitionの辞書項目。"
+      },
+      "en": {
+        "title": "Directory Partition",
+        "aliases": [
+          "Naming Context"
+        ],
+        "summary": "CyPedia entry for Active Directory directory partitions."
+      }
+    },
+    {
+      "canonical_id": "ad.replication",
+      "slug": "active-directory-replication",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Active Directory Replication",
+        "aliases": [
+          "AD Replication"
+        ],
+        "summary": "Active Directory Replicationの辞書項目。"
+      },
+      "en": {
+        "title": "Active Directory Replication",
+        "aliases": [
+          "AD Replication"
+        ],
+        "summary": "CyPedia entry for Active Directory replication."
+      }
+    },
+    {
+      "canonical_id": "ad.fsmo-roles",
+      "slug": "fsmo-roles",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "FSMO Roles",
+        "aliases": [
+          "FSMO",
+          "Operations Master Roles"
+        ],
+        "summary": "Active Directory FSMO Rolesの辞書項目。"
+      },
+      "en": {
+        "title": "FSMO Roles",
+        "aliases": [
+          "FSMO",
+          "Operations Master Roles"
+        ],
+        "summary": "CyPedia entry for Active Directory FSMO roles."
+      }
+    },
+    {
+      "canonical_id": "ad.trust",
+      "slug": "active-directory-trust",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Active Directory Trust",
+        "aliases": [
+          "Domain Trust",
+          "Forest Trust"
+        ],
+        "summary": "Active Directory Trustの辞書項目。"
+      },
+      "en": {
+        "title": "Active Directory Trust",
+        "aliases": [
+          "Domain Trust",
+          "Forest Trust"
+        ],
+        "summary": "CyPedia entry for Active Directory trusts."
+      }
+    },
+    {
+      "canonical_id": "ad.ntds-dit",
+      "slug": "ntds-dit",
+      "status": "article",
+      "categories": [
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "NTDS.dit",
+        "aliases": [],
+        "summary": "Active Directory databaseであるNTDS.ditの辞書項目。"
+      },
+      "en": {
+        "title": "NTDS.dit",
+        "aliases": [],
+        "summary": "CyPedia entry for the Active Directory NTDS.dit database."
+      }
+    },
+    {
+      "canonical_id": "ad.sysvol",
+      "slug": "sysvol",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Windows"
+      ],
+      "ja": {
+        "title": "SYSVOL",
+        "aliases": [],
+        "summary": "Active Directory SYSVOLの辞書項目。"
+      },
+      "en": {
+        "title": "SYSVOL",
+        "aliases": [],
+        "summary": "CyPedia entry for SYSVOL."
+      }
+    },
+    {
+      "canonical_id": "windows.group-policy",
+      "slug": "group-policy",
+      "status": "article",
+      "categories": [
+        "Windows",
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Group Policy",
+        "aliases": [
+          "GPO",
+          "Group Policy Object"
+        ],
+        "summary": "Windows Group Policyの辞書項目。"
+      },
+      "en": {
+        "title": "Group Policy",
+        "aliases": [
+          "GPO",
+          "Group Policy Object"
+        ],
+        "summary": "CyPedia entry for Windows Group Policy."
+      }
+    },
+    {
+      "canonical_id": "protocol.dns",
+      "slug": "dns",
+      "status": "article",
+      "categories": [
+        "Network / Protocol"
+      ],
+      "ja": {
+        "title": "DNS",
+        "aliases": [
+          "Domain Name System"
+        ],
+        "summary": "Domain Name System（DNS）の辞書項目。"
+      },
+      "en": {
+        "title": "DNS",
+        "aliases": [
+          "Domain Name System"
+        ],
+        "summary": "CyPedia entry for the Domain Name System."
+      }
+    },
+    {
+      "canonical_id": "auth.ntlm",
+      "slug": "ntlm",
+      "status": "article",
+      "categories": [
+        "Authentication",
+        "Windows"
+      ],
+      "ja": {
+        "title": "NTLM",
+        "aliases": [],
+        "summary": "Windows NTLM authenticationの辞書項目。"
+      },
+      "en": {
+        "title": "NTLM",
+        "aliases": [],
+        "summary": "CyPedia entry for NTLM authentication."
+      }
+    },
+    {
+      "canonical_id": "windows.security-identifier",
+      "slug": "security-identifier",
+      "status": "article",
+      "categories": [
+        "Windows",
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Security Identifier",
+        "aliases": [
+          "SID"
+        ],
+        "summary": "Windows Security Identifier（SID）の辞書項目。"
+      },
+      "en": {
+        "title": "Security Identifier",
+        "aliases": [
+          "SID"
+        ],
+        "summary": "CyPedia entry for Windows Security Identifiers."
+      }
+    },
+    {
+      "canonical_id": "attack.dcsync",
+      "slug": "dcsync",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Credential Access"
+      ],
+      "ja": {
+        "title": "DCSync",
+        "aliases": [],
+        "summary": "Active Directory replicationを悪用するDCSyncの辞書項目。"
+      },
+      "en": {
+        "title": "DCSync",
+        "aliases": [],
+        "summary": "CyPedia entry for DCSync."
+      }
+    },
+    {
+      "canonical_id": "attack.ntds-credential-dumping",
+      "slug": "ntds-credential-dumping",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Credential Access"
+      ],
+      "ja": {
+        "title": "NTDS Credential Dumping",
+        "aliases": [],
+        "summary": "NTDS.ditを対象とするCredential Dumpingの辞書項目。"
+      },
+      "en": {
+        "title": "NTDS Credential Dumping",
+        "aliases": [],
+        "summary": "CyPedia entry for NTDS credential dumping."
+      }
+    },
+    {
+      "canonical_id": "attack.domain-trust-discovery",
+      "slug": "domain-trust-discovery",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Discovery"
+      ],
+      "ja": {
+        "title": "Domain Trust Discovery",
+        "aliases": [],
+        "summary": "Active Directory trust関係のDiscovery techniqueの辞書項目。"
+      },
+      "en": {
+        "title": "Domain Trust Discovery",
+        "aliases": [],
+        "summary": "CyPedia entry for Domain Trust Discovery."
+      }
+    },
+    {
+      "canonical_id": "windows.security-principal",
+      "slug": "security-principal",
+      "status": "article",
+      "categories": [
+        "Windows",
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Security Principal",
+        "aliases": [
+          "security principal",
+          "セキュリティプリンシパル"
+        ],
+        "summary": "Windows Security Principalの辞書項目。"
+      },
+      "en": {
+        "title": "Security Principal",
+        "aliases": [
+          "security principal"
+        ],
+        "summary": "CyPedia entry for Windows security principals."
+      }
+    },
+    {
+      "canonical_id": "ad.user-account",
+      "slug": "user-account",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Identity"
+      ],
+      "ja": {
+        "title": "User Account",
+        "aliases": [],
+        "summary": "Active Directoryのユーザーを表すaccount、Security Principalとしての役割、認証・認可との関係。"
+      },
+      "en": {
+        "title": "User Account",
+        "aliases": [],
+        "summary": "Active Directory user accounts, their role as security principals, and their relationship to authentication and authorization."
+      }
+    },
+    {
+      "canonical_id": "ad.computer-account",
+      "slug": "computer-account",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Identity"
+      ],
+      "ja": {
+        "title": "Computer Account",
+        "aliases": [],
+        "summary": "Domain参加computerを表すActive Directory accountとmachine identity、認証、serviceとの関係。"
+      },
+      "en": {
+        "title": "Computer Account",
+        "aliases": [],
+        "summary": "Active Directory computer accounts, machine identity, domain authentication, and service relationships."
+      }
+    },
+    {
+      "canonical_id": "ad.security-group",
+      "slug": "security-group",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Identity"
+      ],
+      "ja": {
+        "title": "Security Group",
+        "aliases": [],
+        "summary": "Active Directory Security GroupによるSecurity Principalの集約、scope、permission assignment。"
+      },
+      "en": {
+        "title": "Security Group",
+        "aliases": [],
+        "summary": "Active Directory security groups, security-principal aggregation, group scope, and permission assignment."
+      }
+    },
+    {
+      "canonical_id": "ad.knowledge-consistency-checker",
+      "slug": "knowledge-consistency-checker",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Replication"
+      ],
+      "ja": {
+        "title": "Knowledge Consistency Checker",
+        "aliases": [
+          "KCC"
+        ],
+        "summary": "Active Directory replication topologyを生成・維持するKnowledge Consistency Checker。"
+      },
+      "en": {
+        "title": "Knowledge Consistency Checker",
+        "aliases": [
+          "KCC"
+        ],
+        "summary": "The Knowledge Consistency Checker that generates and maintains Active Directory replication topology."
+      }
+    },
+    {
+      "canonical_id": "ad.site-link",
+      "slug": "site-link",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Replication"
+      ],
+      "ja": {
+        "title": "Site Link",
+        "aliases": [],
+        "summary": "Active Directory Site間のreplication connectivity、cost、scheduleを表すSite Link。"
+      },
+      "en": {
+        "title": "Site Link",
+        "aliases": [],
+        "summary": "Active Directory Site Links representing inter-site replication connectivity, costs, and schedules."
+      }
+    },
+    {
+      "canonical_id": "ad.connection-object",
+      "slug": "connection-object",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Replication"
+      ],
+      "ja": {
+        "title": "Connection Object",
+        "aliases": [],
+        "summary": "source Domain Controllerからdestination Domain Controllerへのreplication connectionを表すAD object。"
+      },
+      "en": {
+        "title": "Connection Object",
+        "aliases": [],
+        "summary": "An Active Directory object representing a replication connection from a source Domain Controller to a destination Domain Controller."
+      }
+    },
+    {
+      "canonical_id": "ad.read-only-domain-controller",
+      "slug": "read-only-domain-controller",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Domain Controller"
+      ],
+      "ja": {
+        "title": "Read-Only Domain Controller",
+        "aliases": [
+          "RODC"
+        ],
+        "summary": "read-only AD DS database replicaとcredential caching制御を持つRead-Only Domain Controller。"
+      },
+      "en": {
+        "title": "Read-Only Domain Controller",
+        "aliases": [
+          "RODC"
+        ],
+        "summary": "Read-Only Domain Controllers, read-only AD DS replicas, and credential-caching behavior."
+      }
+    },
+    {
+      "canonical_id": "ad.group-managed-service-account",
+      "slug": "group-managed-service-account",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Service Identity"
+      ],
+      "ja": {
+        "title": "Group Managed Service Account",
+        "aliases": [
+          "gMSA"
+        ],
+        "summary": "複数serverで利用でき、Domain Controllerがpasswordを管理するGroup Managed Service Account。"
+      },
+      "en": {
+        "title": "Group Managed Service Account",
+        "aliases": [
+          "gMSA"
+        ],
+        "summary": "Group Managed Service Accounts that support multiple servers with domain-managed credentials."
+      }
+    },
+    {
+      "canonical_id": "ad.standalone-managed-service-account",
+      "slug": "standalone-managed-service-account",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Service Identity"
+      ],
+      "ja": {
+        "title": "Standalone Managed Service Account",
+        "aliases": [
+          "sMSA"
+        ],
+        "summary": "単一computer上のservice向けにcredential管理を自動化するStandalone Managed Service Account。"
+      },
+      "en": {
+        "title": "Standalone Managed Service Account",
+        "aliases": [
+          "sMSA"
+        ],
+        "summary": "Standalone Managed Service Accounts that automate credential management for services on a single computer."
+      }
+    },
+    {
+      "canonical_id": "ad.delegated-managed-service-account",
+      "slug": "delegated-managed-service-account",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Service Identity"
+      ],
+      "ja": {
+        "title": "Delegated Managed Service Account",
+        "aliases": [
+          "dMSA"
+        ],
+        "summary": "Windows Server 2025で導入されたdevice-bound service identityであるDelegated Managed Service Account。"
+      },
+      "en": {
+        "title": "Delegated Managed Service Account",
+        "aliases": [
+          "dMSA"
+        ],
+        "summary": "Delegated Managed Service Accounts introduced with Windows Server 2025 for device-bound managed service identity."
+      }
+    },
+    {
+      "canonical_id": "ldap.distinguished-name",
+      "slug": "distinguished-name",
+      "status": "article",
+      "categories": [
+        "Network / Protocol",
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Distinguished Name",
+        "aliases": [
+          "DN"
+        ],
+        "summary": "LDAPおよびActive Directory tree内でobjectを識別するDistinguished NameとRDN構造。"
+      },
+      "en": {
+        "title": "Distinguished Name",
+        "aliases": [
+          "DN"
+        ],
+        "summary": "LDAP Distinguished Names and RDN composition for identifying objects in directory trees."
+      }
+    },
+    {
+      "canonical_id": "windows.access-control-list",
+      "slug": "access-control-list",
+      "status": "article",
+      "categories": [
+        "Windows",
+        "Access Control",
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Access Control List",
+        "aliases": [
+          "ACL"
+        ],
+        "summary": "WindowsおよびActive Directory objectのaccess controlを定義するAccess Control List。"
+      },
+      "en": {
+        "title": "Access Control List",
+        "aliases": [
+          "ACL"
+        ],
+        "summary": "Access Control Lists used to protect Windows and Active Directory securable objects."
+      }
+    },
+    {
+      "canonical_id": "windows.security-descriptor",
+      "slug": "security-descriptor",
+      "status": "article",
+      "categories": [
+        "Windows",
+        "Access Control",
+        "Active Directory"
+      ],
+      "ja": {
+        "title": "Security Descriptor",
+        "aliases": [],
+        "summary": "Windows securable objectとActive Directory objectに関連付けられるsecurity information data structure。"
+      },
+      "en": {
+        "title": "Security Descriptor",
+        "aliases": [],
+        "summary": "The Windows security-information data structure associated with securable and Active Directory objects."
+      }
+    },
+    {
+      "canonical_id": "ad.sid-history",
+      "slug": "sidhistory",
+      "status": "article",
+      "categories": [
+        "Active Directory",
+        "Authorization"
+      ],
+      "ja": {
+        "title": "SIDHistory",
+        "aliases": [
+          "SID History"
+        ],
+        "summary": "Domain migration時などに以前のSIDを保持するActive DirectoryのsIDHistory attribute。"
+      },
+      "en": {
+        "title": "SIDHistory",
+        "aliases": [
+          "SID History"
+        ],
+        "summary": "The Active Directory sIDHistory attribute used to retain previous SIDs across domain migrations."
       }
     }
   ]

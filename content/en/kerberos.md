@@ -92,7 +92,7 @@ During authentication exchanges, the KDC provides session-key material for commu
 
 An Authenticator is data used to demonstrate that the party presenting a ticket also possesses the corresponding session key.
 
-Authenticators include time-related information and are used with tickets. Application servers validate Authenticators and may use a [[kerberos.replay-cache|Replay Cache]] to detect replayed authentication material.
+Authenticators include time-related information and are used with tickets. RFC 4120 requires an application server to use a [[kerberos.replay-cache|Replay Cache]] to detect Authenticator reuse unless the application provides another suitable anti-replay mechanism.
 
 ## Authentication Flow
 
@@ -160,7 +160,7 @@ Time is important to Kerberos operation.
 
 RFC 4120 assumes that participating hosts maintain reasonably synchronized clocks and discusses an allowable clock skew, commonly around five minutes.
 
-Application servers validate timestamps carried in Authenticators and can maintain replay caches. Reuse of the same Authenticator can therefore be rejected as a replay.
+Application servers validate timestamps carried in Authenticators. RFC 4120 requires a replay cache for Authenticators presented within the allowable clock skew unless the application provides another suitable replay-protection mechanism; a repeated Authenticator can then be rejected as a replay.
 
 Reliable and secure time synchronization is consequently important to Kerberos deployments.
 
@@ -312,6 +312,7 @@ Important Kerberos-related standards and specifications include RFC 4120, the Ke
 - [[attack.as-rep-roasting|AS-REP Roasting]]
 - [[attack.golden-ticket|Golden Ticket]]
 - [[attack.silver-ticket|Silver Ticket]]
+- [[ad.domain|Active Directory Domain]]
 
 ## References
 

@@ -89,7 +89,7 @@ KDCは認証処理の中でclientとTGS、またはclientとapplication service�
 
 Authenticatorは、ticketを提示する主体が、そのticketに対応するsession keyを保持していることを示すために使用されるデータです。
 
-Authenticatorには時刻情報などが含まれ、ticketと組み合わせて利用されます。application serverはAuthenticatorの検証と[[kerberos.replay-cache|replay cache]]などを利用してreplay attackへの対策を行います。
+Authenticatorには時刻情報などが含まれ、ticketと組み合わせて利用されます。RFC 4120では、application側が別の適切なanti-replay mechanismを提供しない限り、application serverは[[kerberos.replay-cache|replay cache]]を利用してAuthenticatorの再利用を検出する必要があります。
 
 ## 認証の流れ
 
@@ -157,7 +157,7 @@ Kerberosでは時刻が重要な役割を持ちます。
 
 RFC 4120では、参加するhostのclockがある程度同期していることを前提としており、典型的な許容clock skewとして約5分が示されています。
 
-application serverはAuthenticatorに含まれる時刻情報を検証し、必要に応じてreplay cacheを保持します。同一Authenticatorの再利用が検出された場合、replayとして拒否できます。
+application serverはAuthenticatorに含まれる時刻情報を検証します。RFC 4120では、別の適切なanti-replay mechanismがない場合、serverはallowable clock skew内に提示されたAuthenticatorを記録するreplay cacheを利用し、再利用をreplayとして拒否する必要があります。
 
 そのため、Kerberos環境では正確かつ安全な時刻同期が重要です。
 
@@ -297,6 +297,7 @@ Kerberos V5を理解する上で重要な標準・仕様には、RFC 4120のほ�
 - [[attack.silver-ticket|Silver Ticket]]
 - [[kerberos.pkinit|PKINIT]]
 - [[windows.privilege-attribute-certificate|PAC]]
+- [[ad.domain|Active Directory Domain]]
 
 ## 参考文献
 
